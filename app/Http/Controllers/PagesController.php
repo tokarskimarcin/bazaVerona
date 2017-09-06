@@ -226,7 +226,7 @@ class PagesController extends Controller
         if($system == 0)
             $naglowek[] = array('Imie','Nazwisko','Ulica','Nr. Domu','Nr. Mieszkania','Miasto','Kod','Telefon');
         else
-            $naglowek[] = array('Telefon','Imie','Nazwisko','Ulica','Nr. Domu','Kod Pocztowy','Miasto');
+            $naglowek[] = array('Numer telefonu','Imię','Nazwisko','Ulica','Numer domu','Kod pocztowy','Miasto','Miasto Poczty','Komentarz','Status','Ponowny Kontakt o:','Wpisz kod pocztowy lub miasto:');
         //Wpisanie danych do pliku
         foreach ($dane as $item)
         {
