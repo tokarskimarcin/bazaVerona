@@ -102,9 +102,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
 
-        $('.btn').click(function(){
+        $('.btn').click(function(event){
             document.getElementById("loader").style.display = "block";
-            var dane = window.event.target.id;
+            var dane = event.target.id;
             var baza = dane.split("/");
             var kolumna = $(this).closest('tr');
             var miasto = kolumna.find(".miasto").text();

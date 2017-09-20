@@ -81,4 +81,7 @@ Route::post('/raportuserplus', 'RaportsController@setraportuserplus');
 Route::get('/setdata', 'RaportsController@setdata');
 
 
+//*************************Planer*******************************
+Route::get('/planer', 'PlanerController@addroute');
+
 
