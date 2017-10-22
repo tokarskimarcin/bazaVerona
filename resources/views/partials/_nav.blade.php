@@ -67,7 +67,7 @@
                 @endif
                     <li><a href="{{ url('historia') }}">Pobrane Rekordy</a></li>
 
-                    @if (Auth::user()->id == 1 || Auth::user()->id == 105)
+                    @if (Auth::user()->id == 1 || Auth::user()->id == 105 || Auth::user()->id == 102 || Auth::user()->id == 109)
                         <li><a href="{{ url('odblokowanie') }}">Odblokowanie paczek</a></li>
                     @endif
 
