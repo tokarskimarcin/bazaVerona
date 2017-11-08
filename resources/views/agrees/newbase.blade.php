@@ -96,14 +96,14 @@
     <div id="loader"></div>
 
 
-    <h1 style="font-family: 'bebas_neueregular'; text-shadow: 2px 2px 2px rgba(150, 150, 150, 0.8); font-size:40px;text-align: center">Panel zarządzania nowymi zgodami</h1>
+    <h1 style="font-family: 'bebas_neueregular'; text-shadow: 2px 2px 2px rgba(150, 150, 150, 0.8); font-size:40px;text-align: center">Panel zarządzania rekordami EXITO</h1>
     <hr></br>
 
 
     <table id="ilosc" class="table table-striped table-bordered" cellspacing="0" width="50%">
         <thead>
         <th></th>
-        <th>Nowe Zgody</th>
+        <th>Rekordy</th>
         <th>Suma</th>
         </thead>
         <tr id="znalezione">
@@ -141,7 +141,7 @@
             <th>Miasto</th>
             <th>Adres</th>
             <th>Kod</th>
-            <th>Nowe Zgody</th>
+            <th>Rekordy</th>
             <th><input type="checkbox" name="select_all" value="0" id="example-select-all"></th>
         </tr>
         </thead>
