@@ -150,8 +150,7 @@
             <div class="form-group">
                 <label for="selectSystem">Wybierz system:</label>
                 <select id="selectSystem" class="form-control selectWidth">
-                    <option value="0">Systell</option>
-                    <option value="1">PBX</option>
+                    <option value="1" selected>PBX</option>
                 </select>
             </div>
             <div class="btn-group">
