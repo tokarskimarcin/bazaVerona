@@ -107,7 +107,7 @@
         <th>Suma</th>
         </thead>
         <tr id="znalezione">
-            <td>Zlanezionych:</td>
+            <td>Znalezionych:</td>
             <td id="bznalezionych">0/0</td>
             <td id="sumaznalezionych">0/0</td>
         </tr>
