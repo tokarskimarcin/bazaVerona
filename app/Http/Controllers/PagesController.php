@@ -113,9 +113,9 @@ class PagesController extends Controller
             {   //wyszukanie miast przez select
                 if($kodod !=0){
                     if($projekt == 'Badania')
-                        return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','bisnode_badania','zgody_badania','event_badania','reszta_badania')->where('idkod', '>=', $kodod)->where('idkod', '<=', $koddo)->get();
+                        return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','exito','bisnode_badania','zgody_badania','event_badania','reszta_badania','exito_badania')->where('idkod', '>=', $kodod)->where('idkod', '<=', $koddo)->get();
                     else
-                        return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','bisnodeall','zgodyall','eventall','resztaall')->where('idkod', '>=', $kodod)->where('idkod', '<=', $koddo)->get();
+                        return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','exito','bisnodeall','zgodyall','eventall','resztaall','exitoall')->where('idkod', '>=', $kodod)->where('idkod', '<=', $koddo)->get();
                 }
             }
         }
@@ -125,9 +125,9 @@ class PagesController extends Controller
             //Zmiana zanku w mieście
             $res = str_replace("|","/",$DaneWejsciowe[2]);
             if($projekt == 'Badania')
-                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','bisnode_badania','zgody_badania','event_badania','reszta_badania')->where('miasto', '=', $res)->where('idwoj', '=', $wojewodztwo)->get();
+                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','exito','bisnode_badania','zgody_badania','event_badania','reszta_badania','exito_badania')->where('miasto', '=', $res)->where('idwoj', '=', $wojewodztwo)->get();
             else
-                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','bisnodeall','zgodyall','eventall','resztaall')->where('miasto', '=', $res)->where('idwoj', '=', $wojewodztwo)->get();
+                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','exito','bisnodeall','zgodyall','eventall','resztaall','exitoall')->where('miasto', '=', $res)->where('idwoj', '=', $wojewodztwo)->get();
 
         }
         //Wyszukanie miast po jednym kodzie pocztowym
@@ -136,9 +136,9 @@ class PagesController extends Controller
             $kodod = str_replace('-','',$DaneWejsciowe[0]);
             $kodod = intval($kodod);
             if($projekt == 'Badania')
-                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','bisnode_badania','zgody_badania','event_badania','reszta_badania')->where('idkod', '=', $kodod)->get();
+                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','exito','bisnode_badania','zgody_badania','event_badania','reszta_badania','exito_badania')->where('idkod', '=', $kodod)->get();
             else
-                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','bisnodeall','zgodyall','eventall','resztaall')->where('idkod', '=', $kodod)->get();
+                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','exito','bisnodeall','zgodyall','eventall','resztaall','exitoall')->where('idkod', '=', $kodod)->get();
 
         }
         //Wyszukanie miast po kodzie i rejonce jednocześnie
@@ -151,21 +151,21 @@ class PagesController extends Controller
             $res = str_replace("|","/",$DaneWejsciowe[2]);
 
             if($projekt == 'Badania')
-                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','bisnode_badania','zgody_badania','event_badania','reszta_badania')->where('idkod', '>=', $kodod)->where('idkod', '<=', $koddo)->where('miasto', '=', $res)->where('idwoj', '=', $wojewodztwo)->get();
+                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','exito','bisnode_badania','zgody_badania','event_badania','reszta_badania','exito_badania')->where('idkod', '>=', $kodod)->where('idkod', '<=', $koddo)->where('miasto', '=', $res)->where('idwoj', '=', $wojewodztwo)->get();
             else
-                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','bisnodeall','zgodyall','eventall','resztaall')->where('idkod', '>=', $kodod)->where('idkod', '<=', $koddo)->where('miasto', '=', $res)->where('idwoj', '=', $wojewodztwo)->get();
+                return $rekordy = Postcode::select('idwoj','miasto','adres','kodpocztowy','bisnode','zgody','event','reszta','exito','bisnodeall','zgodyall','eventall','resztaall','exitoall')->where('idkod', '>=', $kodod)->where('idkod', '<=', $koddo)->where('miasto', '=', $res)->where('idwoj', '=', $wojewodztwo)->get();
         }
         else if($DaneWejsciowe[0] == '' && $DaneWejsciowe[1] == '' && $DaneWejsciowe[2] == '' && $DaneWejsciowe[3]!= null )
         {
             $wynikowy = array();
             foreach ($tab as $item) {
                 if ($projekt == 'Badania') {
-                    $rekordy = Postcode::select('idwoj', 'miasto', 'adres', 'kodpocztowy', 'bisnode', 'zgody', 'event', 'reszta', 'bisnode_badania', 'zgody_badania', 'event_badania', 'reszta_badania')
+                    $rekordy = Postcode::select('idwoj', 'miasto', 'adres', 'kodpocztowy', 'bisnode', 'zgody', 'event', 'reszta','exito', 'bisnode_badania', 'zgody_badania', 'event_badania', 'reszta_badania','exito_badania')
                         ->where('idkod', '=', $item)
                         ->get();
                 }
                 else {
-                    $rekordy = Postcode::select('idwoj', 'miasto', 'adres', 'kodpocztowy', 'bisnode', 'zgody', 'event', 'reszta', 'bisnodeall', 'zgodyall', 'eventall', 'resztaall')
+                    $rekordy = Postcode::select('idwoj', 'miasto', 'adres', 'kodpocztowy', 'bisnode', 'zgody', 'event', 'reszta','exito', 'bisnodeall', 'zgodyall', 'eventall', 'resztaall','exitoall')
                         ->where('idkod', '=', $item)
                         ->get();
                 }
@@ -214,8 +214,22 @@ class PagesController extends Controller
         $data = date("Y-m-d H:i:s", strtotime('+2 hours'));
         $iledanych = session()->get('iledanych');
         $miasto = str_replace('-','/',session()->get('miasto'));
-        $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2];
-        $napis = $napis.'_'.$data;
+
+        if($iledanych[4] != 0 && ($iledanych[0] ==0 && $iledanych[1] == 0 && $iledanych[2] == 0 && $iledanych[3]==0))
+        {
+            $napis = $miasto.'_EXITO-'.$iledanych[4];
+            $napis = $napis.'_'.$data;
+        }
+        else if($iledanych[4] != 0 && ($iledanych[0] ==0 || $iledanych[1] == 0 || $iledanych[2] == 0 || $iledanych[3]==0))
+        {
+            $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2].'_EXITO-'.$iledanych[4];
+            $napis = $napis.'_'.$data;
+        }
+        else{
+            $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2];
+            $napis = $napis.'_'.$data;
+        }
+
 
         $dane =session()->get('tablicaDanych');
         $system =session()->get('system');
@@ -268,6 +282,7 @@ class PagesController extends Controller
         $zgody = $request['zgody'];
         $reszta = $request['reszta'];
         $event = $request['event'];
+        $exito = $request['exito'];
         $miasto = $request['miasto'];
         $idwoj = $request['idwoj'];
         $projekt = $request['projekt'];
@@ -296,12 +311,16 @@ class PagesController extends Controller
         {
             self::setDate($kody,$event,3);
         }
+        if($exito!=0)
+        {
+            self::setDate($kody,$exito,4);
+        }
         //Wywołanie funkcji UpdateData do zablokowanie pobieranych numerów
-        self::updateData($bisnode,$zgody,$reszta,$event,$miasto,$idwoj,$projekt);
+        self::updateData($bisnode,$zgody,$reszta,$event,$exito,$miasto,$idwoj,$projekt);
 
     }
     //Zablokowanie numerów, dodanie wpisu w log_download, zmniejszenie licznika
-    public function updateData($bisnode,$zgody,$reszta,$event,$miasto,$idwoj,$projekt)
+    public function updateData($bisnode,$zgody,$reszta,$event,$exito,$miasto,$idwoj,$projekt)
     {
         $data = date("Y-m-d H:i:s", strtotime('+2 hours'));
         $databezgodiny = date("Y-m-d");
@@ -338,14 +357,14 @@ class PagesController extends Controller
             $licznikzg = array_fill_keys(array_keys($kodyBezDubli),0);
             $licznikresz = array_fill_keys(array_keys($kodyBezDubli),0);
             $licznikevent = array_fill_keys(array_keys($kodyBezDubli),0);
-
+            $licznikexito = array_fill_keys(array_keys($kodyBezDubli),0);
 
             //Liczniki ile faktycznie możemy pobrać(aby liczniki nie wyszły na -1 gdy pobranie odbędzie się w tym samym czasie)
             $poubdatebis =0;
             $poubdatezg =0;
             $poubdateev =0;
             $poubdateresz =0;
-
+            $poubdateexito =0;
             //Licznik ile rekordów przypada na dany kod
             foreach ($daneDoZapisania as $item) {
                 if($item['idbaza'] == 8) {
@@ -356,6 +375,9 @@ class PagesController extends Controller
                 }else if($item['idbaza'] == 5 ||$item['idbaza'] == 9 || $item['idbaza'] ==17)
                 {
                     $licznikzg[$item['idkod']]++;
+                }else if($item['idbaza'] == 19)
+                {
+                    $licznikexito[$item['idkod']]++;
                 }else
                 {
                     $licznikresz[$item['idkod']]++;
@@ -402,17 +424,28 @@ class PagesController extends Controller
                         DB::table('kod')->where('idkod',$key)->decrement('eventall',$item);
                 }
 
+            if($exito > 0)
+                foreach($licznikexito as $key => $item)
+                {
+                    $poubdateexito+=$item;
+                    if($projekt == "Badania")
+                        DB::table('kod')->where('idkod',$key)->decrement('exito_badania',$item);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('exitoall',$item);
+                }
+
                 //Tablica sesji ilości wykorzystana do generowania nazwy pliku csv
                 $ilosc = array();
                 array_push($ilosc,$poubdatebis);
                 array_push($ilosc,$poubdatezg);
                 array_push($ilosc,$poubdateresz);
                 array_push($ilosc,$poubdateev);
+                array_push($ilosc,$poubdateexito);
                 session()->put('iledanych',$ilosc);
         //Insert już poprawnych danych
         DB::table('log_download')
             ->where('id',$id)
-            ->update(['baza8' => $poubdatebis,'bazazg' => $poubdatezg,'bazareszta'=>$poubdateresz,'bazaevent'=>$poubdateev]);
+            ->update(['baza8' => $poubdatebis,'bazazg' => $poubdatezg,'bazareszta'=>$poubdateresz,'bazaevent'=>$poubdateev,'bazaexito'=>$poubdateexito]);
 
             //Blokowanie rekordów.
 
@@ -429,7 +462,7 @@ class PagesController extends Controller
                         ->update([$doUpdateProjekt => $id,$doUpdateDataProjektu => $databezgodiny]);
 
     }
-    //Pobranie wymaganej ilości danych z bazy, typ- rodzaj bazy 0-bisnode,1-zgody,2-reszta,3-event
+    //Pobranie wymaganej ilości danych z bazy, typ- rodzaj bazy 0-bisnode,1-zgody,2-reszta,3-event,4-exito
     public function setDate($kody,$ilosc,$typ)
     {
         $tablica = array();
@@ -505,6 +538,17 @@ class PagesController extends Controller
                             ->where('lock', '=', 0)
                             ->where($dataDoProjektu, '<', $blokada)
                             ->where('idbaza', '=', 6)
+                            ->orderBy($dataDoProjektu, 'asc')
+                            ->take($ilosc)->get();
+                }
+                else if($typ == 4)
+                {
+                    $rekody =
+                        Record::select('imie', 'nazwisko', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','idbaza')
+                            ->where('idkod', '=', $kod)
+                            ->where('lock', '=', 0)
+                            ->where($dataDoProjektu, '<', $blokada)
+                            ->where('idbaza', '=', 19)
                             ->orderBy($dataDoProjektu, 'asc')
                             ->take($ilosc)->get();
                 }

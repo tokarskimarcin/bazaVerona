@@ -131,6 +131,7 @@
         <th>BisNode</th>
         <th>Zgody</th>
         <th>Event</th>
+        <th>Exito</th>
         <th>Reszta</th>
         <th>Suma</th>
         </thead>
@@ -139,6 +140,7 @@
             <td id="bznalezionych">0/0</td>
             <td id="zznalezionych">0/0</td>
             <td id="eznalezionych">0/0</td>
+            <td id="exznalezionych">0/0</td>
             <td id="rznalezionych">0/0</td>
             <td id="sumaznalezionych">0/0</td>
         </tr>
@@ -147,6 +149,7 @@
             <td><input type="number" id="bliczba" value="0" class="form-control-dane"/></td>
             <td><input type="number" id="zliczba" value="0" class="form-control-dane"/></td>
             <td><input type="number" id="eliczba" value="0" class="form-control-dane"/></td>
+            <td><input type="number" id="exliczba" value="0" class="form-control-dane"/></td>
             <td><input type="number" id="rliczba" value="0" class="form-control-dane"/></td>
             <td id="sumaliczba">0</td>
         </tr>
@@ -177,6 +180,7 @@
             <th>BisNode</th>
             <th>Zgody</th>
             <th>Event</th>
+            <th>Exito</th>
             <th>Reszta</th>
             <th><input type="checkbox" name="select_all" value="0" id="example-select-all"></th>
         </tr>
@@ -228,18 +232,21 @@
         var sumabis = 0;
         var sumazg = 0;
         var sumaev = 0;
+        var sumaex = 0;
         var sumaresz = 0;
         var sumacalosci = 0;
         //DANE Z BAZY Badania
         var bisbadania = 0;
         var zgodybadania = 0;
         var eventbadania = 0;
+        var exitobadania = 0;
         var resztabadania = 0;
         var sumabadania = 0;
         // dane do pobrania
         var liczbabisnode = 0;
         var liczbazgody = 0;
         var liczbaevent = 0;
+        var liczbaexito = 0;
         var liczbareszy = 0;
         var liczbacalosci = 0;
 
@@ -270,6 +277,7 @@
             $("#bznalezionych").html("0/0");
             $("#zznalezionych").html("0/0");
             $("#eznalezionych").html("0/0");
+            $("#exznalezionych").html("0/0");
             $("#rznalezionych").html("0/0");
             $("#sumaznalezionych").html("0/0");
         });
@@ -315,25 +323,19 @@
 
                     for(var i=0;i<source.length;i++)
                     {
-                        napis = '<tr><td>'+region[source[i]['idwoj']]['woj']+'</td><td>'+source[i]['miasto']+'</td><td>'+source[i]['adres']+'</td><td>'+source[i]['kodpocztowy']+'</td><td>'+source[i]['bisnode']+'</td><td>'+source[i]['zgody']+'</td><td>'+source[i]['event']+'</td><td>'+source[i]['reszta']+'</td><td><input type="checkbox"  value='+i+' class="checkboxselect"/></td></tr>';
+                        napis = '<tr><td>'+region[source[i]['idwoj']]['woj']+'</td><td>'+source[i]['miasto']+'</td><td>'+source[i]['adres']+'</td><td>'+source[i]['kodpocztowy']+'</td><td>'+source[i]['bisnode']+'</td><td>'+source[i]['zgody']+'</td><td>'+source[i]['event']+'</td>'+'<td>'+source[i]['exito']+'</td><td>'+source[i]['reszta']+'</td><td><input type="checkbox"  value='+i+' class="checkboxselect"/></td></tr>';
                         table_rows +=napis; // połączenie wszystkiego iteracyjnie
                         badania[i] = new Array(4);
                         badania[i][0] = source[i]['bisnode_badania'];
                         badania[i][1] = source[i]['zgody_badania'];
                         badania[i][2] = source[i]['event_badania'];
                         badania[i][3] = source[i]['reszta_badania'];
+                        badania[i][4] = source[i]['exito_badania'];
                     }
                     table.rows.add($(table_rows)).draw(); // rysowanie tebeli na jeden raz, optymalnie niz pojedynczo
                     $('.dataTables_filter input').val(szukana); // aby nie znikl wynik wyszukiwania w polu wyszukaj
                 }
             });
-
-
-
-
-
-
-
         }
         function ZerujDane() {
             //całość
@@ -341,23 +343,27 @@
             sumazg = 0;
             sumaev = 0;
             sumaresz = 0;
+            sumaex = 0;
             sumacalosci = 0;
             //badania
             bisbadania = 0;
             zgodybadania = 0;
             eventbadania = 0;
+            exitobadania = 0;
             resztabadania = 0;
             sumabadania = 0;
             //dopobrania
             liczbabisnode = 0;
             liczbazgody = 0;
             liczbaevent = 0;
+            liczbaexito = 0;
             liczbareszy = 0;
             liczbacalosci = 0;
 
             $("#bliczba").val(0);
             $("#rliczba").val(0);
             $("#eliczba").val(0);
+            $("#exliczba").val(0);
             $("#zliczba").val(0);
             $("#sumaliczba").html(0);
 
@@ -373,7 +379,8 @@
             liczbazgody = $("#zliczba").val();
             liczbaevent = $("#eliczba").val();
             liczbareszy = $("#rliczba").val();
-            liczbacalosci = parseInt(liczbabisnode) + parseInt(liczbazgody) + parseInt(liczbaevent) + parseInt(liczbareszy);
+            liczbaexito = $("#exliczba").val();
+            liczbacalosci = parseInt(liczbabisnode) + parseInt(liczbazgody) + parseInt(liczbaevent) + parseInt(liczbareszy)+ parseInt(liczbaexito);
             $("#sumaliczba").html(liczbacalosci);
         }
         $(document).ready(function() {
@@ -494,7 +501,8 @@
                 zgodybadania += badania[indeks][1];
                 eventbadania += badania[indeks][2];
                 resztabadania += badania[indeks][3];
-                sumabadania = bisbadania + zgodybadania+ eventbadania+resztabadania;
+                exitobadania += badania[indeks][4];
+                sumabadania = bisbadania + zgodybadania+ eventbadania+resztabadania+exitobadania;
             }
 
 
@@ -503,17 +511,19 @@
                 sumabis += parseInt(dane[i][4]);
                 sumazg += parseInt(dane[i][5]);
                 sumaev += parseInt(dane[i][6]);
-                sumaresz += parseInt(dane[i][7]);
+                sumaresz += parseInt(dane[i][8]);
+                sumaex += parseInt(dane[i][7]);
                 tablicakodowpocztowych.push(dane[i][3]);
                 if(i==0){
                     idwoj = dane[i][0];
                 }
-                sumacalosci = sumabis + sumazg + sumaev + sumaresz;
+                sumacalosci = sumabis + sumazg + sumaev + sumaresz + sumaex;
             }
             // wyswietlenie łączne
             $("#bznalezionych").html(bisbadania +"/" + sumabis);
             $("#zznalezionych").html(zgodybadania + "/"+ sumazg);
             $("#eznalezionych").html(eventbadania + "/" + sumaev);
+            $("#exznalezionych").html(exitobadania + "/"+ sumaex);
             $("#rznalezionych").html(resztabadania + "/"+ sumaresz);
             $("#sumaznalezionych").html(sumabadania + "/" + sumacalosci);
 
@@ -541,14 +551,16 @@
                 sumabis += parseInt(dane[i][4]);
                 sumazg += parseInt(dane[i][5]);
                 sumaev += parseInt(dane[i][6]);
-                sumaresz += parseInt(dane[i][7]);
-                sumacalosci = sumabis + sumazg + sumaev + sumaresz;
+                sumaresz += parseInt(dane[i][8]);
+                sumaex += parseInt(dane[i][7]);
+                sumacalosci = sumabis + sumazg + sumaev + sumaresz + sumaex;
             }
             // wyswietlenie
             $("#bznalezionych").html("0/" + sumabis);
             $("#zznalezionych").html("0/" + sumazg);
             $("#eznalezionych").html("0/" + sumaev);
             $("#rznalezionych").html("0/" + sumaresz);
+            $("#exznalezionych").html("0/" + sumaex);
             $("#sumaznalezionych").html("0/" + sumacalosci);
         }
 
@@ -577,8 +589,9 @@
                     sumabis += parseInt(dane[i][4]);
                     sumazg += parseInt(dane[i][5]);
                     sumaev += parseInt(dane[i][6]);
-                    sumaresz += parseInt(dane[i][7]);
-                    sumacalosci = sumabis + sumazg + sumaev + sumaresz;
+                    sumaresz += parseInt(dane[i][8]);
+                    sumaex += parseInt(dane[i][7]);
+                    sumacalosci = sumabis + sumazg + sumaev + sumaresz + sumaex;
                     tablicakodowpocztowych.push(dane[i][3]);
                     if(i==0){
                         idwoj = dane[i][0];
@@ -588,7 +601,8 @@
                     zgodybadania  += parseInt(badania[i][1]);
                     eventbadania+= parseInt(badania[i][2]);
                     resztabadania += parseInt(badania[i][3]);
-                    sumabadania = bisbadania + zgodybadania + eventbadania + resztabadania;
+                    exitobadania += parseInt(badania[i][4]);
+                    sumabadania = bisbadania + zgodybadania + eventbadania + resztabadania + exitobadania;
 
                 }
                 // wyswietlenie
@@ -596,6 +610,7 @@
                 $("#zznalezionych").html(zgodybadania + "/"+ sumazg);
                 $("#eznalezionych").html(eventbadania + "/" + sumaev);
                 $("#rznalezionych").html(resztabadania + "/"+ sumaresz);
+                $("#exznalezionych").html(exitobadania + "/" + sumaex);
                 $("#sumaznalezionych").html(sumabadania + "/" + sumacalosci);
                 ///////FUNKCJA Koniec //////////////
             });
@@ -689,6 +704,26 @@
                 }
                 CzytajPola();
             });
+
+            $("#exliczba").bind("change paste keyup", function () {
+                var liczba = $(this).val();
+                if (!parseInt(liczba)) {
+                    $(this).val("0");
+                }
+                else {
+                    liczba = parseInt(liczba);
+                    if(liczba < 0)
+                    {
+                        liczba = 0;
+                    }
+                    if(liczba > exitobadania)
+                    {
+                        liczba = exitobadania;
+                    }
+                    $(this).val(liczba);
+                }
+                CzytajPola();
+            });
         });
 
 
@@ -709,7 +744,14 @@
                 }else if(liczbazgody > zgodybadania)
                 {
                     alert("Za Duzo");
-                }else
+                }else if(liczbaexito > exitobadania)
+                {
+                    alert("Za Duzo");
+                }else if(liczbaexito > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0))
+                {
+                        alert("Mieszasz Paczki, Exito można poprać tylko jako osobną paczkę !!!!");
+                }
+                else
                 {
                     var system = $('#selectSystem').val();
                     document.getElementById("loader").style.display = "block";  // show the loading message.
@@ -729,6 +771,7 @@
                             "zgody": liczbazgody,
                             "reszta": liczbareszy,
                             "event": liczbaevent,
+                            "exito": liczbaexito,
                             "miasto": szukana,
                             "idwoj": idwoj,
                             "projekt": "Badania"
