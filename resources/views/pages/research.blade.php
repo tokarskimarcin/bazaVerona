@@ -58,7 +58,10 @@
             width: 890px;
             background: chartreuse;
         }
-
+        td > input
+        {
+            width:150px;
+        }
 
         #loader {
             position: absolute;
