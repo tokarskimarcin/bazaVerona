@@ -409,7 +409,7 @@
                     "columnDefs": [
                         {
                             "searchable": false, "targets":[0,2,3,4,5,6,7,8],
-                            "orderable": false, "targets": [0,8]}
+                            "orderable": false, "targets": [0,9]}
                     ],
                     deferRender:    true,
                     scrollY:        250,
