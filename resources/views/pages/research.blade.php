@@ -20,6 +20,10 @@
         {
             background: white;
         }
+        td > input
+        {
+            width:150px;
+        }
         #wybor
         {
             float: right;

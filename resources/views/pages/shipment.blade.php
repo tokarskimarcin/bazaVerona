@@ -15,6 +15,10 @@
             margin-bottom: 0px;
             background: white;
         }
+        td > input
+        {
+            width:150px;
+        }
         #example_wrapper
         {
             background: white;
