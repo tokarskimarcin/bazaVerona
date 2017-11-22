@@ -129,14 +129,7 @@
 
     <?php if(!empty($dane[0])) :?>
             {{--Badania--}}
-            <tr class="badania">
-                <td colspan="3" style="text-align: center"><b>{{$dane[0]['baza']}}</b></td>
-                <td><b>{{number_format($dane[0]['bisnode']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                <td><b>{{number_format($dane[0]['zgody']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                <td><b>{{number_format($dane[0]['event']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                <td><b>{{number_format($dane[0]['reszta']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                <td><b>{{$dane[0]['suma']}}</b></td>
-            </tr>
+
 
             <?php
             foreach ($oddzialy as $item):?>
