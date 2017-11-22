@@ -130,7 +130,7 @@
         {{--Badania--}}
         <?php if(!empty($dane[0])) :?>
         <tr class="badania">
-            <td colspan="3" style="text-align: center"><b>{{$dane[0]['baza']}}</b></td>
+            <td colspan="3" style="text-align: center"><b>Ogół</b></td>
             <td><b>{{number_format($dane[0]['bisnode']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
             <td><b>{{number_format($dane[0]['zgody']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
             <td><b>{{number_format($dane[0]['event']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
