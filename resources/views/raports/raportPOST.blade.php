@@ -130,7 +130,7 @@
         {{--Badania--}}
         <?php if(!empty($dane[0])) :?>
         <tr class="badania">
-            <td colspan="3" style="text-align: center"><b>{{$dane[0]['baza']}}</b></td>
+            <td colspan="3" style="text-align: center"><b>Ogół</b></td>
             <td><b>{{number_format($dane[0]['bisnode']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
             <td><b>{{number_format($dane[0]['zgody']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
             <td><b>{{number_format($dane[0]['event']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
@@ -169,48 +169,6 @@
 
             <?php endforeach;?>
 <?php endif?>
-
-
-        {{--WYSYLKA--}}
-        <?php if(!empty($dane[1])) :?>
-        <tr class="wysylka">
-            <td colspan="3" style="text-align: center"><b>{{$dane[1]['baza']}}</b></td>
-            <td><b>{{number_format($dane[1]['bisnode']/$dane[1]['suma'], 2, '', '')+0 }}%</b></td>
-            <td><b>{{number_format($dane[1]['zgody']/$dane[1]['suma'], 2, '', '')+0 }}%</b></td>
-            <td><b>{{number_format($dane[1]['event']/$dane[1]['suma'], 2, '', '')+0 }}%</b></td>
-            <td><b>{{number_format($dane[1]['reszta']/$dane[1]['suma'], 2, '', '')+0 }}%</b></td>
-            <td><b>{{$dane[1]['suma']}}</b></td>
-        </tr>
-
-        <?php
-        foreach ($zapytanie as $item):?>
-
-        <tr class="wysylka">
-            <td colspan="3"><b> <?php echo $item['name']; ?> </b></td>
-            <td><b>{{number_format($item['bisnode']/$item['suma'], 2, '', '')+0 }}%</b> </td>
-            <td><b> {{number_format($item['zgody']/$item['suma'], 2, '', '')+0 }}% </b></td>
-            <td><b> {{number_format($item['event']/$item['suma'], 2, '', '')+0 }}% </b></td>
-            <td><b> {{number_format($item['reszta']/$item['suma'], 2, '', '')+0 }}%</b> </td>
-            <td><b> {{ $item['suma'] }} </b></td>
-        </tr>
-
-            <?php
-            foreach ($employeeship as $value):?>
-                @if( $item['id'] == $value['dep_id'] )
-                    <tr class="wysylka">
-                        <td> {{ $i++ }}</td>
-                        <td> {{ $value['name'] }}</td>
-                        <td> {{ $value['last'] }}</td>
-                        <td> {{number_format($value['bisnode']/$value['suma'], 2, '', '')+0 }}% </td>
-                        <td> {{number_format($value['zgody']/$value['suma'], 2, '', '')+0 }}% </td>
-                        <td> {{number_format($value['event']/$value['suma'], 2, '', '')+0 }}% </td>
-                        <td> {{number_format($value['reszta']/$value['suma'], 2, '', '')+0 }}% </td>
-                        <td> {{ $value['suma'] }} </td>
-                    </tr>
-            @endif
-            <?php endforeach;?>
-        <?php endforeach;?>
-        <?php endif?>
         </tbody>
     </table>
 @endsection
