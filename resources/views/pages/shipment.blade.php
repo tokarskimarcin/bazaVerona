@@ -91,6 +91,11 @@
             100% { transform: rotate(360deg); }
         }
 
+        .checkboxselect
+        {
+            width:33px;
+        }
+
         /* Add animation to "page content" */
         .animate-bottom {
             position: relative;
@@ -322,7 +327,7 @@
 
                     for(var i=0;i<source.length;i++)
                     {
-                        napis = '<tr><td>'+region[source[i]['idwoj']]['woj']+'</td><td>'+source[i]['miasto']+'</td><td>'+source[i]['adres']+'</td><td>'+source[i]['kodpocztowy']+'</td><td>'+source[i]['bisnode']+'</td><td>'+source[i]['zgody']+'</td><td>'+source[i]['event']+'</td>'+'<td>'+source[i]['exito']+'</td><td>'+source[i]['reszta']+'</td><td><input type="checkbox"  value='+i+' class="checkboxselect"/></td></tr>';
+                        napis = '<tr><td>'+region[source[i]['idwoj']]['woj']+'</td><td>'+source[i]['miasto']+'</td><td>'+source[i]['adres']+'</td><td>'+source[i]['kodpocztowy']+'</td><td>'+source[i]['bisnode']+'</td><td>'+source[i]['zgody']+'</td><td>'+source[i]['event']+'</td>'+'<td>'+source[i]['exito']+'</td><td>'+source[i]['reszta']+'</td><td style="max-width: 40px"><input type="checkbox"  value='+i+' class="checkboxselect"/></td></tr>';
                         table_rows +=napis; // połączenie wszystkiego iteracyjnie
                         badania[i] = new Array(4);
                         badania[i][0] = source[i]['bisnodeall'];
