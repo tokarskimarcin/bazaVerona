@@ -8,11 +8,7 @@
     <style>
 
         body{
-            @if(Auth::user()->id == 111)
-                background-image: url("https://lh3.googleusercontent.com/-L9JPJwKOoy8/Wh_ktmbEmVI/AAAAAAAAA2E/3tJ_ldr38pUnUEuOjTqxQ2UKD-C2kx9zQCL0BGAYYCw/h428/iStock-543469106-760x428.jpg");
-            @else
-                background: rgba(216, 245, 251, 0.52);
-            @endif
+            background: rgba(216, 245, 251, 0.52);
         }
 
         #ilosc
@@ -131,18 +127,8 @@
 
 @section('content')
     <div id="loader"></div>
-
-    @if(Auth::user()->id == 111)
-        <h1 style="font-family: 'bebas_neueregular'; text-shadow: 2px 2px 2px rgba(150, 150, 150, 0.8); font-size:40px;text-align: center">Wszystkiego najlepszego Andrzeju</h1>
-        <hr></br>
-    @else
     <h1 style="font-family: 'bebas_neueregular'; text-shadow: 2px 2px 2px rgba(150, 150, 150, 0.8); font-size:40px;text-align: center">Panel zarządzania bazą danych badań</h1>
     <hr></br>
-    @endif
-
-
-
-
     <table id="ilosc" class="table table-striped table-bordered" cellspacing="0" width="50%">
         <thead>
         <th></th>
