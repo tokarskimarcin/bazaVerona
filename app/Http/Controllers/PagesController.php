@@ -211,7 +211,7 @@ class PagesController extends Controller
 
     public function gererateCSV()
     {
-        $data = date("Y-m-d H:i:s", strtotime('+2 hours'));
+        $data = date("Y-m-d H:i:s", strtotime('+1 hours'));
         $iledanych = session()->get('iledanych');
         $miasto = str_replace('-','/',session()->get('miasto'));
 
@@ -322,7 +322,7 @@ class PagesController extends Controller
     //Zablokowanie numerów, dodanie wpisu w log_download, zmniejszenie licznika
     public function updateData($bisnode,$zgody,$reszta,$event,$exito,$miasto,$idwoj,$projekt)
     {
-        $data = date("Y-m-d H:i:s", strtotime('+2 hours'));
+        $data = date("Y-m-d H:i:s", strtotime('+1 hours'));
         $databezgodiny = date("Y-m-d");
         // Insert do log_download z pustymi danymi.Rezerwacja id i pobranie go.
         $user = Auth::user();//id uzytkownika
