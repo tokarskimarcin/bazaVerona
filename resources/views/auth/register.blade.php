@@ -69,7 +69,7 @@
                                     <option value="9">Starachowice</option>
                                     <option value="10">Bialystok</option>
                                     <option value="11">Chełm</option>
-
+                                    <option value="12">Zamość</option>
                                 </select>
                                 @if ($errors->has('dep_id'))
                                     <span class="help-block">
