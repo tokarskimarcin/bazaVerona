@@ -202,6 +202,7 @@ class UploadsController extends Controller
                         {   // Dodanie rekordu do bazy
                             DB::table('rekordy')
                                 ->where('telefon', '=', $item['telefon'])
+                                ->where('lock','=',0)
                                 ->update($tablica);
                             $aktualizacja++;
                         }
@@ -237,6 +238,7 @@ class UploadsController extends Controller
             ->where('idbaza', '!=', 17)
             ->where('idbaza', '!=', 9)
             ->where('idbaza', '!=', 5)
+            ->where('idbaza', '!=', 30)
             ->get();
         return $wynik;
     }
@@ -250,6 +252,7 @@ class UploadsController extends Controller
             ->where('idbaza', '!=', 9)
             ->where('idbaza', '!=', 5)
             ->where('idbaza', '!=', 6)
+            ->where('idbaza', '!=', 30)
             ->get();
         return $wynik;
     }
