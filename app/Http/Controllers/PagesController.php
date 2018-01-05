@@ -487,6 +487,7 @@ class PagesController extends Controller
                             ->where('idkod', '=', $kod)
                             ->where('lock', '=', 0)
                             ->where($dataDoProjektu, '<', $blokada)
+                            ->where('data_wysylka', '<', $blokada)
                             ->where('idbaza', '=', 8)
                             ->orderBy($dataDoProjektu, 'asc')
                             ->limit($ilosc)->get();
@@ -497,6 +498,7 @@ class PagesController extends Controller
                             ->where('idkod', '=', $kod)
                             ->where('lock', '=', 0)
                             ->where($dataDoProjektu, '<', $blokada)
+                            ->where('data_wysylka', '<', $blokada)
                             ->where(function ($querry)
                             {
                                 $querry->orWhere('idbaza', '=', 5)
@@ -512,6 +514,7 @@ class PagesController extends Controller
                             ->where('idkod', '=', $kod)
                             ->where('lock', '=', 0)
                             ->where($dataDoProjektu, '<', $blokada)
+                            ->where('data_wysylka', '<', $blokada)
                             ->where(function ($querry)
                             {
                                 $querry->orWhere('idbaza', '=', 1)
@@ -537,6 +540,7 @@ class PagesController extends Controller
                             ->where('idkod', '=', $kod)
                             ->where('lock', '=', 0)
                             ->where($dataDoProjektu, '<', $blokada)
+                            ->where('data_wysylka', '<', $blokada)
                             ->where('idbaza', '=', 6)
                             ->orderBy($dataDoProjektu, 'asc')
                             ->take($ilosc)->get();
@@ -548,6 +552,7 @@ class PagesController extends Controller
                             ->where('idkod', '=', $kod)
                             ->where('lock', '=', 0)
                             ->where($dataDoProjektu, '<', $blokada)
+                            ->where('data_wysylka', '<', $blokada)
                             ->where('idbaza', '=', 19)
                             ->orderBy($dataDoProjektu, 'asc')
                             ->take($ilosc)->get();

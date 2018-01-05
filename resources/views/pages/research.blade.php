@@ -127,7 +127,7 @@
 
 @section('content')
     <div id="loader"></div>
-    <h1 style="font-family: 'bebas_neueregular'; text-shadow: 2px 2px 2px rgba(150, 150, 150, 0.8); font-size:40px;text-align: center">Panel zarządzania bazą danych badań</h1>
+    <h1 style="font-family: 'bebas_neueregular'; text-shadow: 2px 2px 2px rgba(150, 150, 150, 0.8); font-size:40px;text-align: center">Panel zarządzania bazą danych.</h1>
     <hr></br>
     <table id="ilosc" class="table table-striped table-bordered" cellspacing="0" width="50%">
         <thead>

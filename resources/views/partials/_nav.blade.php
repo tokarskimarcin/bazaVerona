@@ -22,7 +22,7 @@
                             <li><a href="{{ url('badania') }}">Badania</a></li>
                         @endif
                         @if (Auth::user()->rodzaj == "Badania")
-                            <li><a href="{{ url('badania') }}">Badania</a></li>
+                            <li><a href="{{ url('badania') }}">Baza</a></li>
                         @endif
                         @if (Auth::user()->rodzaj == "Wysyłka")
                             <li><a href="{{ url('wysylka') }}">Wysyłka</a></li>
