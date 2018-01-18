@@ -67,7 +67,7 @@ class RaportsController extends Controller
         $data['overall_result'] = session()->get('resandship');
         $data['departments_statistic'] = session()->get('departamentres');
         $data['employee_statistic'] = session()->get('employeeres');
-        return json_encode($data);
+        return json_encode($data,JSON_UNESCAPED_UNICODE);
 
     }
 
