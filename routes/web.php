@@ -80,7 +80,8 @@ Route::post('/raportuserplus', 'RaportsController@setraportuserplus');
 
 Route::get('/setdata', 'RaportsController@setdata');
 
-
+Route::get('/getRaportNewBaseWeek', 'RaportsController@getRaportNewBaseWeek');
+Route::get('/getRaportNewBaseMonth', 'RaportsController@getRaportNewBaseMonth');
 //*************************Planer*******************************
 Route::get('/planer', 'PlanerController@addroute');
 

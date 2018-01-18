@@ -733,9 +733,9 @@
 
 
         $("#pobierz").on("click",function(e){
-            if(liczbacalosci > 3000 || liczbacalosci  < 1)
+            if(liczbacalosci > 1000 || liczbacalosci  < 1)
             {
-                alert("Za Duzo");
+                alert("Maksymalna ilość rekordów to 1000");
             }else {
                 if(liczbabisnode > bisbadania)
                 {
@@ -755,6 +755,18 @@
                 }else if(liczbaexito > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0))
                 {
                         alert("Mieszasz Paczki, Exito można poprać tylko jako osobną paczkę !!!!");
+                }else if(liczbabisnode > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbaexito > 0))
+                {
+                    alert("Mieszasz Paczki, Bisnode można poprać tylko jako osobną paczkę !!!!");
+                }else if(liczbaevent > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0))
+                {
+                    alert("Mieszasz Paczki, Event można poprać tylko jako osobną paczkę !!!!");
+                }else if(liczbazgody > 0 && (liczbaevent > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0))
+                {
+                    alert("Mieszasz Paczki, Zgody można poprać tylko jako osobną paczkę !!!!");
+                }else if(liczbareszy > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0))
+                {
+                    alert("Mieszasz Paczki, Resztę można poprać tylko jako osobną paczkę !!!!");
                 }
                 else
                 {

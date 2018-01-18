@@ -10,7 +10,33 @@ class RaportsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth',['except' => ['getRaportNewBaseWeek', 'getRaportNewBaseMonth']]);
+    }
+
+    public function getRaportNewBaseWeek()
+    {
+        $date_start = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-7,date("Y")));
+        $date_stop = date("Y-m-d",mktime(0,0,0,date("m"),date("d"),date("Y")));
+        $wynik = DB::table('old_new_base')
+            ->selectRaw('old_base,count(DISTINCT(id_record)) as count_record')
+            ->where('add_date','>=',$date_start.' 00:00:00')
+            ->where('add_date','<=',$date_stop.' 23:00:00')
+            ->groupBy('old_base')
+            ->get();
+        return json_encode($wynik);
+    }
+
+    public function getRaportNewBaseMonth()
+    {
+        $date_start = date("Y-n-d", strtotime("first day of previous month"));
+        $date_stop = date("Y-n-d", strtotime("last day of previous month"));
+        $wynik = DB::table('old_new_base')
+            ->selectRaw('old_base,count(DISTINCT(id_record)) as count_record')
+            ->where('add_date','>=',$date_start.' 00:00:00')
+            ->where('add_date','<=',$date_stop.' 23:00:00')
+            ->groupBy('old_base')
+            ->get();
+        return json_encode($wynik);
     }
     
     public function getRaport()
