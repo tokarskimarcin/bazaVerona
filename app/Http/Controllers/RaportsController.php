@@ -10,7 +10,7 @@ class RaportsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth',['except' => ['getRaportNewBaseWeek', 'getRaportNewBaseMonth']]);
+        $this->middleware('auth',['except' => ['getRaportNewBaseWeek', 'getRaportNewBaseMonth','getRaportDayAPI']]);
     }
 // wystawienie danych nowych zgód tygodniowy
     public function getRaportNewBaseWeek()
