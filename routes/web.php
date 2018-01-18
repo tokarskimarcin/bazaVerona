@@ -68,6 +68,8 @@ Route::post('/save', 'UploadsController@save');
 Route::get('/raport', 'RaportsController@getraport');
 Route::post('/raport', 'RaportsController@setRaport');
 
+Route::get('/getRaportDayAPI/{id}', 'RaportsController@getRaportDayAPI');
+
 Route::get('/raportuzytkownika', 'RaportsController@getraportuser');
 Route::post('/raportuzytkownika', 'RaportsController@setraportuser');
 

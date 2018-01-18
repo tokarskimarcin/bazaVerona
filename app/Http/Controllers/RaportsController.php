@@ -12,7 +12,7 @@ class RaportsController extends Controller
     {
         $this->middleware('auth',['except' => ['getRaportNewBaseWeek', 'getRaportNewBaseMonth']]);
     }
-
+// wystawienie danych nowych zgód tygodniowy
     public function getRaportNewBaseWeek()
     {
         $date_start = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-7,date("Y")));
@@ -25,7 +25,7 @@ class RaportsController extends Controller
             ->get();
         return json_encode($wynik);
     }
-
+// wystawienie danych nowych zgód miesięczny
     public function getRaportNewBaseMonth()
     {
         $date_start = date("Y-n-d", strtotime("first day of previous month"));
@@ -38,7 +38,39 @@ class RaportsController extends Controller
             ->get();
         return json_encode($wynik);
     }
-    
+    // wystawienie raportu dziennego pobranej bazy
+
+    public function getRaportDayAPI($id)
+    {
+//        $id == 1 dzienny,$id == 2 tygodniowy,$id == 3 miesieczny
+        $tablica = array();
+        if($id == 1)
+        {
+            $datajeden = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+            array_push($tablica,$datajeden);
+            $this->setSingleRaport($tablica,1);
+        }else if($id == 2)
+        {
+            $dataod = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-7,date("Y")));
+            $datado = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+            array_push($tablica,$dataod);
+            array_push($tablica,$datado);
+            $this->setSingleRaport($tablica,2);
+        }else if( $id == 3)
+        {
+            $dataod =  date("Y-n-d", strtotime("first day of previous month"));
+            $datado =  date("Y-n-d", strtotime("last day of previous month"));
+            array_push($tablica,$dataod);
+            array_push($tablica,$datado);
+            $this->setSingleRaport($tablica,2);
+        }
+        $data['overall_result'] = session()->get('resandship');
+        $data['departments_statistic'] = session()->get('departamentres');
+        $data['employee_statistic'] = session()->get('employeeres');
+        return json_encode($data);
+
+    }
+
     public function getRaport()
     {
         return view('raports.raport');
