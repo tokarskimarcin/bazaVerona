@@ -218,10 +218,13 @@ class UploadsController extends Controller
                                 ->update($tablica);
                             $aktualizacja++;
                         }
-                    }else if ($czyJestWBazie == 0) { // nowy rekord w bazie
-                        DB::table('rekordy')
-                            ->insert($tablica);
-                        $nowe++;
+                    }else if ($czyJestWBazie == 0) { // nowy rekord w bazie, nie dodajemy nowych zgód
+                        if($typ != "zgody")
+                        {
+                            DB::table('rekordy')
+                                ->insert($tablica);
+                            $nowe++;
+                        }
                     }
                 }
         }
