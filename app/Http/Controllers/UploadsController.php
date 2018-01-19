@@ -203,20 +203,24 @@ class UploadsController extends Controller
                             $kopia =  DB::table('rekordy')
                                 ->where('telefon', '=', $item['telefon'])
                                 ->where('lock','=',0)->get();
-                            // wyłuskanie danych z numeru przed aktualizacją
-                            $kopia = $this::dedubArray($kopia);
-                            // kopia id rekordu
-                            $telefon_id = $kopia[0];
-                            // baza rekordu
-                            $telefon_baza = $kopia[9];
-                            // wrzucenie infromacji o rekordach
-                            DB::table('old_new_base')->insert(['id_record' => $telefon_id,'old_base' => $telefon_baza]);
-                            // Dodanie rekordu do bazy
-                            DB::table('rekordy')
-                                ->where('telefon', '=', $item['telefon'])
-                                ->where('lock','=',0)
-                                ->update($tablica);
-                            $aktualizacja++;
+
+                            if($kopia->isNotEmpty()) // jeśli można dodać numer
+                            {
+                                // wyłuskanie danych z numeru przed aktualizacją
+                                $kopia = $this::dedubArray($kopia);
+                                // kopia id rekordu
+                                $telefon_id = $kopia[0];
+                                // baza rekordu
+                                $telefon_baza = $kopia[9];
+                                // wrzucenie infromacji o rekordach
+                                DB::table('old_new_base')->insert(['id_record' => $telefon_id,'old_base' => $telefon_baza]);
+                                // Dodanie rekordu do bazy
+                                DB::table('rekordy')
+                                    ->where('telefon', '=', $item['telefon'])
+                                    ->where('lock','=',0)
+                                    ->update($tablica);
+                                $aktualizacja++;
+                            }
                         }
                     }else if ($czyJestWBazie == 0) { // nowy rekord w bazie, nie dodajemy nowych zgód
                         if($typ != "zgody")
