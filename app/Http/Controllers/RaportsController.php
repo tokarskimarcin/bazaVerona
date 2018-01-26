@@ -231,7 +231,7 @@ class RaportsController extends Controller
         $id = $user->id;
         if($typ == 1) {
             $resandship = DB::table('log_download')
-                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->where(function ($q) {
                     $q->where('baza', 'Badania')
                         ->orWhere('baza', 'Wysylka');
@@ -241,7 +241,7 @@ class RaportsController extends Controller
                 ->get();
         }else {
             $resandship = DB::table('log_download')
-                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->where(function ($q) {
                     $q->where('baza', 'Badania')
                         ->orWhere('baza', 'Wysylka');
@@ -256,7 +256,7 @@ class RaportsController extends Controller
 ///////////////////////////////////////BADANIA Oddziały/////////////////////////////////////////////
         if($typ == 1) {
             $departamentres = DB::table('log_download')
-                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
                 ->where('id_user', '=', $id)
@@ -267,7 +267,7 @@ class RaportsController extends Controller
         }else
         {
             $departamentres = DB::table('log_download')
-                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
                 ->where('id_user', '=', $id)
@@ -310,7 +310,7 @@ class RaportsController extends Controller
 ///////////////////////////////////////Badania Pracownicy/////////////////////////////////////////////
         if($typ == 1) {
             $employeeres = DB::table('log_download')
-                ->selectRaw('users_t.name,users_t.last, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('users_t.name,users_t.last, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->where('id_user', '=', $id)
                 ->where('date', 'like', $date[0] . '%')
@@ -322,7 +322,7 @@ class RaportsController extends Controller
         else
         {
             $employeeres = DB::table('log_download')
-                ->selectRaw('users_t.name,users_t.last, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('users_t.name,users_t.last, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->where('id_user', '=', $id)
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
@@ -524,13 +524,13 @@ class RaportsController extends Controller
 ///////////////////////////////////////BADANIA Wysylka/////////////////////////////////////////////
         if($typ == 1) {
             $resandship = DB::table('log_download')
-                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->where('id_user', '>', 100)
                 ->where('date', 'like', $date[0] . '%')
                 ->get();
         }else {
             $resandship = DB::table('log_download')
-                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->where('id_user', '>', 100)
                 ->whereBetween('date', [$date[0].'%',$date[1].' 23:59:59'])
                 ->get();
@@ -541,7 +541,7 @@ class RaportsController extends Controller
 ///////////////////////////////////////BADANIA Oddziały/////////////////////////////////////////////
         if($typ == 1) {
             $departamentres = DB::table('log_download')
-                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
                 ->where('date', 'like', $date[0] . '%')
@@ -551,7 +551,7 @@ class RaportsController extends Controller
         }else
         {
             $departamentres = DB::table('log_download')
-                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
@@ -591,7 +591,7 @@ class RaportsController extends Controller
 ///////////////////////////////////////Badania Pracownicy/////////////////////////////////////////////
         if($typ == 1) {
             $employeeres = DB::table('log_download')
-                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->where('date', 'like', $date[0] . '%')
                 ->groupBy('users_t.name')
@@ -603,7 +603,7 @@ class RaportsController extends Controller
         else
         {
             $employeeres = DB::table('log_download')
-                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
                 ->groupBy('users_t.name')
@@ -645,7 +645,7 @@ class RaportsController extends Controller
 
         if($typ == 1) {
             $cityres = DB::table('log_download')
-                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('woj', 'log_download.idwoj', 'woj.idwoj')
                 ->where('date', 'like', $date[0] . '%')
                 ->groupBy('miasto', 'id_user', 'woj.woj')
@@ -653,7 +653,7 @@ class RaportsController extends Controller
 
         }else {
             $cityres = DB::table('log_download')
-                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('woj', 'log_download.idwoj', 'woj.idwoj')
                 -> whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
                 ->groupBy('miasto', 'id_user', 'woj.woj')
@@ -701,13 +701,13 @@ class RaportsController extends Controller
 ///////////////////////////////////////BADANIA Wysylka/////////////////////////////////////////////
         if($typ == 1) {
             $resandship = DB::table('log_download')
-                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->where('id_user', '=', $id)
                 ->where('date', 'like2', $date[0] . '%')
                 ->get();
         }else {
             $resandship = DB::table('log_download')
-                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->where('id_user', '=', $id)
                 ->whereBetween('date', [$date[0].'%',$date[1].' 23:59:59'])
                 ->get();
@@ -718,7 +718,7 @@ class RaportsController extends Controller
 ///////////////////////////////////////BADANIA Oddziały/////////////////////////////////////////////
         if($typ == 1) {
             $departamentres = DB::table('log_download')
-                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
                 ->where('id_user', '=', $id)
@@ -729,7 +729,7 @@ class RaportsController extends Controller
         }else
         {
             $departamentres = DB::table('log_download')
-                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
                 ->where('id_user', '=', $id)
@@ -772,7 +772,7 @@ class RaportsController extends Controller
 ///////////////////////////////////////Badania Pracownicy/////////////////////////////////////////////
         if($typ == 1) {
             $employeeres = DB::table('log_download')
-                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->where('id_user', '=', $id)
                 ->where('date', 'like', $date[0] . '%')
@@ -785,7 +785,7 @@ class RaportsController extends Controller
         else
         {
             $employeeres = DB::table('log_download')
-                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
                 ->where('id_user', '=', $id)
@@ -830,7 +830,7 @@ class RaportsController extends Controller
 
         if($typ == 1) {
             $cityres = DB::table('log_download')
-                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('woj', 'log_download.idwoj', 'woj.idwoj')
                 ->where('id_user', '=', $id)
                 ->where('date', 'like', $date[0] . '%')
@@ -839,7 +839,7 @@ class RaportsController extends Controller
 
         }else {
             $cityres = DB::table('log_download')
-                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
+                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(bazaexito) as exito,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito) as suma')
                 ->join('woj', 'log_download.idwoj', 'woj.idwoj')
                 ->where('id_user', '=', $id)
                 -> whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])

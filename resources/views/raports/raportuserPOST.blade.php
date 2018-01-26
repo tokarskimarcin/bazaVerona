@@ -122,6 +122,7 @@
                 <th>Zgody</th>
                 <th>Event</th>
                 <th>Reszta</th>
+                <th>Exito</th>
                 <th>Suma</th>
             </tr>
             </thead>
@@ -140,6 +141,7 @@
                 <td><b> {{number_format($item['zgody']/$item['suma'], 2, '', '')+0 }}% </b></td>
                 <td><b> {{number_format($item['event']/$item['suma'], 2, '', '')+0 }}% </b></td>
                 <td><b> {{number_format($item['reszta']/$item['suma'], 2, '', '')+0 }}%</b> </td>
+                <td><b> {{number_format($item['exito']/$item['suma'], 2, '', '')+0 }}%</b> </td>
                 <td><b> {{ $item['suma'] }} </b></td>
             </tr>
             <?php
@@ -154,6 +156,7 @@
                     <td> {{number_format($value['zgody']/$value['suma'], 2, '', '')+0 }}% </td>
                     <td> {{number_format($value['event']/$value['suma'], 2, '', '')+0 }}% </td>
                     <td> {{number_format($value['reszta']/$value['suma'], 2, '', '')+0 }}% </td>
+                    <td> {{number_format($value['exito']/$value['suma'], 2, '', '')+0 }}% </td>
                     <td> {{ $value['suma'] }} </td>
                 </tr>
                 @endif
@@ -169,6 +172,7 @@
                     <td><b>{{number_format($dane[1]['zgody']/$dane[1]['suma'], 2, '', '')+0 }}%</b></td>
                     <td><b>{{number_format($dane[1]['event']/$dane[1]['suma'], 2, '', '')+0 }}%</b></td>
                     <td><b>{{number_format($dane[1]['reszta']/$dane[1]['suma'], 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($dane[1]['eixto']/$dane[1]['suma'], 2, '', '')+0 }}%</b></td>
                     <td><b>{{$dane[1]['suma']}}</b></td>
                 </tr>
 
@@ -181,6 +185,7 @@
                     <td><b> {{number_format($item['zgody']/$item['suma'], 2, '', '')+0 }}% </b></td>
                     <td><b> {{number_format($item['event']/$item['suma'], 2, '', '')+0 }}% </b></td>
                     <td><b> {{number_format($item['reszta']/$item['suma'], 2, '', '')+0 }}%</b> </td>
+                    <td><b> {{number_format($item['exito']/$item['suma'], 2, '', '')+0 }}%</b> </td>
                     <td><b> {{ $item['suma'] }} </b></td>
                 </tr>
 
@@ -195,6 +200,7 @@
                         <td> {{number_format($value['zgody']/$value['suma'], 2, '', '')+0 }}% </td>
                         <td> {{number_format($value['event']/$value['suma'], 2, '', '')+0 }}% </td>
                         <td> {{number_format($value['reszta']/$value['suma'], 2, '', '')+0 }}% </td>
+                        <td> {{number_format($value['exito']/$value['suma'], 2, '', '')+0 }}% </td>
                         <td> {{ $value['suma'] }} </td>
                     </tr>
                 @endif

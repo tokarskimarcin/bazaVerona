@@ -103,6 +103,7 @@
             <th>Zgody</th>
             <th>Event</th>
             <th>Reszta</th>
+            <th>Exito</th>
             <th>Suma</th>
         </tr>
         </thead>
