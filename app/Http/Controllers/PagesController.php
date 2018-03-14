@@ -206,20 +206,27 @@ class PagesController extends Controller
         $iledanych = session()->get('iledanych');
         $miasto = str_replace('-','/',session()->get('miasto'));
 
-        if($iledanych[4] != 0 && ($iledanych[0] ==0 && $iledanych[1] == 0 && $iledanych[2] == 0 && $iledanych[3]==0))
-        {
-            $napis = $miasto.'_EXITO-'.$iledanych[4];
-            $napis = $napis.'_'.$data;
-        }
-        else if($iledanych[4] != 0 && ($iledanych[0] ==0 || $iledanych[1] == 0 || $iledanych[2] == 0 || $iledanych[3]==0))
-        {
+        if($iledanych[0] =! 0 || $iledanych[1] =! 0 || $iledanych[2] =! 0 || $iledanych[3] =! 0 || $iledanych[4] =! 0){
             $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2].'_EXITO-'.$iledanych[4];
             $napis = $napis.'_'.$data;
-        }
-        else{
-            $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2];
+        }else{
+            $napis = $miasto.'_8ZG-'.$iledanych[5].'_zgZG-'.$iledanych[6].'_evZG-'.$iledanych[8].'_rZG-'.$iledanych[7].'_EXITOZG-'.$iledanych[9];
             $napis = $napis.'_'.$data;
         }
+//        if($iledanych[4] != 0 && ($iledanych[0] ==0 && $iledanych[1] == 0 && $iledanych[2] == 0 && $iledanych[3]==0))
+//        {
+//            $napis = $miasto.'_EXITO-'.$iledanych[4];
+//            $napis = $napis.'_'.$data;
+//        }
+//        else if($iledanych[4] != 0 && ($iledanych[0] ==0 || $iledanych[1] == 0 || $iledanych[2] == 0 || $iledanych[3]==0))
+//        {
+//            $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2].'_EXITO-'.$iledanych[4];
+//            $napis = $napis.'_'.$data;
+//        }
+//        else{
+//            $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2];
+//            $napis = $napis.'_'.$data;
+//        }
 
 
         $dane =session()->get('tablicaDanych');
@@ -358,7 +365,14 @@ class PagesController extends Controller
                 'bazazg' => 0,
                 'bazareszta' => 0,
                 'bazaevent' => 0,
-                'bazaevent' => 0,
+                'bazaexito' => 0,
+
+                'baza8Zgody' => 0,
+                'bazazgZgody' => 0,
+                'bazaresztaZgody' => 0,
+                'bazaeventZgody' => 0,
+                'bazaexitoZgody' => 0,
+
                 'id_user' => $user->id,
                 'date' => $data,
                 'miasto' => $miasto,
@@ -385,12 +399,24 @@ class PagesController extends Controller
             $licznikevent = array_fill_keys(array_keys($kodyBezDubli),0);
             $licznikexito = array_fill_keys(array_keys($kodyBezDubli),0);
 
+            $licznikBisZgody = array_fill_keys(array_keys($kodyBezDubli),0);
+            $licznikzgZgody = array_fill_keys(array_keys($kodyBezDubli),0);
+            $licznikreszZgody = array_fill_keys(array_keys($kodyBezDubli),0);
+            $licznikeventZgody = array_fill_keys(array_keys($kodyBezDubli),0);
+            $licznikexitoZgody = array_fill_keys(array_keys($kodyBezDubli),0);
+
             //Liczniki ile faktycznie możemy pobrać(aby liczniki nie wyszły na -1 gdy pobranie odbędzie się w tym samym czasie)
             $poubdatebis =0;
             $poubdatezg =0;
             $poubdateev =0;
             $poubdateresz =0;
             $poubdateexito =0;
+
+            $poubdatebisZgody =0;
+            $poubdatezgZgody =0;
+            $poubdateevZgody =0;
+            $poubdatereszZgody =0;
+            $poubdateexitoZgody =0;
             //Licznik ile rekordów przypada na dany kod
             foreach ($daneDoZapisania as $item) {
                 if($item['idbaza'] == 8) {
@@ -404,7 +430,24 @@ class PagesController extends Controller
                 }else if($item['idbaza'] == 19)
                 {
                     $licznikexito[$item['idkod']]++;
-                }else
+                }
+                else if($item['idbaza'] == 28)
+                {
+                    $licznikBisZgody[$item['idkod']]++;
+                }else if($item['idbaza'] == 27)
+                {
+                    $licznikzgZgody[$item['idkod']]++;
+                }else if($item['idbaza'] == 24)
+                {
+                    $licznikreszZgody[$item['idkod']]++;
+                }else if($item['idbaza'] == 26)
+                {
+                    $licznikeventZgody[$item['idkod']]++;
+                }else if($item['idbaza'] == 29)
+                {
+                    $licznikexitoZgody[$item['idkod']]++;
+                }
+                else
                 {
                     $licznikresz[$item['idkod']]++;
                 }
@@ -460,6 +503,63 @@ class PagesController extends Controller
                         DB::table('kod')->where('idkod',$key)->decrement('exitoall',$item);
                 }
 
+
+
+
+
+
+        if($bisnodeZgody > 0)
+            foreach($licznikBisZgody as $key => $item)
+            {
+                $poubdatebisZgody+=$item;
+                if($projekt == "Badania")
+                    DB::table('kod')->where('idkod',$key)->decrement('bisndeFromZgody_badania',$item);
+                else
+                    DB::table('kod')->where('idkod', $key)->decrement('bisndeFromZgody_all', $item);
+
+            }
+
+        if($zgodyZgody > 0)
+            foreach($licznikzgZgody as $key => $item)
+            {
+                $poubdatezgZgody+=$item;
+                if($projekt == "Badania")
+                    DB::table('kod')->where('idkod',$key)->decrement('zgodyFromZgody_badania',$item);
+                else
+                    DB::table('kod')->where('idkod',$key)->decrement('zgodyFromZgody_all',$item);
+            }
+
+        if($resztaZgody > 0)
+            foreach($licznikreszZgody as $key => $item)
+            {
+                $poubdatereszZgody+=$item;
+                if($projekt == "Badania")
+                    DB::table('kod')->where('idkod',$key)->decrement('resztaFromZgody_badania',$item);
+                else
+                    DB::table('kod')->where('idkod',$key)->decrement('resztaFromZgody_all',$item);
+            }
+
+
+        if($eventZgody > 0)
+            foreach($licznikeventZgody as $key => $item)
+            {
+                $poubdateevZgody+=$item;
+                if($projekt == "Badania")
+                    DB::table('kod')->where('idkod',$key)->decrement('eventFromZgody_badania',$item);
+                else
+                    DB::table('kod')->where('idkod',$key)->decrement('eventFromZgody_all',$item);
+            }
+
+        if($exitoZgody > 0)
+            foreach($licznikexitoZgody as $key => $item)
+            {
+                $poubdateexitoZgody+=$item;
+                if($projekt == "Badania")
+                    DB::table('kod')->where('idkod',$key)->decrement('exitoFromZgody_badania',$item);
+                else
+                    DB::table('kod')->where('idkod',$key)->decrement('exitoFromZgody_all',$item);
+            }
+
                 //Tablica sesji ilości wykorzystana do generowania nazwy pliku csv
                 $ilosc = array();
                 array_push($ilosc,$poubdatebis);
@@ -467,6 +567,13 @@ class PagesController extends Controller
                 array_push($ilosc,$poubdateresz);
                 array_push($ilosc,$poubdateev);
                 array_push($ilosc,$poubdateexito);
+
+                array_push($ilosc,$poubdatebisZgody); //5
+                array_push($ilosc,$poubdatezgZgody);
+                array_push($ilosc,$poubdatereszZgody);
+                array_push($ilosc,$poubdateevZgody);
+                array_push($ilosc,$poubdateexitoZgody);
+
                 session()->put('iledanych',$ilosc);
         //Insert już poprawnych danych
         DB::table('log_download')
@@ -476,7 +583,13 @@ class PagesController extends Controller
                     'bazazg'        => $poubdatezg,
                     'bazareszta'    => $poubdateresz,
                     'bazaevent'     => $poubdateev,
-                    'bazaexito'     => $poubdateexito]
+                    'bazaexito'     => $poubdateexito,
+                    'baza8Zgody' => $poubdatebisZgody,
+                    'bazazgZgody' => $poubdatezgZgody,
+                    'bazaresztaZgody' => $poubdatereszZgody,
+                    'bazaeventZgody' => $poubdateevZgody,
+                    'bazaexitoZgody' => $poubdateexitoZgody,
+                    ]
             );
 
             //Blokowanie rekordów.
