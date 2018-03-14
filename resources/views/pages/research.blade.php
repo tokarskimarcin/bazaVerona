@@ -11,7 +11,7 @@
             background: rgba(216, 245, 251, 0.52);
         }
 
-        #ilosc
+        #ilosc,#iloscZgody
         {
             margin-bottom: 0px;
             background: white;
@@ -150,14 +150,47 @@
         </tr>
         <tr id="liczba">
             <td>Liczba:</td>
-            <td><input type="number" id="bliczba" value="0" class="form-control-dane"/></td>
-            <td><input type="number" id="zliczba" value="0" class="form-control-dane"/></td>
-            <td><input type="number" id="eliczba" value="0" class="form-control-dane"/></td>
-            <td><input type="number" id="exliczba" value="0" class="form-control-dane"/></td>
-            <td><input type="number" id="rliczba" value="0" class="form-control-dane"/></td>
+            <td><input type="number" id="bliczba" value="0" class="form-control"/></td>
+            <td><input type="number" id="zliczba" value="0" class="form-control"/></td>
+            <td><input type="number" id="eliczba" value="0" class="form-control"/></td>
+            <td><input type="number" id="exliczba" value="0" class="form-control"/></td>
+            <td><input type="number" id="rliczba" value="0" class="form-control"/></td>
             <td id="sumaliczba">0</td>
         </tr>
     </table>
+
+</br>
+
+    <table id="iloscZgody" class="table table-striped table-bordered" cellspacing="0" width="50%">
+        <thead>
+        <th></th>
+        <th>Zgody BisNode</th>
+        <th>Nowe Zgody</th>
+        <th>Zgody Event</th>
+        <th>Zgody Exito</th>
+        <th>Zgody Reszta</th>
+        <th>Suma</th>
+        </thead>
+        <tr id="znalezioneZgody">
+            <td>Znalezionych:</td>
+            <td id="bznalezionychZgody">0/0</td>
+            <td id="zznalezionychZgody">0/0</td>
+            <td id="eznalezionychZgody">0/0</td>
+            <td id="exznalezionychZgody">0/0</td>
+            <td id="rznalezionychZgody">0/0</td>
+            <td id="sumaznalezionychZgody">0/0</td>
+        </tr>
+        <tr id="liczbaZgody">
+            <td>Liczba:</td>
+            <td><input type="number" id="bliczbaZgody" value="0" class="form-control"/></td>
+            <td><input type="number" id="zliczbaZgody" value="0" class="form-control"/></td>
+            <td><input type="number" id="eliczbaZgody" value="0" class="form-control"/></td>
+            <td><input type="number" id="exliczbaZgody" value="0" class="form-control"/></td>
+            <td><input type="number" id="rliczbaZgody" value="0" class="form-control"/></td>
+            <td id="sumaliczbaZgody">0</td>
+        </tr>
+    </table>
+
 
     <div id="wybor">
         <form role="form" class="form-inline">
@@ -174,6 +207,7 @@
     </div>
 
 
+
     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
         <tr>
@@ -182,29 +216,24 @@
             <th>Adres</th>
             <th>Kod</th>
             <th>BisNode</th>
-            <th>Zgody</th>
+            <th>BisNode Zgody</th>
+            <th>Zgody Stare</th>
+            <th>Zgody Nowe</th>
             <th>Event</th>
+            <th>Event Zgody</th>
             <th>Exito</th>
+            <th>Exito Zgody</th>
             <th>Reszta</th>
-            <th><input type="checkbox" name="select_all" value="0" id="example-select-all"></th>
+            <th>Reszta Zgody</th>
+            <th>
+                <input type="checkbox" name="select_all" value="0" id="example-select-all">
+            </th>
         </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
 
 @section('script')
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
@@ -238,6 +267,14 @@
         var sumaev = 0;
         var sumaex = 0;
         var sumaresz = 0;
+        //tabela zgód
+        var sumabisZgody = 0;
+        var sumazgZgody = 0;
+        var sumaevZgody = 0;
+        var sumaexZgody = 0;
+        var sumareszZgody = 0;
+        var sumacalosciZgody = 0;
+
         var sumacalosci = 0;
         //DANE Z BAZY Badania
         var bisbadania = 0;
@@ -245,6 +282,14 @@
         var eventbadania = 0;
         var exitobadania = 0;
         var resztabadania = 0;
+        // Dane z bazy tabela zgody
+        var bisbadaniaZgody = 0;
+        var zgodybadaniaZgody = 0;
+        var eventbadaniaZgody = 0;
+        var exitobadaniaZgody = 0;
+        var resztabadaniaZgody = 0;
+        var sumabadaniaZgody = 0;
+
         var sumabadania = 0;
         // dane do pobrania
         var liczbabisnode = 0;
@@ -252,8 +297,15 @@
         var liczbaevent = 0;
         var liczbaexito = 0;
         var liczbareszy = 0;
-        var liczbacalosci = 0;
+        // dane do tabeli zgody
+        var liczbabisnodeZgody = 0;
+        var liczbazgodyZgody = 0;
+        var liczbaeventZgody = 0;
+        var liczbaexitoZgody = 0;
+        var liczbareszyZgody = 0;
 
+        var liczbacalosciZgody = 0;
+        var liczbacalosci = 0;
         $(document).ready(function() {
             $.ajax({
                 type: "GET",
@@ -270,21 +322,6 @@
 
         });
 
-
-
-        $(document).ready(function() {
-//            $("#bliczba").html("0");
-//            $("#rliczba").html("0");
-//            $("#eliczba").html("0");
-//            $("#zliczba").html("0");
-            $("#sumaliczba").html("0");
-            $("#bznalezionych").html("0/0");
-            $("#zznalezionych").html("0/0");
-            $("#eznalezionych").html("0/0");
-            $("#exznalezionych").html("0/0");
-            $("#rznalezionych").html("0/0");
-            $("#sumaznalezionych").html("0/0");
-        });
         function wyszukaj() { // wyszukaj klawisz
             var wojewodztwo = $( "#wojewodztwo").val();
             odznaczenie();
@@ -308,36 +345,63 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    source = response; // zapisanie zwroconych danych
-                    var table = $('#example').DataTable(); // wskaznik na tabele
-                    table.clear().draw();
-                    var table_rows = ""; // zerowanie całego kodu html
-                    var napis = ""; // zerwoanie wierwsza
-                    badania = new Array(source.length);
+                    console.log(response);
+                    if (response == 0) {
+                        console.log("Brak danych do zwrócenia");
+                    } else {
+                        source = response; // zapisanie zwroconych danych
+                        var table = $('#example').DataTable(); // wskaznik na tabele
+                        table.clear().draw();
+                        var table_rows = ""; // zerowanie całego kodu html
+                        var napis = ""; // zerwoanie wierwsza
+                        badania = new Array(source.length);
 
+                        if (koddo != '' && kodod != '' && res == '') // nazwa miasta po kodzie pocztowym
+                            rejonka = source[0].miasto;
 
-                    if(koddo!='' && kodod != '' && res == '') // nazwa miasta po kodzie pocztowym
-                        rejonka = source[0]['miasto'];
+                        if (kodzakres != '') // nazwa miasta po kodzie pocztowym
+                            rejonka = source[0].miasto;
 
-                    if(kodzakres!='') // nazwa miasta po kodzie pocztowym
-                        rejonka = source[0]['miasto'];
+                        if (kodod != '' && res == '') // nazwa miasta po kodzie pocztowym
+                            rejonka = source[0].miasto;
 
-                    if(kodod!='' && res == '') // nazwa miasta po kodzie pocztowym
-                        rejonka = source[0]['miasto'];
+                        for (var i = 0; i < source.length; i++) {
+                            napis = '<tr>' +
+                                '<td>' + region[source[i]['idwoj']]['woj'] + '</td>' +
+                                '<td>' + source[i]['miasto'] + '</td>' +
+                                '<td>' + source[i]['adres'] + '</td>' +
+                                '<td>' + source[i]['kodpocztowy'] + '</td>' +
+                                '<td>' + source[i]['bisnode'] + '</td>' +
+                                '<td>' + source[i]['bisndeFromZgody'] + '</td>' +
+                                '<td>' + source[i]['zgody'] + '</td>' +
+                                '<td>' + source[i]['zgodyFromZgody'] + '</td>' +
+                                '<td>' + source[i]['event'] + '</td>' +
+                                '<td>' + source[i]['eventFromZgody'] + '</td>' +
+                                '<td>' + source[i]['exito'] + '</td>' +
+                                '<td>' + source[i]['exitoFromZgody'] + '</td>' +
+                                '<td>' + source[i]['reszta'] + '</td>' +
+                                '<td>' + source[i]['resztaFromZgody'] + '</td>' +
+                                '<td style="max-width: 40px">' +
+                                '<input type="checkbox"  value=' + i + ' class="checkboxselect"/></td>' +
+                                '</tr>';
 
-                    for(var i=0;i<source.length;i++)
-                    {
-                        napis = '<tr><td>'+region[source[i]['idwoj']]['woj']+'</td><td>'+source[i]['miasto']+'</td><td>'+source[i]['adres']+'</td><td>'+source[i]['kodpocztowy']+'</td><td>'+source[i]['bisnode']+'</td><td>'+source[i]['zgody']+'</td><td>'+source[i]['event']+'</td>'+'<td>'+source[i]['exito']+'</td><td>'+source[i]['reszta']+'</td><td style="max-width: 40px"><input type="checkbox"  value='+i+' class="checkboxselect"/></td></tr>';
-                        table_rows +=napis; // połączenie wszystkiego iteracyjnie
-                        badania[i] = new Array(4);
-                        badania[i][0] = source[i]['bisnode_badania'];
-                        badania[i][1] = source[i]['zgody_badania'];
-                        badania[i][2] = source[i]['event_badania'];
-                        badania[i][3] = source[i]['reszta_badania'];
-                        badania[i][4] = source[i]['exito_badania'];
+                            table_rows += napis; // połączenie wszystkiego iteracyjnie
+                            badania[i] = new Array(10);
+                            badania[i][0] = source[i]['bisnode_badania'];
+                            badania[i][1] = source[i]['zgody_badania'];
+                            badania[i][2] = source[i]['event_badania'];
+                            badania[i][3] = source[i]['reszta_badania'];
+                            badania[i][4] = source[i]['exito_badania'];
+
+                            badania[i][5] = source[i]['bisndeFromZgody_badania'];
+                            badania[i][6] = source[i]['zgodyFromZgody_badania'];
+                            badania[i][7] = source[i]['eventFromZgody_badania'];
+                            badania[i][8] = source[i]['resztaFromZgody_badania'];
+                            badania[i][9] = source[i]['exitoFromZgody_badania'];
+                        }
+                        table.rows.add($(table_rows)).draw(); // rysowanie tebeli na jeden raz, optymalnie niz pojedynczo
+                        $('.dataTables_filter input').val(szukana); // aby nie znikl wynik wyszukiwania w polu wyszukaj
                     }
-                    table.rows.add($(table_rows)).draw(); // rysowanie tebeli na jeden raz, optymalnie niz pojedynczo
-                    $('.dataTables_filter input').val(szukana); // aby nie znikl wynik wyszukiwania w polu wyszukaj
                 }
             });
         }
@@ -349,6 +413,13 @@
             sumaresz = 0;
             sumaex = 0;
             sumacalosci = 0;
+
+             sumabisZgody = 0;
+             sumazgZgody = 0;
+             sumaevZgody = 0;
+             sumaexZgody = 0;
+             sumareszZgody = 0;
+             sumacalosciZgody = 0;
             //badania
             bisbadania = 0;
             zgodybadania = 0;
@@ -356,6 +427,14 @@
             exitobadania = 0;
             resztabadania = 0;
             sumabadania = 0;
+
+            bisbadaniaZgody = 0;
+            zgodybadaniaZgody = 0;
+            eventbadaniaZgody = 0;
+            exitobadaniaZgody = 0;
+            resztabadaniaZgody = 0;
+            sumabadaniaZgody = 0;
+
             //dopobrania
             liczbabisnode = 0;
             liczbazgody = 0;
@@ -364,6 +443,13 @@
             liczbareszy = 0;
             liczbacalosci = 0;
 
+             liczbabisnodeZgody = 0;
+             liczbazgodyZgody = 0;
+             liczbaeventZgody = 0;
+             liczbaexitoZgody = 0;
+             liczbareszyZgody = 0;
+             liczbacalosciZgody = 0;
+
             $("#bliczba").val(0);
             $("#rliczba").val(0);
             $("#eliczba").val(0);
@@ -371,6 +457,12 @@
             $("#zliczba").val(0);
             $("#sumaliczba").html(0);
 
+            $("#bliczbaZgody").val(0);
+            $("#zliczbaZgody").val(0);
+            $("#eliczbaZgody").val(0);
+            $("#exliczbaZgody").val(0);
+            $("#rliczbaZgody").val(0);
+            $("#sumaliczbaZgody").html(0);
 
             while (tablicakodowpocztowych.length > 0) {
                 tablicakodowpocztowych.pop();
@@ -386,6 +478,14 @@
             liczbaexito = $("#exliczba").val();
             liczbacalosci = parseInt(liczbabisnode) + parseInt(liczbazgody) + parseInt(liczbaevent) + parseInt(liczbareszy)+ parseInt(liczbaexito);
             $("#sumaliczba").html(liczbacalosci);
+
+            liczbabisnodeZgody = $("#bliczbaZgody").val();
+            liczbazgodyZgody = $("#zliczbaZgody").val();
+            liczbaeventZgody = $("#eliczbaZgody").val();
+            liczbareszyZgody = $("#rliczbaZgody").val();
+            liczbaexitoZgody = $("#exliczbaZgody").val();
+            liczbacalosciZgody = parseInt(liczbabisnodeZgody) + parseInt(liczbazgodyZgody) + parseInt(liczbaeventZgody) + parseInt(liczbareszyZgody)+ parseInt(liczbaexitoZgody);
+            $("#sumaliczbaZgody").html(liczbacalosciZgody);
         }
         $(document).ready(function() {
             $('#example').DataTable( {
@@ -418,10 +518,7 @@
                     ],
                 "autoWidth": false,
                     deferRender:    true,
-                    scrollY:        250,
                     "bPaginate": false,
-                    scrollCollapse: true,
-                    scroller:       true,
                     //"sDom": '<"topleft"f>rt<"bottom"lp><"clear">'
                     dom: 'lf<"wojewodztwo"><"kodod"><"koddo"><"kodzakres"><"toolbar">rtip',
                     initComplete: function(){
@@ -499,6 +596,7 @@
             });
 
             var indeks = 0;
+            console.log(badania);
             for(var i=0 ;i<selected.length;i++)
             {
                 indeks = parseInt(selected[i]);
@@ -507,22 +605,37 @@
                 eventbadania += badania[indeks][2];
                 resztabadania += badania[indeks][3];
                 exitobadania += badania[indeks][4];
+
+                bisbadaniaZgody += badania[indeks][5];
+                zgodybadaniaZgody += badania[indeks][6];
+                eventbadaniaZgody += badania[indeks][7];
+                resztabadaniaZgody += badania[indeks][8];
+                exitobadaniaZgody += badania[indeks][9];
+
                 sumabadania = bisbadania + zgodybadania+ eventbadania+resztabadania+exitobadania;
+                sumabadaniaZgody = bisbadaniaZgody + zgodybadaniaZgody+ eventbadaniaZgody+resztabadaniaZgody+exitobadaniaZgody;
             }
-
-
             for (var i = 0; i < dane.length; i++) // sumowanie
             {   //Całość
                 sumabis += parseInt(dane[i][4]);
-                sumazg += parseInt(dane[i][5]);
-                sumaev += parseInt(dane[i][6]);
-                sumaresz += parseInt(dane[i][8]);
-                sumaex += parseInt(dane[i][7]);
+                sumazg += parseInt(dane[i][6]);
+                sumaev += parseInt(dane[i][8]);
+                sumaresz += parseInt(dane[i][12]);
+                sumaex += parseInt(dane[i][10]);
+
+                sumabisZgody += parseInt(dane[i][5]);
+                sumazgZgody += parseInt(dane[i][7]);
+                sumaevZgody += parseInt(dane[i][9]);
+                sumareszZgody += parseInt(dane[i][13]);
+                sumaexZgody += parseInt(dane[i][11]);
+
                 tablicakodowpocztowych.push(dane[i][3]);
                 if(i==0){
                     idwoj = dane[i][0];
                 }
                 sumacalosci = sumabis + sumazg + sumaev + sumaresz + sumaex;
+                sumacalosciZgody = sumabisZgody + sumazgZgody + sumaevZgody + sumareszZgody + sumaexZgody;
+
             }
             // wyswietlenie łączne
             $("#bznalezionych").html(bisbadania +"/" + sumabis);
@@ -531,6 +644,13 @@
             $("#exznalezionych").html(exitobadania + "/"+ sumaex);
             $("#rznalezionych").html(resztabadania + "/"+ sumaresz);
             $("#sumaznalezionych").html(sumabadania + "/" + sumacalosci);
+
+            $("#bznalezionychZgody").html(bisbadaniaZgody +"/" + sumabisZgody);
+            $("#zznalezionychZgody").html(zgodybadaniaZgody + "/"+ sumazgZgody);
+            $("#eznalezionychZgody").html(eventbadaniaZgody + "/" + sumaevZgody);
+            $("#exznalezionychZgody").html(exitobadaniaZgody + "/"+ sumaexZgody);
+            $("#rznalezionychZgody").html(resztabadaniaZgody + "/"+ sumareszZgody);
+            $("#sumaznalezionychZgody").html(sumabadaniaZgody + "/" + sumacalosciZgody);
 
         });
         $(document).ready(function() {
@@ -554,11 +674,19 @@
             for (var i = 0; i < dane.length; i++) // sumowanie
             {
                 sumabis += parseInt(dane[i][4]);
-                sumazg += parseInt(dane[i][5]);
-                sumaev += parseInt(dane[i][6]);
-                sumaresz += parseInt(dane[i][8]);
-                sumaex += parseInt(dane[i][7]);
+                sumazg += parseInt(dane[i][6]);
+                sumaev += parseInt(dane[i][8]);
+                sumaresz += parseInt(dane[i][12]);
+                sumaex += parseInt(dane[i][10]);
+                // tabela zgody
+                sumabisZgody += parseInt(dane[i][5]);
+                sumazgZgody += parseInt(dane[i][7]);
+                sumaevZgody += parseInt(dane[i][9]);
+                sumareszZgody += parseInt(dane[i][13]);
+                sumaexZgody += parseInt(dane[i][11]);
+
                 sumacalosci = sumabis + sumazg + sumaev + sumaresz + sumaex;
+                sumacalosciZgody = sumabisZgody + sumazgZgody + sumaevZgody + sumareszZgody + sumaexZgody;
             }
             // wyswietlenie
             $("#bznalezionych").html("0/" + sumabis);
@@ -567,6 +695,14 @@
             $("#rznalezionych").html("0/" + sumaresz);
             $("#exznalezionych").html("0/" + sumaex);
             $("#sumaznalezionych").html("0/" + sumacalosci);
+
+            $("#bznalezionychZgody").html( "0/" + sumabisZgody);
+            $("#zznalezionychZgody").html( "0/"+ sumazgZgody);
+            $("#eznalezionychZgody").html( "0/" + sumaevZgody);
+            $("#exznalezionychZgody").html( "0/"+ sumaexZgody);
+            $("#rznalezionychZgody").html("0/"+ sumareszZgody);
+            $("#sumaznalezionychZgody").html("0/" + sumacalosciZgody);
+
         }
 
 
@@ -589,14 +725,26 @@
                 /////////FUNKCJA//////////////
                 var dane = table.rows('.selected').data(); // znalezienie wszystkich zanaczonych elementow
                 ZerujDane();
+
                 for (var i = 0; i < dane.length; i++) // sumowanie
                 {   //Całość
+
+
                     sumabis += parseInt(dane[i][4]);
-                    sumazg += parseInt(dane[i][5]);
-                    sumaev += parseInt(dane[i][6]);
-                    sumaresz += parseInt(dane[i][8]);
-                    sumaex += parseInt(dane[i][7]);
+                    sumazg += parseInt(dane[i][6]);
+                    sumaev += parseInt(dane[i][8]);
+                    sumaresz += parseInt(dane[i][12]);
+                    sumaex += parseInt(dane[i][10]);
+
+                    sumabisZgody += parseInt(dane[i][5]);
+                    sumazgZgody += parseInt(dane[i][7]);
+                    sumaevZgody += parseInt(dane[i][9]);
+                    sumareszZgody += parseInt(dane[i][13]);
+                    sumaexZgody += parseInt(dane[i][11]);
+
+
                     sumacalosci = sumabis + sumazg + sumaev + sumaresz + sumaex;
+                    sumacalosciZgody = sumabisZgody + sumazgZgody + sumaevZgody + sumareszZgody + sumaexZgody;
                     tablicakodowpocztowych.push(dane[i][3]);
                     if(i==0){
                         idwoj = dane[i][0];
@@ -607,8 +755,14 @@
                     eventbadania+= parseInt(badania[i][2]);
                     resztabadania += parseInt(badania[i][3]);
                     exitobadania += parseInt(badania[i][4]);
-                    sumabadania = bisbadania + zgodybadania + eventbadania + resztabadania + exitobadania;
 
+                    bisbadaniaZgody += badania[i][5];
+                    zgodybadaniaZgody += badania[i][6];
+                    eventbadaniaZgody += badania[i][7];
+                    resztabadaniaZgody += badania[i][8];
+                    exitobadaniaZgody += badania[i][9];
+                    sumabadania = bisbadania + zgodybadania + eventbadania + resztabadania + exitobadania;
+                    sumabadaniaZgody = bisbadaniaZgody + zgodybadaniaZgody + eventbadaniaZgody + resztabadaniaZgody + exitobadaniaZgody;
                 }
                 // wyswietlenie
                 $("#bznalezionych").html(bisbadania +"/" + sumabis);
@@ -617,6 +771,14 @@
                 $("#rznalezionych").html(resztabadania + "/"+ sumaresz);
                 $("#exznalezionych").html(exitobadania + "/" + sumaex);
                 $("#sumaznalezionych").html(sumabadania + "/" + sumacalosci);
+
+                $("#bznalezionychZgody").html(bisbadaniaZgody +"/" + sumabisZgody);
+                $("#zznalezionychZgody").html(zgodybadaniaZgody + "/"+ sumazgZgody);
+                $("#eznalezionychZgody").html(eventbadaniaZgody + "/" + sumaevZgody);
+                $("#exznalezionychZgody").html(exitobadaniaZgody + "/"+ sumaexZgody);
+                $("#rznalezionychZgody").html(resztabadaniaZgody + "/"+ sumareszZgody);
+                $("#sumaznalezionychZgody").html(sumabadaniaZgody + "/" + sumacalosciZgody);
+
                 ///////FUNKCJA Koniec //////////////
             });
             $('#example tbody').on('click', 'tr', function (event) { // reakcja na klikniece wierszu w tabeli z danymi
@@ -626,14 +788,9 @@
             });
         });
 
-
-
-
-
-
         $(document).ready(function() {
             //  Wpisywanie Danych  //
-            $("#bliczba").bind("change paste keyup", function () {
+            $("#bliczba,#eliczba,#zliczba,#rliczba,#exliczba,#bliczbaZgody,#zliczbaZgody,#eliczbaZgody,#exliczbaZgody,#rliczbaZgody").bind("change paste keyup", function () {
                 var liczba = $(this).val();
                 if (!parseInt(liczba)) {
                     $(this).val("0");
@@ -644,88 +801,68 @@
                     {
                         liczba = 0;
                     }
-                    if(liczba > bisbadania)
-                    {
-                        liczba = bisbadania;
+                    if($(this).attr('id') == 'bliczba'){
+                        if(liczba > bisbadania)
+                        {
+                            liczba = bisbadania;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'eliczba'){
+                        if(liczba > eventbadania)
+                        {
+                            liczba = eventbadania;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'zliczba'){
+                        if(liczba > zgodybadania)
+                        {
+                            liczba = zgodybadania;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'rliczba'){
+                        if(liczba > resztabadania)
+                        {
+                            liczba = resztabadania;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'exliczba'){
+                        if(liczba > exitobadania)
+                        {
+                            liczba = exitobadania;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'bliczbaZgody'){
+                        if(liczba > bisbadaniaZgody)
+                        {
+                            liczba = bisbadaniaZgody;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'zliczbaZgody'){
+                        if(liczba > zgodybadaniaZgody)
+                        {
+                            liczba = zgodybadaniaZgody;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'eliczbaZgody'){
+                        if(liczba > eventbadaniaZgody)
+                        {
+                            liczba = eventbadaniaZgody;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'exliczbaZgody'){
+                        if(liczba > exitobadaniaZgody)
+                        {
+                            liczba = exitobadaniaZgody;
+                        }
+                        $(this).val(liczba);
+                    }else if($(this).attr('id') == 'rliczbaZgody'){
+                        if(liczba > resztabadaniaZgody)
+                        {
+                            liczba = resztabadaniaZgody;
+                        }
+                        $(this).val(liczba);
                     }
-                    $(this).val(liczba);
-                }
-                CzytajPola();
-            });
-            $("#eliczba").bind("change paste keyup", function () {
-                var liczba = $(this).val();
-                if (!parseInt(liczba)) {
-                    $(this).val("0");
-                }
-                else {
-                    liczba = parseInt(liczba);
-                    if(liczba < 0)
-                    {
-                        liczba = 0;
-                    }
-                    if(liczba > eventbadania)
-                    {
-                        liczba = eventbadania;
-                    }
-                    $(this).val(liczba);
-                }
-                CzytajPola();
-            });
-            $("#zliczba").bind("change paste keyup", function () {
-                var liczba = $(this).val();
-                if (!parseInt(liczba)) {
-                    $(this).val("0");
-                }
-                else {
-                    liczba = parseInt(liczba);
-                    if(liczba < 0)
-                    {
-                        liczba = 0;
-                    }
-                    if(liczba > zgodybadania)
-                    {
-                        liczba = zgodybadania;
-                    }
-                    $(this).val(liczba);
-                }
-                CzytajPola();
-            });
-            $("#rliczba").bind("change paste keyup", function () {
-                var liczba = $(this).val();
-                if (!parseInt(liczba)) {
-                    $(this).val("0");
-                }
-                else {
-                    liczba = parseInt(liczba);
-                    if(liczba < 0)
-                    {
-                        liczba = 0;
-                    }
-                    if(liczba > resztabadania)
-                    {
-                        liczba = resztabadania;
-                    }
-                    $(this).val(liczba);
-                }
-                CzytajPola();
-            });
 
-            $("#exliczba").bind("change paste keyup", function () {
-                var liczba = $(this).val();
-                if (!parseInt(liczba)) {
-                    $(this).val("0");
-                }
-                else {
-                    liczba = parseInt(liczba);
-                    if(liczba < 0)
-                    {
-                        liczba = 0;
-                    }
-                    if(liczba > exitobadania)
-                    {
-                        liczba = exitobadania;
-                    }
-                    $(this).val(liczba);
                 }
                 CzytajPola();
             });
@@ -733,10 +870,13 @@
 
 
         $("#pobierz").on("click",function(e){
-            if(liczbacalosci > 1000 || liczbacalosci  < 1)
+            if(liczbacalosci > 1000 || liczbacalosciZgody  > 1000)
             {
                 alert("Maksymalna ilość rekordów to 1000");
-            }else {
+            }else if(liczbacalosci < 1 && liczbacalosciZgody  < 1){
+                console.log("Brak danych do pobrania");
+            }
+            else {
                 if(liczbabisnode > bisbadania)
                 {
                     alert("Za Duzo");
@@ -752,22 +892,76 @@
                 }else if(liczbaexito > exitobadania)
                 {
                     alert("Za Duzo");
-                }else if(liczbaexito > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0))
+                }
+
+                else if(liczbabisnodeZgody > bisbadaniaZgody)
+                {
+                    alert("Za Duzo");
+                }
+                else if(liczbazgodyZgody > zgodybadaniaZgody)
+                {
+                    alert("Za Duzo");
+                }
+                else if(liczbaeventZgody > eventbadaniaZgody)
+                {
+                    alert("Za Duzo");
+                }
+                else if(liczbaexitoZgody > exitobadaniaZgody)
+                {
+                    alert("Za Duzo");
+                }
+                else if(liczbareszyZgody > resztabadaniaZgody)
+                {
+                    alert("Za Duzo");
+                }
+
+                else if(liczbaexito > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0
+                    || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
                 {
                         alert("Mieszasz Paczki, Exito można poprać tylko jako osobną paczkę !!!!");
-                }else if(liczbabisnode > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbaexito > 0))
+                }else if(liczbabisnode > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
                 {
                     alert("Mieszasz Paczki, Bisnode można poprać tylko jako osobną paczkę !!!!");
-                }else if(liczbaevent > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0))
+                }else if(liczbaevent > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
                 {
                     alert("Mieszasz Paczki, Event można poprać tylko jako osobną paczkę !!!!");
-                }else if(liczbazgody > 0 && (liczbaevent > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0))
+                }else if(liczbazgody > 0 && (liczbaevent > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
                 {
                     alert("Mieszasz Paczki, Zgody można poprać tylko jako osobną paczkę !!!!");
-                }else if(liczbareszy > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0))
+                }else if(liczbareszy > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
                 {
                     alert("Mieszasz Paczki, Resztę można poprać tylko jako osobną paczkę !!!!");
                 }
+                else if(liczbaexitoZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexito > 0))
+                {
+                    alert("Mieszasz Paczki, Zgody Exito można poprać tylko jako osobną paczkę !!!!");
+                }
+                else if(liczbabisnodeZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnode > 0 || liczbaexitoZgody > 0))
+                {
+                    alert("Mieszasz Paczki, Zgody Bisnode można poprać tylko jako osobną paczkę !!!!");
+                }
+                else if(liczbaeventZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaevent > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
+                {
+                    alert("Mieszasz Paczki, Zgody Event można poprać tylko jako osobną paczkę !!!!");
+                }
+                else if(liczbazgodyZgody > 0 && (liczbaevent > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
+                {
+                    alert("Mieszasz Paczki, Zgody Zgody można poprać tylko jako osobną paczkę !!!!");
+                }
+                else if(liczbareszyZgody > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszy > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
+                {
+                    alert("Mieszasz Paczki, Zgody Resztę można poprać tylko jako osobną paczkę !!!!");
+                }
+
                 else
                 {
                     var system = $('#selectSystem').val();
@@ -789,6 +983,11 @@
                             "reszta": liczbareszy,
                             "event": liczbaevent,
                             "exito": liczbaexito,
+                            "bisnodeZgody": liczbabisnodeZgody,
+                            "zgodyZgody": liczbazgodyZgody,
+                            "resztaZgody": liczbareszyZgody,
+                            "eventZgody": liczbaeventZgody,
+                            "exitoZgody": liczbaexitoZgody,
                             "miasto": szukana,
                             "idwoj": idwoj,
                             "projekt": "Badania"
