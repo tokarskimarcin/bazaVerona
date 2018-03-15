@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,17 +22,14 @@ class unlockController extends Controller
         if ($user->id == 1 || $user->id == 105 || $user->id == 102 || $user->id == 103 || $user->id == 109 || $user->id == 127) {
 
             $date = date('Y-m-d', strtotime('-7 days', time()));
-            $lista = DB::table('log_download')
-                ->selectRaw('log_download.id,status,users_t.name,users_t.last,baza8 as bisnode,bazazg as zgody,bazareszta as reszta,
-            bazaevent as event,date as data,miasto,woj.woj as wojewodztwo,baza')
+            $lista = DB::table('log_download')->
+                select('log_download.*','users_t.name','users_t.last','woj.woj')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->join('woj', 'log_download.idwoj', 'woj.idwoj')
                 ->where('date', '>=', $date . '%')
                 ->where('status', '=', 0)
                 ->orderBy('log_download.id', 'desc')
                 ->get();
-            $lista = json_decode(json_encode((array)$lista), true);
-            $lista = $this->setArray($lista);
             return view('unlock.list')->with('lista', $lista);
         }else
         {
@@ -239,7 +237,6 @@ class unlockController extends Controller
         $miasto = $request->input('kod');
         $date= date('Y-m-d', strtotime('-10 days', time()));
         if ($miasto[1] == 'Wysylka') {
-
             $lista = DB::table('rekordy')
                 ->select('idkod')->distinct()->where('wysylka', '=', $miasto[0])
                 ->get();
@@ -248,6 +245,14 @@ class unlockController extends Controller
             $zgody = 'zgodyall';
             $reszta = 'resztaall';
             $event = 'eventall';
+            $exito = 'exitoall';
+
+            $bisnodeZgody ='bisndeFromZgody_all';
+            $zgodyZgody = '	zgodyFromZgody_all';
+            $resztaZgody = 'resztaFromZgody_all';
+            $eventZgody = 'eventFromZgody_all';
+            $exitoZgody = 'exitoFromZgody_all';
+
 
             DB::table('rekordy')
                 ->where('wysylka',$miasto[0])
@@ -263,6 +268,14 @@ class unlockController extends Controller
             $zgody = 'zgody_badania';
             $reszta = 'reszta_badania';
             $event = 'event_badania';
+            $exito = 'exito_badania';
+
+            $bisnodeZgody ='bisndeFromZgody_badania';
+            $zgodyZgody = '	zgodyFromZgody_badania';
+            $resztaZgody = 'resztaFromZgody_badania';
+            $eventZgody = 'eventFromZgody_badania';
+            $exitoZgody = 'exitoFromZgody_badania';
+
 
             DB::table('rekordy')
                 ->where('badania',$miasto[0])
@@ -282,6 +295,14 @@ class unlockController extends Controller
             self::zliczenieZgod($item['idkod'],$rodzaj,$zgody);
             self::zliczenieEvent($item['idkod'],$rodzaj,$event);
             self::zliczenieReszta($item['idkod'],$rodzaj,$reszta);
+            self::zliczenieExito($item['idkod'],$rodzaj,$exito);
+
+            self::zliczenieBisnodeZgody($item['idkod'],$rodzaj,$bisnodeZgody);
+            self::zliczenieZgodZgody($item['idkod'],$rodzaj,$zgodyZgody);
+            self::zliczenieEventZgody($item['idkod'],$rodzaj,$eventZgody);
+            self::zliczenieResztaZgody($item['idkod'],$rodzaj,$resztaZgody);
+            self::zliczenieExitoZgody($item['idkod'],$rodzaj,$exitoZgody);
+
         }
         return $tablica;
     }
@@ -386,6 +407,136 @@ class unlockController extends Controller
 
         return $wynik;
     }
+
+    public function zliczenieExito($idkod,$baza,$typ)
+    {
+        $date= date('Y-m-d', strtotime('-7 days', time()));
+        $lista = DB::table('rekordy')
+            ->selectRaw('count(idkod)')
+            ->where('idkod','=',$idkod)
+            ->where($baza,'<',$date)
+            ->where('idbaza','=',19)
+            ->where('lock','=',0)
+            ->get();
+        $lista = json_decode(json_encode((array) $lista), true);
+        $lista = $this->setArray($lista);
+        $wynik = $lista[0]['count(idkod)'];
+
+        DB::table('kod')
+            ->where('kod.idkod',$idkod)
+            ->update([$typ => $wynik]);
+
+        return $wynik;
+    }
+
+    public function zliczenieBisnodeZgody($idkod,$baza,$typ)
+    {
+        $date= date('Y-m-d', strtotime('-7 days', time()));
+        $lista = DB::table('rekordy')
+            ->selectRaw('count(idkod)')
+            ->where('idkod','=',$idkod)
+            ->where($baza,'<',$date)
+            ->where('idbaza','=',28)
+            ->where('lock','=',0)
+            ->get();
+        $lista = json_decode(json_encode((array) $lista), true);
+        $lista = $this->setArray($lista);
+        $wynik = $lista[0]['count(idkod)'];
+
+        DB::table('kod')
+            ->where('kod.idkod',$idkod)
+            ->update([$typ => $wynik]);
+
+        return $wynik;
+    }
+
+    public function zliczenieZgodZgody($idkod,$baza,$typ)
+    {
+        $date= date('Y-m-d', strtotime('-7 days', time()));
+        $lista = DB::table('rekordy')
+            ->selectRaw('count(idkod)')
+            ->where('idkod','=',$idkod)
+            ->where($baza,'<',$date)
+            ->where('idbaza','=',27)
+            ->where('lock','=',0)
+            ->get();
+        $lista = json_decode(json_encode((array) $lista), true);
+        $lista = $this->setArray($lista);
+        $wynik = $lista[0]['count(idkod)'];
+
+        DB::table('kod')
+            ->where('kod.idkod',$idkod)
+            ->update(['zgodyFromZgody_badania' => $wynik]);
+
+        return $wynik;
+    }
+
+    public function zliczenieEventZgody($idkod,$baza,$typ)
+    {
+        $date= date('Y-m-d', strtotime('-7 days', time()));
+        $lista = DB::table('rekordy')
+            ->selectRaw('count(idkod)')
+            ->where('idkod','=',$idkod)
+            ->where($baza,'<',$date)
+            ->where('idbaza','=',26)
+            ->where('lock','=',0)
+            ->get();
+        $lista = json_decode(json_encode((array) $lista), true);
+        $lista = $this->setArray($lista);
+        $wynik = $lista[0]['count(idkod)'];
+
+        DB::table('kod')
+            ->where('kod.idkod',$idkod)
+            ->update([$typ => $wynik]);
+
+        return $wynik;
+    }
+
+    public function zliczenieResztaZgody($idkod,$baza,$typ)
+    {
+        $date= date('Y-m-d', strtotime('-7 days', time()));
+        $lista = DB::table('rekordy')
+            ->selectRaw('count(idkod)')
+            ->where('idkod','=',$idkod)
+            ->where($baza,'<',$date)
+            ->where('idbaza','=',24)
+            ->where('lock','=',0)
+            ->get();
+        $lista = json_decode(json_encode((array) $lista), true);
+        $lista = $this->setArray($lista);
+        $wynik = $lista[0]['count(idkod)'];
+
+        DB::table('kod')
+            ->where('kod.idkod',$idkod)
+            ->update([$typ => $wynik]);
+
+        return $wynik;
+    }
+
+    public function zliczenieExitoZgody($idkod,$baza,$typ)
+    {
+        $date= date('Y-m-d', strtotime('-7 days', time()));
+        $lista = DB::table('rekordy')
+            ->selectRaw('count(idkod)')
+            ->where('idkod','=',$idkod)
+            ->where($baza,'<',$date)
+            ->where('idbaza','=',29)
+            ->where('lock','=',0)
+            ->get();
+        $lista = json_decode(json_encode((array) $lista), true);
+        $lista = $this->setArray($lista);
+        $wynik = $lista[0]['count(idkod)'];
+
+        DB::table('kod')
+            ->where('kod.idkod',$idkod)
+            ->update([$typ => $wynik]);
+
+        return $wynik;
+    }
+
+
+
+
 
 
     function setArray($tab)

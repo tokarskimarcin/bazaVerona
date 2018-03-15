@@ -109,43 +109,53 @@
         <tr style="background: yellow">
             <th>NR</th>
             <th>Miasto</th>
-            <th>Wojewodztwo</th>
+            {{--<th>Wojewodztwo</th>--}}
             <th>Imie Nazwisko</th>
             <th>Bisnode</th>
+            <th>Bisnode Zgody</th>
             <th>Zgody</th>
+            <th>Zgody Nowe</th>
             <th>Event</th>
+            <th>Event Zgody</th>
             <th>Reszta</th>
-            <th>Baza</th>
+            <th>Reszta Zgody</th>
+            <th>Exito</th>
+            <th>Exito Zgody</th>
             <th>Data pobrania</th>
             <th>Data odblokowania</th>
             <th>Akcja</th>
         </tr>
         </thead>
         <tbody>
+
         <?php foreach ($lista as $item):?>
         <?php
 
-        $s = $item['data'];
+        $s = $item->date;
         $dt = new DateTime($s);
         $date = $dt->format('Y-m-d');
         $data_odblokowania= date('Y-m-d', strtotime($date.'+8 days'));
         ?>
 
-                    <?php if($item['baza'] == 'Wysylka'): ?>
-                        <tr style="background-color: rgba(250, 235, 215, 0.46)" class="wysylka" id="<?php echo $item['id'].'.'.$item['baza'] ?>">
-                            <?php else: ?>
-                     <tr style="background: rgba(216, 245, 251, 0.52)" class="badania" id="<?php echo $item['id'].'.'.$item['baza'] ?>">
-                         <?php endif;?>
-            <td ><b> <?php echo $item['id']; ?> </b></td>
-            <td ><b> <?php echo $item['miasto']; ?> </b></td>
-            <td><b> <?php echo $item['wojewodztwo']; ?> </b></td>
-            <td><b> <?php echo $item['name'].' '.$item['last']; ?> </b></td>
-            <td><b> <?php echo $item['bisnode']; ?> </b></td>
-            <td><b> <?php echo $item['zgody']; ?> </b></td>
-            <td><b> <?php echo $item['event']; ?> </b></td>
-            <td><b> <?php echo $item['reszta']; ?> </b></td>
-            <td><b> <?php echo $item['baza']; ?> </b></td>
-            <td><b> <?php echo $item['data']; ?> </b></td>
+        <?php if($item->baza == 'Wysylka'): ?>
+        <tr style="background-color: rgba(250, 235, 215, 0.46)" class="wysylka" id="<?php echo $item->id.'.'.$item->baza ?>">
+                <?php else: ?>
+         <tr style="background: rgba(216, 245, 251, 0.52)" class="badania" id="<?php echo $item->id.'.'.$item->baza ?>">
+             <?php endif;?>
+            <td ><b> <?php echo $item->id; ?> </b></td>
+            <td ><b> <?php echo $item->miasto; ?> </b></td>
+            <td><b> <?php echo $item->name.' '.$item->last; ?> </b></td>
+            <td><b> <?php echo $item->baza8; ?> </b></td>
+            <td><b> <?php echo $item->baza8Zgody; ?> </b></td>
+            <td><b> <?php echo $item->bazazg; ?> </b></td>
+            <td><b> <?php echo $item->bazazgZgody; ?> </b></td>
+            <td><b> <?php echo $item->bazaevent; ?> </b></td>
+            <td><b> <?php echo $item->bazaeventZgody; ?> </b></td>
+            <td><b> <?php echo $item->bazareszta; ?> </b></td>
+            <td><b> <?php echo $item->bazaresztaZgody; ?> </b></td>
+             <td><b> <?php echo $item->bazaexito; ?> </b></td>
+             <td><b> <?php echo $item->bazaexitoZgody; ?> </b></td>
+            <td><b> <?php echo $item->date; ?> </b></td>
             <td><b> <?php echo $data_odblokowania?> </b></td>
             <td><b> <button type="button" class="btn btn-danger">Odblokuj</button></b></td>
         </tr>
