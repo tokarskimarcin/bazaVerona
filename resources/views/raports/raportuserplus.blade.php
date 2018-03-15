@@ -100,10 +100,15 @@
             <th>Imie</th>
             <th>Nazwisko</th>
             <th>Bisnode</th>
+            <th>Bisnode Zgody</th>
             <th>Zgody</th>
+            <th>Zgody Nowe</th>
             <th>Event</th>
+            <th>Event Zgody</th>
             <th>Reszta</th>
+            <th>Reszta Zgody</th>
             <th>Exito</th>
+            <th>Exito Zgody</th>
             <th>Suma</th>
         </tr>
         </thead>
