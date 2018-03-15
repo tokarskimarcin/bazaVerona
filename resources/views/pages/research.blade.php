@@ -213,7 +213,7 @@
         <tr>
             <th>Województwo</th>
             <th>Miasto</th>
-            <th>Adres</th>
+            {{--<th>Adres</th>--}}
             <th>Kod</th>
             <th>BisNode</th>
             <th>BisNode Zgody</th>
@@ -369,7 +369,7 @@
                             napis = '<tr>' +
                                 '<td>' + region[source[i]['idwoj']]['woj'] + '</td>' +
                                 '<td>' + source[i]['miasto'] + '</td>' +
-                                '<td>' + source[i]['adres'] + '</td>' +
+                                // '<td>' + source[i]['adres'] + '</td>' +
                                 '<td>' + source[i]['kodpocztowy'] + '</td>' +
                                 '<td>' + source[i]['bisnode'] + '</td>' +
                                 '<td>' + source[i]['bisndeFromZgody'] + '</td>' +
@@ -617,19 +617,19 @@
             }
             for (var i = 0; i < dane.length; i++) // sumowanie
             {   //Całość
-                sumabis += parseInt(dane[i][4]);
-                sumazg += parseInt(dane[i][6]);
-                sumaev += parseInt(dane[i][8]);
-                sumaresz += parseInt(dane[i][12]);
-                sumaex += parseInt(dane[i][10]);
+                sumabis += parseInt(dane[i][3]);
+                sumazg += parseInt(dane[i][5]);
+                sumaev += parseInt(dane[i][7]);
+                sumaresz += parseInt(dane[i][11]);
+                sumaex += parseInt(dane[i][9]);
 
-                sumabisZgody += parseInt(dane[i][5]);
-                sumazgZgody += parseInt(dane[i][7]);
-                sumaevZgody += parseInt(dane[i][9]);
-                sumareszZgody += parseInt(dane[i][13]);
-                sumaexZgody += parseInt(dane[i][11]);
+                sumabisZgody += parseInt(dane[i][4]);
+                sumazgZgody += parseInt(dane[i][6]);
+                sumaevZgody += parseInt(dane[i][8]);
+                sumareszZgody += parseInt(dane[i][12]);
+                sumaexZgody += parseInt(dane[i][10]);
 
-                tablicakodowpocztowych.push(dane[i][3]);
+                tablicakodowpocztowych.push(dane[i][2]);
                 if(i==0){
                     idwoj = dane[i][0];
                 }
@@ -673,17 +673,17 @@
             ZerujDane();
             for (var i = 0; i < dane.length; i++) // sumowanie
             {
-                sumabis += parseInt(dane[i][4]);
-                sumazg += parseInt(dane[i][6]);
-                sumaev += parseInt(dane[i][8]);
-                sumaresz += parseInt(dane[i][12]);
-                sumaex += parseInt(dane[i][10]);
-                // tabela zgody
-                sumabisZgody += parseInt(dane[i][5]);
-                sumazgZgody += parseInt(dane[i][7]);
-                sumaevZgody += parseInt(dane[i][9]);
-                sumareszZgody += parseInt(dane[i][13]);
-                sumaexZgody += parseInt(dane[i][11]);
+                sumabis += parseInt(dane[i][3]);
+                sumazg += parseInt(dane[i][5]);
+                sumaev += parseInt(dane[i][7]);
+                sumaresz += parseInt(dane[i][11]);
+                sumaex += parseInt(dane[i][9]);
+
+                sumabisZgody += parseInt(dane[i][4]);
+                sumazgZgody += parseInt(dane[i][6]);
+                sumaevZgody += parseInt(dane[i][8]);
+                sumareszZgody += parseInt(dane[i][12]);
+                sumaexZgody += parseInt(dane[i][10]);
 
                 sumacalosci = sumabis + sumazg + sumaev + sumaresz + sumaex;
                 sumacalosciZgody = sumabisZgody + sumazgZgody + sumaevZgody + sumareszZgody + sumaexZgody;
@@ -730,22 +730,22 @@
                 {   //Całość
 
 
-                    sumabis += parseInt(dane[i][4]);
-                    sumazg += parseInt(dane[i][6]);
-                    sumaev += parseInt(dane[i][8]);
-                    sumaresz += parseInt(dane[i][12]);
-                    sumaex += parseInt(dane[i][10]);
+                    sumabis += parseInt(dane[i][3]);
+                    sumazg += parseInt(dane[i][5]);
+                    sumaev += parseInt(dane[i][7]);
+                    sumaresz += parseInt(dane[i][11]);
+                    sumaex += parseInt(dane[i][9]);
 
-                    sumabisZgody += parseInt(dane[i][5]);
-                    sumazgZgody += parseInt(dane[i][7]);
-                    sumaevZgody += parseInt(dane[i][9]);
-                    sumareszZgody += parseInt(dane[i][13]);
-                    sumaexZgody += parseInt(dane[i][11]);
+                    sumabisZgody += parseInt(dane[i][4]);
+                    sumazgZgody += parseInt(dane[i][6]);
+                    sumaevZgody += parseInt(dane[i][8]);
+                    sumareszZgody += parseInt(dane[i][12]);
+                    sumaexZgody += parseInt(dane[i][10]);
 
 
                     sumacalosci = sumabis + sumazg + sumaev + sumaresz + sumaex;
                     sumacalosciZgody = sumabisZgody + sumazgZgody + sumaevZgody + sumareszZgody + sumaexZgody;
-                    tablicakodowpocztowych.push(dane[i][3]);
+                    tablicakodowpocztowych.push(dane[i][2]);
                     if(i==0){
                         idwoj = dane[i][0];
                     }

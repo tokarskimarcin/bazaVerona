@@ -584,11 +584,13 @@ class PagesController extends Controller
                     'bazareszta'    => $poubdateresz,
                     'bazaevent'     => $poubdateev,
                     'bazaexito'     => $poubdateexito,
+
                     'baza8Zgody' => $poubdatebisZgody,
                     'bazazgZgody' => $poubdatezgZgody,
                     'bazaresztaZgody' => $poubdatereszZgody,
                     'bazaeventZgody' => $poubdateevZgody,
                     'bazaexitoZgody' => $poubdateexitoZgody,
+
                     ]
             );
 
