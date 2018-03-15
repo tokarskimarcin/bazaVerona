@@ -20,14 +20,11 @@ class PackageController extends Controller
         $user = Auth::user();
         $id = $user['id'];
         $paczka =
-            Log::select('id','baza8','bazazg','bazareszta','bazaevent','date','miasto','woj.woj as idwoj','baza')
-                ->join('woj', 'log_download.idwoj', 'woj.idwoj')
+            Log::join('woj', 'log_download.idwoj', 'woj.idwoj')
                 ->where('id_user', '=', $id)
                 ->orderBy('date','desc')
                 ->limit(20)
                 ->get();
-        $paczka = json_decode(json_encode((array) $paczka), true);
-        $paczka = self::setArray($paczka);
         return view('package.history')->with('paczka',$paczka);
     }
 

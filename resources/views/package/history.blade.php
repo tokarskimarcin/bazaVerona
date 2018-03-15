@@ -74,22 +74,34 @@
         <th>Województwo</th>
         <th>Data</th>
         <th>BisNode</th>
+        <th>BisNode Zgody</th>
         <th>Zgody</th>
+        <th>Zgody Nowe</th>
         <th>Event</th>
+        <th>Event Zgody</th>
         <th>Reszta</th>
-        <th>Baza</th>
+        <th>Reszta Zgody</th>
+        <th>Exito</th>
+        <th>Exito Zgody</th>
+        {{--<th>Baza</th>--}}
         <th>Akcja</th>
         </thead>
         <?php foreach ($paczka as  $key):?>
                 <tr class ="tabela">
-                    <td class="miasto"> {{ $key['miasto'] }} </td>
-                    <td> {{ $key['idwoj'] }} </td>
+                    <td class="miasto"> {{ $key->miasto }} </td>
+                    <td> {{ $key->woj}} </td>
                     <td> {{ $key['date'] }} </td>
                     <td class="baza8"> {{ $key['baza8'] }}</td>
+                    <td class="baza8Zgody"> {{ $key['baza8Zgody'] }}</td>
                     <td class="bazazg"> {{ $key['bazazg'] }}</td>
+                    <td class="bazazgZgody"> {{ $key['bazazgZgody'] }}</td>
                     <td class="bazaevent"> {{ $key['bazaevent'] }} </td>
+                    <td class="bazaeventZgody"> {{ $key['bazaeventZgody'] }} </td>
                     <td class="bazareszta"> {{ $key['bazareszta'] }} </td>
-                    <td> {{ $key['baza'] }} </td>
+                    <td class="bazaresztaZgody"> {{ $key['bazaresztaZgody'] }} </td>
+                    <td class="bazaexito"> {{ $key['bazaexito'] }} </td>
+                    <td class="bazaexitoZgody"> {{ $key['bazaexitoZgody'] }} </td>
+                    {{--<td> {{ $key['baza'] }} </td>--}}
                     <td><button id = {{ $key['id'].'/'.$key['baza'] }}  type="submit" class="btn btn-default">Pobierz plik</button></td>
                 </tr>
         <?php endforeach;?>
@@ -109,9 +121,15 @@
             var kolumna = $(this).closest('tr');
             var miasto = kolumna.find(".miasto").text();
             var baza8 = kolumna.find(".baza8").text();
+            var baza8Zgody = kolumna.find(".baza8Zgody").text();
             var bazazg = kolumna.find(".bazazg").text();
+            var bazazgZgody = kolumna.find(".bazazgZgody").text();
             var bazaevent = kolumna.find(".bazaevent").text();
+            var bazaeventZgody = kolumna.find(".bazaeventZgody").text();
             var bazareszta = kolumna.find(".bazareszta").text();
+            var bazaresztaZgody = kolumna.find(".bazaresztaZgody").text();
+            var bazaexito = kolumna.find(".bazaexito").text();
+            var bazaexitoZgody = kolumna.find(".bazaexitoZgody").text();
 
             $.ajax({
                 type: "POST",
@@ -123,7 +141,13 @@
                     "bis": baza8,
                     "zg": bazazg,
                     "reszta": bazareszta,
-                    "event": bazaevent
+                    "event": bazaevent,
+                    "exito": bazaexito,
+                    "bisZgody": baza8Zgody,
+                    "zgZgody": bazazgZgody,
+                    "resztaZgody": bazaresztaZgody,
+                    "eventZgody": bazaeventZgody,
+                    "exitoZgody": bazaexitoZgody
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
