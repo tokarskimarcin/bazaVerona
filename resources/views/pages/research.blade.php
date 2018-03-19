@@ -514,7 +514,7 @@
                     "columnDefs": [
                         {
                             "searchable": false, "targets":[0,2,3,4,5,6,7,8],
-                            "orderable": false, "targets": [0,9]}
+                            "orderable": false, "targets": [0,13]}
                     ],
                 "autoWidth": false,
                     deferRender:    true,

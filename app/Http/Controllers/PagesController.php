@@ -207,10 +207,10 @@ class PagesController extends Controller
         $miasto = str_replace('-','/',session()->get('miasto'));
 
         if($iledanych[0] =! 0 || $iledanych[1] =! 0 || $iledanych[2] =! 0 || $iledanych[3] =! 0 || $iledanych[4] =! 0){
-            $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2].'_EXITO-'.$iledanych[4];
+            $napis = $miasto.'_Bis-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2].'_EXITO-'.$iledanych[4];
             $napis = $napis.'_'.$data;
         }else{
-            $napis = $miasto.'_8ZG-'.$iledanych[5].'_zgZG-'.$iledanych[6].'_evZG-'.$iledanych[8].'_rZG-'.$iledanych[7].'_EXITOZG-'.$iledanych[9];
+            $napis = $miasto.'_BisZG-'.$iledanych[5].'_zgZG-'.$iledanych[6].'_evZG-'.$iledanych[8].'_rZG-'.$iledanych[7].'_EXITOZG-'.$iledanych[9];
             $napis = $napis.'_'.$data;
         }
 //        if($iledanych[4] != 0 && ($iledanych[0] ==0 && $iledanych[1] == 0 && $iledanych[2] == 0 && $iledanych[3]==0))
