@@ -232,11 +232,10 @@ class UploadsController extends Controller
                                     }else{
                                         $idbaza = 24;
                                     }
-                                    dd($idbaza);
                                     DB::table('rekordy')
                                         ->where('telefon', '=', $item['telefon'])
                                         ->where('lock','=',0)
-                                        ->update('idkod','=',$idbaza);
+                                        ->update(['idbaza' => $idbaza]);
                                 }else
                                 {
                                     DB::table('rekordy')
