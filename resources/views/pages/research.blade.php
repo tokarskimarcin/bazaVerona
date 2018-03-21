@@ -135,7 +135,7 @@
         <th>BisNode</th>
         <th>Zgody</th>
         <th>Event</th>
-        <th>Exito</th>
+        <th hidden>Exito</th>
         <th>Reszta</th>
         <th>Suma</th>
         </thead>
@@ -144,7 +144,7 @@
             <td id="bznalezionych">0/0</td>
             <td id="zznalezionych">0/0</td>
             <td id="eznalezionych">0/0</td>
-            <td id="exznalezionych">0/0</td>
+            <td hidden id="exznalezionych">0/0</td>
             <td id="rznalezionych">0/0</td>
             <td id="sumaznalezionych">0/0</td>
         </tr>
@@ -153,7 +153,7 @@
             <td><input type="number" id="bliczba" value="0" class="form-control"/></td>
             <td><input type="number" id="zliczba" value="0" class="form-control"/></td>
             <td><input type="number" id="eliczba" value="0" class="form-control"/></td>
-            <td><input type="number" id="exliczba" value="0" class="form-control"/></td>
+            <td hidden><input type="number" id="exliczba" value="0" class="form-control"/></td>
             <td><input type="number" id="rliczba" value="0" class="form-control"/></td>
             <td id="sumaliczba">0</td>
         </tr>
@@ -167,7 +167,7 @@
         <th>Zgody BisNode</th>
         <th>Nowe Zgody</th>
         <th>Zgody Event</th>
-        <th>Zgody Exito</th>
+        <th hidden>Zgody Exito</th>
         <th>Zgody Reszta</th>
         <th>Suma</th>
         </thead>
@@ -176,7 +176,7 @@
             <td id="bznalezionychZgody">0/0</td>
             <td id="zznalezionychZgody">0/0</td>
             <td id="eznalezionychZgody">0/0</td>
-            <td id="exznalezionychZgody">0/0</td>
+            <td hidden id="exznalezionychZgody">0/0</td>
             <td id="rznalezionychZgody">0/0</td>
             <td id="sumaznalezionychZgody">0/0</td>
         </tr>
@@ -185,7 +185,7 @@
             <td><input type="number" id="bliczbaZgody" value="0" class="form-control"/></td>
             <td><input type="number" id="zliczbaZgody" value="0" class="form-control"/></td>
             <td><input type="number" id="eliczbaZgody" value="0" class="form-control"/></td>
-            <td><input type="number" id="exliczbaZgody" value="0" class="form-control"/></td>
+            <td hidden><input type="number" id="exliczbaZgody" value="0" class="form-control"/></td>
             <td><input type="number" id="rliczbaZgody" value="0" class="form-control"/></td>
             <td id="sumaliczbaZgody">0</td>
         </tr>
@@ -221,8 +221,8 @@
             <th>Zgody Nowe</th>
             <th>Event</th>
             <th>Event Zgody</th>
-            <th>Exito</th>
-            <th>Exito Zgody</th>
+            <th hidden>Exito</th>
+            <th hidden>Exito Zgody</th>
             <th>Reszta</th>
             <th>Reszta Zgody</th>
             <th>
@@ -377,8 +377,8 @@
                                 '<td>' + source[i]['zgodyFromZgody'] + '</td>' +
                                 '<td>' + source[i]['event'] + '</td>' +
                                 '<td>' + source[i]['eventFromZgody'] + '</td>' +
-                                '<td>' + source[i]['exito'] + '</td>' +
-                                '<td>' + source[i]['exitoFromZgody'] + '</td>' +
+                                '<td hidden>' + source[i]['exito'] + '</td>' +
+                                '<td hidden>' + source[i]['exitoFromZgody'] + '</td>' +
                                 '<td>' + source[i]['reszta'] + '</td>' +
                                 '<td>' + source[i]['resztaFromZgody'] + '</td>' +
                                 '<td style="max-width: 40px">' +

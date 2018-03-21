@@ -215,10 +215,35 @@ class UploadsController extends Controller
                                 // wrzucenie infromacji o rekordach
                                 DB::table('old_new_base')->insert(['id_record' => $telefon_id,'old_base' => $telefon_baza]);
                                 // Dodanie rekordu do bazy
-                                DB::table('rekordy')
-                                    ->where('telefon', '=', $item['telefon'])
-                                    ->where('lock','=',0)
-                                    ->update($tablica);
+
+                                if($typ == "zgody"){
+                                    if($telefon_baza == 8){
+                                        $idbaza = 28;
+                                    }else if($telefon_baza == 6){
+                                        $idbaza = 26;
+                                    }else if($telefon_baza == 19){
+                                        $idbaza = 29;
+                                    }else if($telefon_baza == 5 || $telefon_baza == 9 || $telefon_baza == 17){
+                                        $idbaza = 27;
+                                    }else if($telefon_baza == 28 || $telefon_baza == 26
+                                        || $telefon_baza == 29 || $telefon_baza == 27
+                                        || $telefon_baza == 24){
+                                        $idbaza = $telefon_baza;
+                                    }else{
+                                        $idbaza = 24;
+                                    }
+                                    dd($idbaza);
+                                    DB::table('rekordy')
+                                        ->where('telefon', '=', $item['telefon'])
+                                        ->where('lock','=',0)
+                                        ->update('idkod','=',$idbaza);
+                                }else
+                                {
+                                    DB::table('rekordy')
+                                        ->where('telefon', '=', $item['telefon'])
+                                        ->where('lock','=',0)
+                                        ->update($tablica);
+                                }
                                 $aktualizacja++;
                             }
                         }
