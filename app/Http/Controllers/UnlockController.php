@@ -19,7 +19,7 @@ class unlockController extends Controller
     {
 
         $user = Auth::user();
-        if ($user->id == 1 || $user->id == 105 ) {
+        if ($user->id == 1 || $user->id == 105 || Auth::user()->id == 130) {
 
             $date = date('Y-m-d', strtotime('-7 days', time()));
             $lista = DB::table('log_download')->
