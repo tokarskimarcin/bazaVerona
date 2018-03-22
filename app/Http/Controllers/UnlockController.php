@@ -218,8 +218,7 @@ class unlockController extends Controller
         $date= date('Y-m-d', strtotime('-7 days', time()));
 
         $lista = DB::table('log_download')
-            ->selectRaw('log_download.id,status,users_t.name,users_t.last,baza8 as bisnode,bazazg as zgody,bazareszta as reszta,
-            bazaevent as event,date as data,miasto,woj.woj as wojewodztwo,baza')
+           -> select('log_download.*','users_t.name','users_t.last','woj.woj')
             ->join('users_t', 'id_user', 'users_t.id')
             ->join('woj', 'log_download.idwoj', 'woj.idwoj')
             ->where('status','=',0)
@@ -227,9 +226,8 @@ class unlockController extends Controller
             ->where('miasto','like',$miasto.'%')
             ->orderBy('log_download.id', 'desc')
             ->get();
-        $lista = json_decode(json_encode((array) $lista), true);
-        $lista = $this->setArray($lista);
-        return view('unlock.list')->with('lista',$lista);
+        return view('unlock.list')
+            ->with('lista',$lista);
     }
 
     public function UnlockRecordsPost(Request $request)

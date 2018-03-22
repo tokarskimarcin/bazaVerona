@@ -131,10 +131,12 @@
         <?php foreach ($lista as $item):?>
         <?php
 
+                //dd($item);
         $s = $item->date;
         $dt = new DateTime($s);
         $date = $dt->format('Y-m-d');
         $data_odblokowania= date('Y-m-d', strtotime($date.'+8 days'));
+
         ?>
 
         <?php if($item->baza == 'Wysylka'): ?>
