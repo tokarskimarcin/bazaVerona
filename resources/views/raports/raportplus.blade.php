@@ -101,14 +101,16 @@
             <th>Nazwisko</th>
             <th>Bisnode</th>
             <th>Bisnode Zgody</th>
+            <th>Bisnode Suma</th>
             <th>Zgody</th>
             <th>Zgody Nowe</th>
+            <th>Zgody Suma</th>
             <th>Event</th>
             <th>Event Zgody</th>
+            <th>Event Suma</th>
             <th>Reszta</th>
             <th>Reszta Zgody</th>
-            <th>Exito</th>
-            <th>Exito Zgody</th>
+            <th>Reszta Suma</th>
             <th>Suma</th>
         </tr>
         </thead>
