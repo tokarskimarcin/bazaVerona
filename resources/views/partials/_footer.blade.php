@@ -1,3 +1,3 @@
 <hr>
 
-    <p class="text-center">Copyright VeronaConsulting - All Right Reserved</p>
+    <p class="text-center">Copyright VeronaConsulting - All Rights Reserved</p>
