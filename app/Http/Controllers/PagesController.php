@@ -504,10 +504,6 @@ class PagesController extends Controller
                 }
 
 
-
-
-
-
         if($bisnodeZgody > 0)
             foreach($licznikBisZgody as $key => $item)
             {
@@ -631,8 +627,8 @@ class PagesController extends Controller
             $rekody = Record::select('imie', 'nazwisko', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','idbaza')
                     ->where('idkod', '=', $kod)
                     ->where('lock', '=', 0)
-                    ->where($dataDoProjektu, '<', $blokada)
-                    ->where('data_wysylka', '<', $blokada);
+                    ->where($dataDoProjektu, '<', $blokada);
+                    //->where('data_wysylka', '<', $blokada);
 
                 if($typ == 0) {
                     $rekody = $rekody
