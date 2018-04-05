@@ -137,11 +137,13 @@
         </tr>
         </thead>
         <tbody>
-        {{--Badania--}}
-        <?php if(!empty($dane[0])) :?>
+        @php
+            $badania = $dane->where('baza','like','Badania')->first();
+        @endphp
+        @if(!empty($dane))
         <tr class="badania">
             <td colspan="3" style="text-align: center"><b>Ogół</b></td>
-                @if($dane[0]['suma'] == 0)
+                @if($badania->suma == 0)
                     <td><b>0 %</b></td>
                     <td><b>0 %</b></td>
                     <td><b>0 %</b></td>
@@ -153,73 +155,144 @@
                     <td><b>0 %</b></td>
                     <td><b>0 %</b></td>
                     <td><b>0 %</b></td>
-                <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
                     <td><b>0</b></td>
                 @else
-                    <td><b>{{number_format($dane[0]['bisnode']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td><b>{{number_format($dane[0]['bisnodeZgody']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td class="suma"><b>{{number_format(($dane[0]['bisnodeZgody']+$dane[0]['bisnode'])/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td><b>{{number_format($dane[0]['zgody']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td><b>{{number_format($dane[0]['zgodyZgody']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td  class="suma"><b>{{number_format(($dane[0]['zgody']+$dane[0]['zgodyZgody'])/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td><b>{{number_format($dane[0]['event']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td><b>{{number_format($dane[0]['eventZgody']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td  class="suma"><b>{{number_format(($dane[0]['event']+$dane[0]['eventZgody'])/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td><b>{{number_format($dane[0]['reszta']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td><b>{{number_format($dane[0]['resztaZgody']/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td  class="suma"><b>{{number_format(($dane[0]['reszta']+$dane[0]['resztaZgody'])/$dane[0]['suma'], 2, '', '')+0 }}%</b></td>
-                    <td><b>{{$dane[0]['suma']}}</b></td>
+                    <td><b>{{number_format($badania->bisnode/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($badania->bisnodeZgody/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td class="suma"><b>{{number_format(($badania->bisnodeZgody+$badania->bisnode)/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($badania->zgody/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($badania->zgodyZgody/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($badania->zgody+$badania->zgodyZgody)/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($badania->event/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($badania->eventZgody/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($badania->event+$badania->eventZgody)/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($badania->reszta/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($badania->resztaZgody/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($badania->reszta+$badania->resztaZgody)/$badania->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{$badania->suma}}</b></td>
             @endif
-
         </tr>
 
-        <?php
-            foreach ($oddzialy as $item):?>
-
+        @foreach ($oddzialy as $item)
                     <tr class="badania">
-                        <td colspan="3"><b> <?php echo $item['name']; ?> </b></td>
-                        <td><b>{{number_format($item['bisnode']/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td><b>{{number_format($item['bisnodeZgody']/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td  class="suma"><b>{{number_format(($item['bisnode']+$item['bisnodeZgody'])/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td><b>{{number_format($item['zgody']/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td><b>{{number_format($item['zgodyZgody']/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td  class="suma"><b>{{number_format(($item['zgody']+$item['zgodyZgody'])/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td><b>{{number_format($item['event']/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td><b>{{number_format($item['eventZgody']/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td  class="suma"><b>{{number_format(($item['event']+$item['eventZgody'])/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td><b>{{number_format($item['reszta']/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td><b>{{number_format($item['resztaZgody']/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td  class="suma"><b>{{number_format(($item['reszta']+$item['resztaZgody'])/$item['suma'], 2, '', '')+0 }}%</b></td>
-                        <td><b> {{ $item['suma'] }} </b></td>
+                        <td colspan="3"><b> <?php echo $item->name; ?> </b></td>
+                        <td><b>{{number_format($item->bisnode/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td><b>{{number_format($item->bisnodeZgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td  class="suma"><b>{{number_format(($item->bisnode+$item->bisnodeZgody)/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td><b>{{number_format($item->zgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td><b>{{number_format($item->zgodyZgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td  class="suma"><b>{{number_format(($item->zgody+$item->zgodyZgody)/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td><b>{{number_format($item->event/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td><b>{{number_format($item->eventZgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td  class="suma"><b>{{number_format(($item->event+$item->eventZgody)/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td><b>{{number_format($item->reszta/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td><b>{{number_format($item->resztaZgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td  class="suma"><b>{{number_format(($item->reszta+$item->resztaZgody)/$item->suma, 2, '', '')+0 }}%</b></td>
+                        <td><b> {{ $item->suma }} </b></td>
                     </tr>
-                        <?php
-                            foreach ($employeeres as $value):?>
+                        @foreach ($employeeres as $value)
+                            @if( $item->id == $value->dep_id )
+                                <tr class="badania" >
+                                    <td> {{ $i++ }}</td>
+                                    <td> {{ $value->name }}</td>
+                                    <td> {{ $value->last }}</td>
+                                    <td><b>{{number_format($value->bisnode/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td><b>{{number_format($value->bisnodeZgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td  class="suma"><b>{{number_format(($value->bisnode+$value->bisnodeZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td><b>{{number_format($value->zgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td><b>{{number_format($value->zgodyZgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td  class="suma"><b>{{number_format(($value->zgody+$value->zgodyZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td><b>{{number_format($value->event/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td><b>{{number_format($value->eventZgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td  class="suma"><b>{{number_format(($value->event+$value->eventZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td><b>{{number_format($value->reszta/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td><b>{{number_format($value->resztaZgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td  class="suma"><b>{{number_format(($value->reszta+$value->resztaZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
+                                    <td> {{ $value->suma }} </td>
+                                </tr>
+                            @endif
+                       @endforeach
+            @endforeach
 
-                            @if( $item['id'] == $value['dep_id'] )
-                            <tr class="badania" >
-                                <td> {{ $i++ }}</td>
-                                <td> {{ $value['name'] }}</td>
-                                <td> {{ $value['last'] }}</td>
-                                <td><b>{{number_format($value['bisnode']/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td><b>{{number_format($value['bisnodeZgody']/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td  class="suma"><b>{{number_format(($value['bisnode']+$value['bisnodeZgody'])/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td><b>{{number_format($value['zgody']/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td><b>{{number_format($value['zgodyZgody']/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td  class="suma"><b>{{number_format(($value['zgody']+$value['zgodyZgody'])/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td><b>{{number_format($value['event']/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td><b>{{number_format($value['eventZgody']/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td  class="suma"><b>{{number_format(($value['event']+$value['eventZgody'])/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td><b>{{number_format($value['reszta']/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td><b>{{number_format($value['resztaZgody']/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td  class="suma"><b>{{number_format(($value['reszta']+$value['resztaZgody'])/$value['suma'], 2, '', '')+0 }}%</b></td>
-                                <td> {{ $value['suma'] }} </td>
-                            </tr>
-                        @endif
+        @php
+            $wysylka = $dane->where('baza','like','Wysylka')->first();
+        @endphp
 
-                        <?php endforeach;?>
+            <tr class="wysylka">
+                <td colspan="3" style="text-align: center"><b>Ogół</b></td>
+                @if($wysylka->suma == 0)
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0 %</b></td>
+                    <td><b>0</b></td>
+                @else
+                    <td><b>{{number_format($wysylka->bisnode/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($wysylka->bisnodeZgody/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td class="suma"><b>{{number_format(($wysylka->bisnodeZgody+$wysylka->bisnode)/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($wysylka->zgody/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($wysylka->zgodyZgody/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($wysylka->zgody+$wysylka->zgodyZgody)/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($wysylka->event/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($wysylka->eventZgody/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($wysylka->event+$wysylka->eventZgody)/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($wysylka->reszta/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($wysylka->resztaZgody/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($wysylka->reszta+$wysylka->resztaZgody)/$wysylka->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{$wysylka->suma}}</b></td>
+                @endif
+            </tr>
 
-            <?php endforeach;?>
-<?php endif?>
+            @foreach ($oddzialyWys as $item)
+                <tr class="wysylka">
+                    <td colspan="3"><b> <?php echo $item->name; ?> </b></td>
+                    <td><b>{{number_format($item->bisnode/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($item->bisnodeZgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($item->bisnode+$item->bisnodeZgody)/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($item->zgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($item->zgodyZgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($item->zgody+$item->zgodyZgody)/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($item->event/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($item->eventZgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($item->event+$item->eventZgody)/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($item->reszta/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b>{{number_format($item->resztaZgody/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td  class="suma"><b>{{number_format(($item->reszta+$item->resztaZgody)/$item->suma, 2, '', '')+0 }}%</b></td>
+                    <td><b> {{ $item->suma }} </b></td>
+                </tr>
+                @foreach ($employeeship as $value)
+                    @if( $item->id == $value->dep_id )
+                        <tr class="wysylka" >
+                            <td> {{ $i++ }}</td>
+                            <td> {{ $value->name }}</td>
+                            <td> {{ $value->last }}</td>
+                            <td><b>{{number_format($value->bisnode/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td><b>{{number_format($value->bisnodeZgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td  class="suma"><b>{{number_format(($value->bisnode+$value->bisnodeZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td><b>{{number_format($value->zgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td><b>{{number_format($value->zgodyZgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td  class="suma"><b>{{number_format(($value->zgody+$value->zgodyZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td><b>{{number_format($value->event/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td><b>{{number_format($value->eventZgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td  class="suma"><b>{{number_format(($value->event+$value->eventZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td><b>{{number_format($value->reszta/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td><b>{{number_format($value->resztaZgody/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td  class="suma"><b>{{number_format(($value->reszta+$value->resztaZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
+                            <td> {{ $value->suma }} </td>
+                        </tr>
+                    @endif
+                @endforeach
+            @endforeach
+@endif
         </tbody>
     </table>
 @endsection

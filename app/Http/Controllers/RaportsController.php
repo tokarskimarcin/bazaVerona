@@ -182,7 +182,7 @@ class RaportsController extends Controller
             ->with('dataraportu',$tablica)
             ->with('dane',session()->get('resandship'))
             ->with('oddzialy', session()->get('departamentres'))
-            ->with('zapytanie',session()->get('departamentship'))
+            ->with('oddzialyWys',session()->get('departamentship'))
             ->with('employeeres',session()->get('employeeres'))
             ->with('employeeship',session()->get('employeeship'));
 
@@ -412,19 +412,6 @@ class RaportsController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     function setSingleRaport($date,$typ)
     {
 ///////////////////////////////////////BADANIA Wysylka/////////////////////////////////////////////
@@ -443,21 +430,21 @@ class RaportsController extends Controller
                     sum(bazaexitoZgody) as exitoZgody,
                                         
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
-                     + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
-            ->where('id_user', '>', 100);
-
+                     + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma,
+                     baza')
+                ->where('id_user', '>=', 1);
         if($typ == 1) {
             $resandship = $resandship
                 ->where('date', 'like', $date[0] . '%')
+                ->groupBy('baza')
                 ->get();
         }else {
             $resandship = $resandship
-                    ->where('id_user', '>', 100)
                     ->whereBetween('date', [$date[0].'%',$date[1].' 23:59:59'])
+                    ->groupBy('baza')
                     ->get();
         }
-            $resandship = json_decode(json_encode((array) $resandship), true);
-            $resandship = $this->setArray($resandship);
+
 
 ///////////////////////////////////////BADANIA Oddziały/////////////////////////////////////////////
 
@@ -480,7 +467,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
-            ->join('departments_t', 'users_t.dep_id', 'departments_t.id');
+            ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
+            ->where('baza', 'like', 'Badania');;
         if($typ == 1) {
             $departamentres = $departamentres
                 ->where('date', 'like', $date[0] . '%')
@@ -495,36 +483,48 @@ class RaportsController extends Controller
                 ->groupBy('departments_t.id')
                 ->get();
         }
-        $departamentres = json_decode(json_encode((array) $departamentres), true);
-        $departamentres = $this->setArray($departamentres);
 
 ///////////////////////////////////////WYSYLKA Oddziały/////////////////////////////////////////////
-//        if($typ == 1) {
-//            $departamentship = DB::table('log_download')
-//                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('users_t', 'id_user', 'users_t.id')
-//                ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
-//                ->where('baza', 'like', 'Wysylka')
-//                ->where('date', 'like', $date[0] . '%')
-//                ->where('departments_t.id', '!=', '1')
-//                ->groupBy('departments_t.name')
-//                ->groupBy('departments_t.id')
-//                ->get();
-//        }else
-//        {
-//            $departamentship = DB::table('log_download')
-//                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('users_t', 'id_user', 'users_t.id')
-//                ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
-//                ->where('baza', 'like', 'Wysylka')
-//                ->where('departments_t.id', '!=', '1')
-//                ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
-//                ->groupBy('departments_t.name')
-//                ->groupBy('departments_t.id')
-//                ->get();
-//        }
-//        $departamentship = json_decode(json_encode((array) $departamentship), true);
-//        $departamentship = $this->setArray($departamentship);
+
+
+
+
+
+            $departamentship = DB::table('log_download')
+                ->selectRaw(
+                    'departments_t.name,
+                    departments_t.id,
+                    sum(baza8) as bisnode,
+                    sum(bazazg) as zgody,
+                    sum(bazareszta) as reszta,
+                    sum(bazaevent) as event,
+                    sum(bazaexito) as exito,
+                    
+                    sum(baza8Zgody) as bisnodeZgody,
+                    sum(bazazgZgody) as zgodyZgody,
+                    sum(bazaresztaZgody) as resztaZgody,
+                    sum(bazaeventZgody) as eventZgody,
+                    sum(bazaexitoZgody) as exitoZgody,
+                                        
+                    sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
+                     + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
+                ->join('users_t', 'id_user', 'users_t.id')
+                ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
+                ->where('baza', 'like', 'Wysylka');
+        if($typ == 1) {
+            $departamentship = $departamentship
+                ->where('date', 'like', $date[0] . '%')
+                ->groupBy('departments_t.name')
+                ->groupBy('departments_t.id')
+                ->get();
+        }else
+        {
+            $departamentship = $departamentship
+                ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
+                ->groupBy('departments_t.name')
+                ->groupBy('departments_t.id')
+                ->get();
+        }
 
 ///////////////////////////////////////Badania Pracownicy/////////////////////////////////////////////
         $employeeres = DB::table('log_download')
@@ -546,7 +546,8 @@ class RaportsController extends Controller
                                         
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
-            ->join('users_t', 'id_user', 'users_t.id');
+            ->join('users_t', 'id_user', 'users_t.id')
+            ->where('baza', 'like', 'Badania');
 
         if($typ == 1) {
             $employeeres =  $employeeres
@@ -567,41 +568,55 @@ class RaportsController extends Controller
                 ->groupBy('users_t.dep_id')
                 ->get();
         }
-        $employeeres = json_decode(json_encode((array) $employeeres), true);
-        $employeeres = $this->setArray($employeeres);
-
 ///////////////////////////////////////Wysylka Pracownicy/////////////////////////////////////////////
-//        if($typ == 1) {
-//            $employeeship = DB::table('log_download')
-//                ->selectRaw('users_t.name,users_t.last, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('users_t', 'id_user', 'users_t.id')
-//                ->where('baza', 'like', 'Wysylka')
-//                ->where('date', 'like', $date[0] . '%')
-//                ->groupBy('users_t.name')
-//                ->groupBy('users_t.last')
-//                ->groupBy('users_t.dep_id')
-//                ->get();
-//        }else
-//        {
-//            $employeeship = DB::table('log_download')
-//                ->selectRaw('users_t.name,users_t.last, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('users_t', 'id_user', 'users_t.id')
-//                ->where('baza', 'like', 'Wysylka')
-//                ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
-//                ->groupBy('users_t.name')
-//                ->groupBy('users_t.last')
-//                ->groupBy('users_t.dep_id')
-//                ->get();
-//        }
-//        $employeeship = json_decode(json_encode((array) $employeeship), true);
-//        $employeeship = $this->setArray($employeeship);
 
+            $employeeship = DB::table('log_download')
+            ->selectRaw('
+                users_t.name,
+                users_t.last, 
+                users_t.dep_id, 
+                sum(baza8) as bisnode,
+                    sum(bazazg) as zgody,
+                    sum(bazareszta) as reszta,
+                    sum(bazaevent) as event,
+                    sum(bazaexito) as exito,
+                    
+                    sum(baza8Zgody) as bisnodeZgody,
+                    sum(bazazgZgody) as zgodyZgody,
+                    sum(bazaresztaZgody) as resztaZgody,
+                    sum(bazaeventZgody) as eventZgody,
+                    sum(bazaexitoZgody) as exitoZgody,
+                                        
+                    sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
+                     + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
+            ->join('users_t', 'id_user', 'users_t.id')
+            ->where('baza', 'like', 'Wysylka');
+
+        if($typ == 1) {
+            $employeeship =  $employeeship
+                ->where('date', 'like', $date[0] . '%')
+                ->wherenotin('users_t.id',[1,105,127])
+                ->groupBy('users_t.name')
+                ->groupBy('users_t.last')
+                ->groupBy('users_t.dep_id')
+                ->get();
+        }
+        else
+        {
+            $employeeship =  $employeeship
+                ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
+                ->wherenotin('users_t.id',[1,105,127])
+                ->groupBy('users_t.name')
+                ->groupBy('users_t.last')
+                ->groupBy('users_t.dep_id')
+                ->get();
+        }
 
         session()->put('resandship',$resandship);
         session()->put('departamentres',$departamentres);
-//        session()->put('departamentship',$departamentship);
+        session()->put('departamentship',$departamentship);
         session()->put('employeeres',$employeeres);
-//        session()->put('employeeship',$employeeship);
+        session()->put('employeeship',$employeeship);
     }
 
 
@@ -624,26 +639,26 @@ class RaportsController extends Controller
                     sum(bazaexitoZgody) as exitoZgody,
                                         
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
-                     + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma');
+                     + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma,
+                     baza')
+            ->where('id_user', '>=', 1);
         if($typ == 1) {
             $resandship = $resandship
-                ->where('id_user', '>', 100)
                 ->where('date', 'like', $date[0] . '%')
+                ->groupBy('baza')
                 ->get();
         }else {
             $resandship = $resandship
-                ->where('id_user', '>', 100)
                 ->whereBetween('date', [$date[0].'%',$date[1].' 23:59:59'])
+                ->groupBy('baza')
                 ->get();
         }
-        $resandship = json_decode(json_encode((array) $resandship), true);
-        $resandship = $this->setArray($resandship);
 
 ///////////////////////////////////////BADANIA Oddziały/////////////////////////////////////////////
         $departamentres = DB::table('log_download')
-            ->selectRaw('
-                departments_t.name,
-                departments_t.id,
+            ->selectRaw(
+                'departments_t.name,
+                    departments_t.id,
                     sum(baza8) as bisnode,
                     sum(bazazg) as zgody,
                     sum(bazareszta) as reszta,
@@ -659,8 +674,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
-            ->join('departments_t', 'users_t.dep_id', 'departments_t.id');
-
+            ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
+            ->where('baza', 'like', 'Badania');;
         if($typ == 1) {
             $departamentres = $departamentres
                 ->where('date', 'like', $date[0] . '%')
@@ -675,42 +690,12 @@ class RaportsController extends Controller
                 ->groupBy('departments_t.id')
                 ->get();
         }
-        $departamentres = json_decode(json_encode((array) $departamentres), true);
-        $departamentres = $this->setArray($departamentres);
 
 ///////////////////////////////////////WYSYLKA Oddziały/////////////////////////////////////////////
-//        if($typ == 1) {
-//            $departamentship = DB::table('log_download')
-//                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('users_t', 'id_user', 'users_t.id')
-//                ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
-//                ->where('baza', 'like', 'Wysylka')
-//                ->where('date', 'like', $date[0] . '%')
-//                ->groupBy('departments_t.name')
-//                ->groupBy('departments_t.id')
-//                ->get();
-//        }else
-//        {
-//            $departamentship = DB::table('log_download')
-//                ->selectRaw('departments_t.name,departments_t.id,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('users_t', 'id_user', 'users_t.id')
-//                ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
-//                ->where('baza', 'like', 'Wysylka')
-//                ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
-//                ->groupBy('departments_t.name')
-//                ->groupBy('departments_t.id')
-//                ->get();
-//        }
-//        $departamentship = json_decode(json_encode((array) $departamentship), true);
-//        $departamentship = $this->setArray($departamentship);
-
-///////////////////////////////////////Badania Pracownicy/////////////////////////////////////////////
-        $employeeres = DB::table('log_download')
-            ->selectRaw('
-                users_t.name,
-                users_t.last,
-                users_t.id, 
-                users_t.dep_id,
+        $departamentship = DB::table('log_download')
+            ->selectRaw(
+                'departments_t.name,
+                    departments_t.id,
                     sum(baza8) as bisnode,
                     sum(bazazg) as zgody,
                     sum(bazareszta) as reszta,
@@ -725,56 +710,111 @@ class RaportsController extends Controller
                                         
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
-            ->join('users_t', 'id_user', 'users_t.id');
+            ->join('users_t', 'id_user', 'users_t.id')
+            ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
+            ->where('baza', 'like', 'Wysylka');
         if($typ == 1) {
-            $employeeres = $employeeres
+            $departamentship = $departamentship
                 ->where('date', 'like', $date[0] . '%')
-                ->groupBy('users_t.name')
-                ->groupBy('users_t.last')
-                ->groupBy('users_t.dep_id')
+                ->groupBy('departments_t.name')
+                ->groupBy('departments_t.id')
+                ->get();
+        }else
+        {
+            $departamentship = $departamentship
+                ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
+                ->groupBy('departments_t.name')
+                ->groupBy('departments_t.id')
+                ->get();
+        }
+
+///////////////////////////////////////Badania Pracownicy/////////////////////////////////////////////
+        $employeeres = DB::table('log_download')
+            ->selectRaw('
+                users_t.name,
+                users_t.last, 
+                users_t.dep_id, 
+                users_t.id as user_id,
+                sum(baza8) as bisnode,
+                    sum(bazazg) as zgody,
+                    sum(bazareszta) as reszta,
+                    sum(bazaevent) as event,
+                    sum(bazaexito) as exito,
+                    
+                    sum(baza8Zgody) as bisnodeZgody,
+                    sum(bazazgZgody) as zgodyZgody,
+                    sum(bazaresztaZgody) as resztaZgody,
+                    sum(bazaeventZgody) as eventZgody,
+                    sum(bazaexitoZgody) as exitoZgody,
+                                        
+                    sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
+                     + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
+            ->join('users_t', 'id_user', 'users_t.id')
+            ->where('baza', 'like', 'Badania');
+
+        if($typ == 1) {
+            $employeeres =  $employeeres
+                ->where('date', 'like', $date[0] . '%')
+                ->wherenotin('users_t.id',[1,105,127])
                 ->groupBy('users_t.id')
+                ->groupBy('users_t.dep_id')
                 ->get();
         }
         else
         {
-            $employeeres = $employeeres
+            $employeeres =  $employeeres
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
+                ->wherenotin('users_t.id',[1,105,127])
                 ->groupBy('users_t.name')
                 ->groupBy('users_t.last')
                 ->groupBy('users_t.dep_id')
-                ->groupBy('users_t.id')
                 ->get();
         }
-        $employeeres = json_decode(json_encode((array) $employeeres), true);
-        $employeeres = $this->setArray($employeeres);
 
 ///////////////////////////////////////Wysylka Pracownicy/////////////////////////////////////////////
-//        if($typ == 1) {
-//            $employeeship = DB::table('log_download')
-//                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('users_t', 'id_user', 'users_t.id')
-//                ->where('baza', 'like', 'Wysylka')
-//                ->where('date', 'like', $date[0] . '%')
-//                ->groupBy('users_t.name')
-//                ->groupBy('users_t.last')
-//                ->groupBy('users_t.dep_id')
-//                ->groupBy('users_t.id')
-//                ->get();
-//        }else
-//        {
-//            $employeeship = DB::table('log_download')
-//                ->selectRaw('users_t.name,users_t.last,users_t.id, users_t.dep_id, sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('users_t', 'id_user', 'users_t.id')
-//                ->where('baza', 'like', 'Wysylka')
-//                ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
-//                ->groupBy('users_t.name')
-//                ->groupBy('users_t.last')
-//                ->groupBy('users_t.dep_id')
-//                ->groupBy('users_t.id')
-//                ->get();
-//        }
-//        $employeeship = json_decode(json_encode((array) $employeeship), true);
-//        $employeeship = $this->setArray($employeeship);
+        $employeeship = DB::table('log_download')
+            ->selectRaw('
+                users_t.name,
+                users_t.last, 
+                users_t.dep_id, 
+                sum(baza8) as bisnode,
+                    sum(bazazg) as zgody,
+                    sum(bazareszta) as reszta,
+                    sum(bazaevent) as event,
+                    sum(bazaexito) as exito,
+                    
+                    sum(baza8Zgody) as bisnodeZgody,
+                    sum(bazazgZgody) as zgodyZgody,
+                    sum(bazaresztaZgody) as resztaZgody,
+                    sum(bazaeventZgody) as eventZgody,
+                    sum(bazaexitoZgody) as exitoZgody,
+                                        
+                    sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
+                     + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
+            ->join('users_t', 'id_user', 'users_t.id')
+            ->where('baza', 'like', 'Wysylka');
+
+        if($typ == 1) {
+            $employeeship =  $employeeship
+                ->where('date', 'like', $date[0] . '%')
+                ->wherenotin('users_t.id',[1,105,127])
+                ->groupBy('users_t.name')
+                ->groupBy('users_t.last')
+                ->groupBy('users_t.dep_id')
+                ->get();
+        }
+        else
+        {
+            $employeeship =  $employeeship
+                ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
+                ->wherenotin('users_t.id',[1,105,127])
+                ->groupBy('users_t.name')
+                ->groupBy('users_t.last')
+                ->groupBy('users_t.dep_id')
+                ->get();
+        }
+
+
 
         $cityres = DB::table('log_download')
             ->selectRaw('
@@ -795,7 +835,8 @@ class RaportsController extends Controller
                                         
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
-            ->join('woj', 'log_download.idwoj', 'woj.idwoj');
+                ->join('woj', 'log_download.idwoj', 'woj.idwoj')
+                ->where('baza', 'Badania');
         if($typ == 1) {
             $cityres = $cityres
                 ->where('date', 'like', $date[0] . '%')
@@ -808,37 +849,48 @@ class RaportsController extends Controller
                 ->groupBy('miasto', 'id_user', 'woj.woj')
                 ->get();
         }
-        $cityres = json_decode(json_encode((array)$cityres), true);
-        $cityres = $this->setArray($cityres);
 
-//        if($typ == 1) {
-//            $cityship = DB::table('log_download')
-//                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('woj', 'log_download.idwoj', 'woj.idwoj')
-//                ->where('baza', 'Wysylka')
-//                ->where('date', 'like', $date[0] . '%')
-//                ->groupBy('miasto', 'id_user', 'woj.woj')
-//                ->get();
-//
-//        }else {
-//            $cityship = DB::table('log_download')
-//                ->selectRaw('woj.woj,miasto,id_user,sum(baza8) as bisnode,sum(bazazg) as zgody,sum(bazareszta) as reszta,sum(bazaevent) as event,sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent) as suma')
-//                ->join('woj', 'log_download.idwoj', 'woj.idwoj')
-//                ->where('baza', 'Wysylka')
-//                -> whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
-//                ->groupBy('miasto', 'id_user', 'woj.woj')
-//                ->get();
-//        }
-//        $cityship = json_decode(json_encode((array)$cityship), true);
-//        $cityship = $this->setArray($cityship);
+        $cityship = DB::table('log_download')
+                ->selectRaw('
+                            woj.woj,
+                            miasto,
+                            id_user,sum(baza8) as bisnode,
+                                sum(baza8) as bisnode,
+                                sum(bazazg) as zgody,
+                                sum(bazareszta) as reszta,
+                                sum(bazaevent) as event,
+                                sum(bazaexito) as exito,
+                                
+                                sum(baza8Zgody) as bisnodeZgody,
+                                sum(bazazgZgody) as zgodyZgody,
+                                sum(bazaresztaZgody) as resztaZgody,
+                                sum(bazaeventZgody) as eventZgody,
+                                sum(bazaexitoZgody) as exitoZgody,
+                                                    
+                                sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
+                                 + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
+                ->join('woj', 'log_download.idwoj', 'woj.idwoj')
+                ->where('baza', 'Badania');
+                    if($typ == 1) {
+                        $cityship = $cityship
+                            ->where('date', 'like', $date[0] . '%')
+                            ->groupBy('miasto', 'id_user', 'woj.woj')
+                            ->get();
+
+                    }else {
+                        $cityship = $cityship
+                            -> whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
+                            ->groupBy('miasto', 'id_user', 'woj.woj')
+                            ->get();
+                    }
 
         session()->put('resandship', $resandship);
         session()->put('departamentres', $departamentres);
-       // session()->put('departamentship', $departamentship);
+        session()->put('departamentship', $departamentship);
         session()->put('employeeres', $employeeres);
-        //session()->put('employeeship', $employeeship);
+        session()->put('employeeship', $employeeship);
         session()->put('cityres', $cityres);
-       // session()->put('cityship', $cityship);
+        session()->put('cityship', $cityship);
 
     }
 
