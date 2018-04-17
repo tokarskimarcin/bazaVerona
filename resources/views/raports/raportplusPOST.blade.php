@@ -249,11 +249,11 @@
         @endphp
 
         {{--WYSYLKA--}}
-        <?php if(!empty($dane)) :?>
+        <?php if(!empty($wysylka)) :?>
 
         <tr class="wysylka">
             <td colspan="3" style="text-align: center"><b>Ogół</b></td>
-            @if($badania->suma == 0)
+            @if($wysylka->suma == 0)
                 <td><b>0 %</b></td>
                 <td><b>0 %</b></td>
                 <td><b>0 %</b></td>
@@ -306,7 +306,7 @@
 
        @foreach ($employeeship as $value)
             @if( $item->id == $value->dep_id )
-                <tr class="badania" >
+                <tr class="wysylka" >
                     <td> {{ $i++ }}</td>
                     <td> {{ $value->name }}</td>
                     <td> {{ $value->last }}</td>
@@ -324,10 +324,9 @@
                     <td  class="suma"><b>{{number_format(($value->reszta+$value->resztaZgody)/$value->suma, 2, '', '')+0 }}%</b></td>
                     <td> {{ $value->suma }} </td>
                 </tr>
-
             @foreach ($cityship as  $key)
                     @if( $key->id_user == $value->user_id )
-                        <tr class="badania" >
+                        <tr class="wysylka" >
                             <td> </td>
                             <td> {{ $key->woj }}</td>
                             <td> {{ $key->miasto }}</td>

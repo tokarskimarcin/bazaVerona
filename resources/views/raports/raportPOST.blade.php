@@ -140,7 +140,7 @@
         @php
             $badania = $dane->where('baza','like','Badania')->first();
         @endphp
-        @if(!empty($dane))
+        @if(!empty($badania))
         <tr class="badania">
             <td colspan="3" style="text-align: center"><b>Ogół</b></td>
                 @if($badania->suma == 0)
@@ -214,11 +214,13 @@
                             @endif
                        @endforeach
             @endforeach
-
+@endif
         @php
             $wysylka = $dane->where('baza','like','Wysylka')->first();
         @endphp
 
+        {{--WYSYLKA--}}
+        @if(!empty($wysylka))
             <tr class="wysylka">
                 <td colspan="3" style="text-align: center"><b>Ogół</b></td>
                 @if($wysylka->suma == 0)

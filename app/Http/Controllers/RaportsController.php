@@ -532,6 +532,7 @@ class RaportsController extends Controller
                 users_t.name,
                 users_t.last, 
                 users_t.dep_id, 
+                users_t.id as user_id,
                 sum(baza8) as bisnode,
                     sum(bazazg) as zgody,
                     sum(bazareszta) as reszta,
@@ -553,8 +554,7 @@ class RaportsController extends Controller
             $employeeres =  $employeeres
                 ->where('date', 'like', $date[0] . '%')
                 ->wherenotin('users_t.id',[1,105,127])
-                ->groupBy('users_t.name')
-                ->groupBy('users_t.last')
+                ->groupBy('users_t.id')
                 ->groupBy('users_t.dep_id')
                 ->get();
         }
@@ -563,8 +563,7 @@ class RaportsController extends Controller
             $employeeres =  $employeeres
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
                 ->wherenotin('users_t.id',[1,105,127])
-                ->groupBy('users_t.name')
-                ->groupBy('users_t.last')
+                ->groupBy('users_t.id')
                 ->groupBy('users_t.dep_id')
                 ->get();
         }
@@ -575,6 +574,7 @@ class RaportsController extends Controller
                 users_t.name,
                 users_t.last, 
                 users_t.dep_id, 
+                users_t.id as user_id, 
                 sum(baza8) as bisnode,
                     sum(bazazg) as zgody,
                     sum(bazareszta) as reszta,
@@ -596,8 +596,7 @@ class RaportsController extends Controller
             $employeeship =  $employeeship
                 ->where('date', 'like', $date[0] . '%')
                 ->wherenotin('users_t.id',[1,105,127])
-                ->groupBy('users_t.name')
-                ->groupBy('users_t.last')
+                ->groupBy('users_t.id')
                 ->groupBy('users_t.dep_id')
                 ->get();
         }
@@ -606,8 +605,7 @@ class RaportsController extends Controller
             $employeeship =  $employeeship
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
                 ->wherenotin('users_t.id',[1,105,127])
-                ->groupBy('users_t.name')
-                ->groupBy('users_t.last')
+                ->groupBy('users_t.id')
                 ->groupBy('users_t.dep_id')
                 ->get();
         }
@@ -765,8 +763,7 @@ class RaportsController extends Controller
             $employeeres =  $employeeres
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
                 ->wherenotin('users_t.id',[1,105,127])
-                ->groupBy('users_t.name')
-                ->groupBy('users_t.last')
+                ->groupBy('users_t.id')
                 ->groupBy('users_t.dep_id')
                 ->get();
         }
@@ -776,7 +773,8 @@ class RaportsController extends Controller
             ->selectRaw('
                 users_t.name,
                 users_t.last, 
-                users_t.dep_id, 
+                users_t.dep_id,
+                users_t.id as user_id, 
                 sum(baza8) as bisnode,
                     sum(bazazg) as zgody,
                     sum(bazareszta) as reszta,
@@ -798,8 +796,7 @@ class RaportsController extends Controller
             $employeeship =  $employeeship
                 ->where('date', 'like', $date[0] . '%')
                 ->wherenotin('users_t.id',[1,105,127])
-                ->groupBy('users_t.name')
-                ->groupBy('users_t.last')
+                ->groupBy('users_t.id')
                 ->groupBy('users_t.dep_id')
                 ->get();
         }
@@ -808,8 +805,7 @@ class RaportsController extends Controller
             $employeeship =  $employeeship
                 ->whereBetween('date', [$date[0] . '%', $date[1] . ' 23:59:59'])
                 ->wherenotin('users_t.id',[1,105,127])
-                ->groupBy('users_t.name')
-                ->groupBy('users_t.last')
+                ->groupBy('users_t.id')
                 ->groupBy('users_t.dep_id')
                 ->get();
         }
