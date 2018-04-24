@@ -87,4 +87,7 @@ Route::get('/getRaportNewBaseMonth', 'RaportsController@getRaportNewBaseMonth');
 //*************************Planer*******************************
 Route::get('/planer', 'PlanerController@addroute');
 
+//************************Inne*********************************
+Route::get('/tempInsertData', 'UploadsController@tempInsertDataGet');
+Route::post('/tempInsertData', 'UploadsController@tempInsertDataPost');
 
