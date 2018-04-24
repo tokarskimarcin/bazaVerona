@@ -315,4 +315,44 @@ class UploadsController extends Controller
         return array_merge($tablica,['idbaza' => '8']);
     }
 
+    public function tempInsertDataGet() {
+        return view('uploads.tempInsertData');
+    }
+
+    public function tempInsertDataPost(Request $request) {
+
+        $insert = array();
+        //Wywyołanie metody wstawiającą dane do tablicy danych
+        self::setArray($request,$insert);
+        //Sprawdzenie czy tablica danych nie jest pusta, jesli tak wróć do strony wybierania liku
+        if(!empty($insert) && isset($insert[0]['telefon']))
+        {
+            $telArr = array();
+            session()->push('dane',$insert);
+            for($i = 0; $i < count($insert); $i++) {
+                $tel = $insert[$i]['telefon'];
+                $idbazy = DB::table('rekordy')
+                    ->select(DB::raw('
+                    CASE 
+                     WHEN idbaza IN(8,28) THEN "bisnode" 
+                     WHEN idbaza IN(26,6) THEN "event"
+                     WHEN idbaza IN(5, 9, 17, 27) THEN "zgody"
+                     WHEN idbaza IN(1,2,3,4, 7, 10,11,12,13,14,15,16,18,24) THEN "reszta"
+                     END as idbaza
+                '))
+                    ->where('telefon', '=', $tel)
+                    ->first();
+                $tempArr = array($tel, $idbazy);
+                array_push($telArr, $tempArr);
+            }
+            //Przekierowanie do strony wyświetlającej dane w tablicy
+            return view('uploads.showInsertedData')->with('dane',$telArr)->with('naglowki',self::getHeaders($insert[0]))
+                ->with('typ',$request->typ);
+        }else{
+            return back()->with('error','Please Check your file, Something is wrong there.');
+        }
+//        return view('uploads.showInsertedData');
+    }
+
 }
+
