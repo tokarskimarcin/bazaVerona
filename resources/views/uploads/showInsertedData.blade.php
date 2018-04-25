@@ -7,36 +7,42 @@
 @endsection
 
 @section('content')
-<h2>Tabela wynikowa</h2>
-<hr>
+
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <h3>Tabela wynikowa</h3>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>telefon</th>
-                            <th>id bazy</th>
+                            <th>Nr telefonu</th>
+                            <th>Nazwa bazy</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($dane as $data)
+                        @if(isset($data[1]->idbaza))
                         <tr class="records">
                             <td>{{$data[0]}}</td>
                             <td @if($data[1]->idbaza == 'bisnode') class="bisnode" @elseif($data[1]->idbaza == 'event') class="event" @elseif($data[1]->idbaza == 'zgody') class="zgody" @elseif($data[1]->idbaza == 'reszta') class="reszta" @endif>{{ $data[1]->idbaza}}</td>
                         </tr>
+                        @else
+                            <tr class="records">
+                                <td>{{$data[0]}}</td>
+                                <td class="no_data">Brak numeru w bazie</td>
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <h3>Tabela podsumowująca</h3>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>baza</th>
-                        <th>procent calosci</th>
+                        <th>Nazwa bazy</th>
+                        <th>Procentowy udział</th>
                     </tr>
                     </thead>
                     <tbody id="agregate_body">
@@ -45,8 +51,6 @@
                 </table>
             </div>
         </div>
-
-
     </div>
 
 @endsection
@@ -63,7 +67,9 @@
             let event = Array.from(document.getElementsByClassName('event'));
             let zgody = Array.from(document.getElementsByClassName('zgody'));
             let reszta = Array.from(document.getElementsByClassName('reszta'));
+            let no_data = Array.from(document.getElementsByClassName('no_data'));
 
+            //funkcja generująca wiersze w tabeli podsumowującej
             function dataRow(name, txt) {
                 if(name.length > 0) {
                     //Create td with text Bisnode
@@ -103,6 +109,7 @@
             dataRow(event, "event");
             dataRow(zgody, "zgody");
             dataRow(reszta, "reszta");
+            dataRow(no_data, "Brak danych w bazie")
         });
     </script>
 @endsection
