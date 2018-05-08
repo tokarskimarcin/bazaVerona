@@ -458,49 +458,99 @@ class PagesController extends Controller
                 foreach($licznikBis as $key => $item)
                 {
                     $poubdatebis+=$item;
-                    if($projekt == "Badania")
-                        DB::table('kod')->where('idkod',$key)->decrement('bisnode_badania',$item);
-                    else
-                        DB::table('kod')->where('idkod', $key)->decrement('bisnodeall', $item);
+                    if($projekt == "Badania"){
+                        $max_value_download =  DB::table('kod')->select('bisnode_badania')->where('idkod',$key)->first();
+                        if($max_value_download->bisnode_badania < $item)
+                            DB::table('kod')->where('idkod',$key)->update('bisnode_badania',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('bisnode_badania',$item);
+                    }
+                    else{
+                        $max_value_download =  DB::table('kod')->select('bisnodeall')->where('idkod',$key)->first();
+                        if($max_value_download->bisnodeall < $item)
+                            DB::table('kod')->where('idkod',$key)->update('bisnodeall',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('bisnodeall',$item);
+                    }
 
                 }
             if($zgody > 0)
                 foreach($licznikzg as $key => $item)
                 {
                     $poubdatezg+=$item;
-                    if($projekt == "Badania")
-                        DB::table('kod')->where('idkod',$key)->decrement('zgody_badania',$item);
-                    else
-                        DB::table('kod')->where('idkod',$key)->decrement('zgodyall',$item);
+                    if($projekt == "Badania"){
+                        $max_value_download =  DB::table('kod')->select('zgody_badania')->where('idkod',$key)->first();
+                        if($max_value_download->zgody_badania < $item)
+                            DB::table('kod')->where('idkod',$key)->update('zgody_badania',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('zgody_badania',$item);
+                    }
+                    else{
+                        $max_value_download =  DB::table('kod')->select('zgodyall')->where('idkod',$key)->first();
+                        if($max_value_download->zgodyall < $item)
+                            DB::table('kod')->where('idkod',$key)->update('zgodyall',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('zgodyall',$item);
+                    }
                 }
             if($reszta > 0)
                 foreach($licznikresz as $key => $item)
                 {
                     $poubdateresz+=$item;
-                    if($projekt == "Badania")
-                        DB::table('kod')->where('idkod',$key)->decrement('reszta_badania',$item);
-                    else
-                        DB::table('kod')->where('idkod',$key)->decrement('resztaall',$item);
+                    if($projekt == "Badania"){
+                        $max_value_download =  DB::table('kod')->select('reszta_badania')->where('idkod',$key)->first();
+                        if($max_value_download->reszta_badania < $item)
+                            DB::table('kod')->where('idkod',$key)->update('reszta_badania',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('reszta_badania',$item);
+                    }
+                    else{
+                        $max_value_download =  DB::table('kod')->select('resztaall')->where('idkod',$key)->first();
+                        if($max_value_download->resztaall < $item)
+                            DB::table('kod')->where('idkod',$key)->update('resztaall',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('resztaall',$item);
+                    }
                 }
 
             if($event > 0)
                 foreach($licznikevent as $key => $item)
                 {
                     $poubdateev+=$item;
-                    if($projekt == "Badania")
-                        DB::table('kod')->where('idkod',$key)->decrement('event_badania',$item);
-                    else
-                        DB::table('kod')->where('idkod',$key)->decrement('eventall',$item);
+                    if($projekt == "Badania"){
+                        $max_value_download =  DB::table('kod')->select('event_badania')->where('idkod',$key)->first();
+                        if($max_value_download->event_badania < $item)
+                            DB::table('kod')->where('idkod',$key)->update('event_badania',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('event_badania',$item);
+                    }
+                    else{
+                        $max_value_download =  DB::table('kod')->select('eventall')->where('idkod',$key)->first();
+                        if($max_value_download->eventall < $item)
+                            DB::table('kod')->where('idkod',$key)->update('eventall',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('eventall',$item);
+                    }
                 }
 
             if($exito > 0)
                 foreach($licznikexito as $key => $item)
                 {
                     $poubdateexito+=$item;
-                    if($projekt == "Badania")
-                        DB::table('kod')->where('idkod',$key)->decrement('exito_badania',$item);
-                    else
-                        DB::table('kod')->where('idkod',$key)->decrement('exitoall',$item);
+                    if($projekt == "Badania"){
+                        $max_value_download =  DB::table('kod')->select('exito_badania')->where('idkod',$key)->first();
+                        if($max_value_download->exito_badania < $item)
+                            DB::table('kod')->where('idkod',$key)->update('exito_badania',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('exito_badania',$item);
+                    }
+                    else{
+                        $max_value_download =  DB::table('kod')->select('exitoall')->where('idkod',$key)->first();
+                        if($max_value_download->exitoall < $item)
+                            DB::table('kod')->where('idkod',$key)->update('exitoall',0);
+                        else
+                            DB::table('kod')->where('idkod',$key)->decrement('exitoall',$item);
+                    }
                 }
 
 
@@ -508,52 +558,100 @@ class PagesController extends Controller
             foreach($licznikBisZgody as $key => $item)
             {
                 $poubdatebisZgody+=$item;
-                if($projekt == "Badania")
-                    DB::table('kod')->where('idkod',$key)->decrement('bisndeFromZgody_badania',$item);
-                else
-                    DB::table('kod')->where('idkod', $key)->decrement('bisndeFromZgody_all', $item);
-
+                if($projekt == "Badania"){
+                    $max_value_download =  DB::table('kod')->select('bisndeFromZgody_badania')->where('idkod',$key)->first();
+                    if($max_value_download->bisndeFromZgody_badania < $item)
+                        DB::table('kod')->where('idkod',$key)->update('bisndeFromZgody_badania',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('bisndeFromZgody_badania',$item);
+                }
+                else {
+                    $max_value_download =  DB::table('kod')->select('bisndeFromZgody_all')->where('idkod',$key)->first();
+                    if($max_value_download->bisndeFromZgody_all < $item){
+                        DB::table('kod')->where('idkod',$key)->update('bisndeFromZgody_all',0);
+                    }else
+                        DB::table('kod')->where('idkod', $key)->decrement('bisndeFromZgody_all', $item);
+                }
             }
 
-        if($zgodyZgody > 0)
+        if($zgodyZgody > 0){
             foreach($licznikzgZgody as $key => $item)
             {
                 $poubdatezgZgody+=$item;
-                if($projekt == "Badania")
-                    DB::table('kod')->where('idkod',$key)->decrement('zgodyFromZgody_badania',$item);
-                else
-                    DB::table('kod')->where('idkod',$key)->decrement('zgodyFromZgody_all',$item);
+                if($projekt == "Badania"){
+                    $max_value_download =  DB::table('kod')->select('zgodyFromZgody_badania')->where('idkod',$key)->first();
+                    if($max_value_download->zgodyFromZgody_badania < $item)
+                        DB::table('kod')->where('idkod',$key)->update('zgodyFromZgody_badania',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('zgodyFromZgody_badania',$item);
+                }
+                else{
+                    $max_value_download =  DB::table('kod')->select('zgodyFromZgody_all')->where('idkod',$key)->first();
+                    if($max_value_download->zgodyFromZgody_all < $item)
+                        DB::table('kod')->where('idkod',$key)->update('zgodyFromZgody_all',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('zgodyFromZgody_all',$item);
+                }
             }
+        }
 
         if($resztaZgody > 0)
             foreach($licznikreszZgody as $key => $item)
             {
                 $poubdatereszZgody+=$item;
-                if($projekt == "Badania")
-                    DB::table('kod')->where('idkod',$key)->decrement('resztaFromZgody_badania',$item);
-                else
-                    DB::table('kod')->where('idkod',$key)->decrement('resztaFromZgody_all',$item);
+                if($projekt == "Badania"){
+                    $max_value_download =  DB::table('kod')->select('resztaFromZgody_badania')->where('idkod',$key)->first();
+                    if($max_value_download->resztaFromZgody_badania < $item)
+                        DB::table('kod')->where('idkod',$key)->update('resztaFromZgody_badania',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('resztaFromZgody_badania',$item);
+                }
+                else{
+                    $max_value_download =  DB::table('kod')->select('resztaFromZgody_all')->where('idkod',$key)->first();
+                    if($max_value_download->resztaFromZgody_all < $item)
+                        DB::table('kod')->where('idkod',$key)->update('resztaFromZgody_all',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('resztaFromZgody_all',$item);
+                }
             }
-
-
         if($eventZgody > 0)
             foreach($licznikeventZgody as $key => $item)
             {
                 $poubdateevZgody+=$item;
-                if($projekt == "Badania")
-                    DB::table('kod')->where('idkod',$key)->decrement('eventFromZgody_badania',$item);
-                else
-                    DB::table('kod')->where('idkod',$key)->decrement('eventFromZgody_all',$item);
+                if($projekt == "Badania"){
+                    $max_value_download =  DB::table('kod')->select('eventFromZgody_badania')->where('idkod',$key)->first();
+                    if($max_value_download->eventFromZgody_badania < $item)
+                        DB::table('kod')->where('idkod',$key)->update('eventFromZgody_badania',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('eventFromZgody_badania',$item);
+                }
+                else{
+                    $max_value_download =  DB::table('kod')->select('eventFromZgody_all')->where('idkod',$key)->first();
+                    if($max_value_download->eventFromZgody_all < $item)
+                        DB::table('kod')->where('idkod',$key)->update('eventFromZgody_all',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('eventFromZgody_all',$item);
+                }
             }
 
         if($exitoZgody > 0)
             foreach($licznikexitoZgody as $key => $item)
             {
                 $poubdateexitoZgody+=$item;
-                if($projekt == "Badania")
-                    DB::table('kod')->where('idkod',$key)->decrement('exitoFromZgody_badania',$item);
-                else
-                    DB::table('kod')->where('idkod',$key)->decrement('exitoFromZgody_all',$item);
+                if($projekt == "Badania"){
+                    $max_value_download =  DB::table('kod')->select('exitoFromZgody_badania')->where('idkod',$key)->first();
+                    if($max_value_download->exitoFromZgody_badania < $item)
+                        DB::table('kod')->where('idkod',$key)->update('exitoFromZgody_badania',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('exitoFromZgody_badania',$item);
+                }
+                else{
+                    $max_value_download =  DB::table('kod')->select('exitoFromZgody_all')->where('idkod',$key)->first();
+                    if($max_value_download->exitoFromZgody_all < $item)
+                        DB::table('kod')->where('idkod',$key)->update('exitoFromZgody_all',0);
+                    else
+                        DB::table('kod')->where('idkod',$key)->decrement('exitoFromZgody_all',$item);
+                }
             }
 
                 //Tablica sesji ilości wykorzystana do generowania nazwy pliku csv
