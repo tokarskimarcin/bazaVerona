@@ -608,6 +608,9 @@ class PagesController extends Controller
     //Pobranie wymaganej ilości danych z bazy, typ- rodzaj bazy 0-bisnode,1-zgody,2-reszta,3-event,4-exito
     public function setDate($kody,$ilosc,$typ)
     {
+//        $kody=["00-001","00-002","00-003"];
+//        $ilosc = 10;
+//        $typ = 0;
         $tablica = array();
         $blokada = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-7,date("Y")));
 
@@ -619,92 +622,169 @@ class PagesController extends Controller
             $dataDoProjektu = "data_wysylka";
             $Order = "wysylka";
         }
+        //Pobranie wszystkich numerów na dany kod.
+        $new_zip_code_array = array();
         foreach ($kody as $item)
         {
             $kod = str_replace('-','',$item);
-            $kod = intval($kod);
+            array_push($new_zip_code_array, intval($kod));
+        }
+        if(count($new_zip_code_array) > 0 ){
+            $rekody = Record::select('imie', 'nazwisko', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','idbaza',$dataDoProjektu)
+                ->whereIn('idkod', $new_zip_code_array)
+                ->where('lock', '=', 0)
+                ->where($dataDoProjektu, '<', $blokada);
 
-            $rekody = Record::select('imie', 'nazwisko', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','idbaza')
-                    ->where('idkod', '=', $kod)
-                    ->where('lock', '=', 0)
-                    ->where($dataDoProjektu, '<', $blokada);
-                    //->where('data_wysylka', '<', $blokada);
-
-                if($typ == 0) {
-                    $rekody = $rekody
-                            ->where('idbaza', '=', 8);
-                }else if($typ == 1)
-                {
-                    $rekody = $rekody
-                            ->whereIn('idbaza',[5,9,17]);
-                }else if($typ == 2)
-                {
-                    $rekody = $rekody
-                            ->whereIn('idbaza',[1,2,3,4,7,10,11,12,13,14,15,16,18]);
-
-                }else if($typ == 3)
-                {
-                    $rekody = $rekody
-                            ->where('idbaza', '=', 6);
-                }
-                else if($typ == 4)
-                {
-                    $rekody = $rekody
-                            ->where('idbaza', '=', 19);
-                }
-                else if($typ == 5)
-                {   // zgody Bisnode
-                    $rekody = $rekody
-                        ->where('idbaza', '=', 28);
-                }
-                else if($typ == 6)
-                {   // zgody nowe zgody
-                    $rekody = $rekody
-                        ->where('idbaza', '=', 27);
-                }
-                else if($typ == 7)
-                { // zgody Reszta
-                    $rekody = $rekody
-                        ->where('idbaza', '=', 24);
-                }
-                else if($typ == 8)
-                { // zgody event
-                    $rekody = $rekody
-                        ->where('idbaza', '=', 26);
-                }
-                else if($typ == 9)
-                { // zgody exito
-                    $rekody = $rekody
-                        ->where('idbaza', '=', 29);
-                }
-
-                $rekody  = $rekody->orderBy($dataDoProjektu, 'asc')
-                ->limit($ilosc)
-                ->get();
-
-            if(count($rekody) < $ilosc)
+            if($typ == 0) {
+                $rekody = $rekody
+                    ->where('idbaza', '=', 8);
+            }else if($typ == 1)
             {
-                foreach ($rekody as $item)
-                {
-                    array_push($tablica,$item);
-                }
-                $ilosc = $ilosc - count($rekody);
-            }else
+                $rekody = $rekody
+                    ->whereIn('idbaza',[5,9,17]);
+            }else if($typ == 2)
             {
-                foreach ($rekody as $item)
-                {
-                    array_push($tablica,$item);
-                }
-                break;
+                $rekody = $rekody
+                    ->whereIn('idbaza',[1,2,3,4,7,10,11,12,13,14,15,16,18]);
+
+            }else if($typ == 3)
+            {
+                $rekody = $rekody
+                    ->where('idbaza', '=', 6);
             }
+            else if($typ == 4)
+            {
+                $rekody = $rekody
+                    ->where('idbaza', '=', 19);
+            }
+            else if($typ == 5)
+            {   // zgody Bisnode
+                $rekody = $rekody
+                    ->where('idbaza', '=', 28);
+            }
+            else if($typ == 6)
+            {   // zgody nowe zgody
+                $rekody = $rekody
+                    ->where('idbaza', '=', 27);
+            }
+            else if($typ == 7)
+            { // zgody Reszta
+                $rekody = $rekody
+                    ->where('idbaza', '=', 24);
+            }
+            else if($typ == 8)
+            { // zgody event
+                $rekody = $rekody
+                    ->where('idbaza', '=', 26);
+            }
+            else if($typ == 9)
+            { // zgody exito
+                $rekody = $rekody
+                    ->where('idbaza', '=', 29);
+            }
+
+            $rekody  = $rekody->orderBy($dataDoProjektu, 'asc')
+                ->get();
+            $rekody = $rekody->take($ilosc);
+            foreach ($rekody as $item)
+            {
+                array_push($tablica,$item);
+            }
+            $tymczasowa = session()->get('tablicaDanych');
+            foreach ($tablica as $item)
+            {
+                array_push($tymczasowa,$item);
+            }
+            session()->put('tablicaDanych',$tymczasowa);
+
         }
 
-        $tymczasowa = session()->get('tablicaDanych');
-        foreach ($tablica as $item)
-        {
-            array_push($tymczasowa,$item);
-        }
-        session()->put('tablicaDanych',$tymczasowa);
+//        foreach ($kody as $item)
+//        {
+//            $kod = str_replace('-','',$item);
+//            $kod = intval($kod);
+//
+//            $rekody = Record::select('imie', 'nazwisko', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','idbaza')
+//                    ->where('idkod', '=', $kod)
+//                    ->where('lock', '=', 0)
+//                    ->where($dataDoProjektu, '<', $blokada);
+//                    //->where('data_wysylka', '<', $blokada);
+//
+//                if($typ == 0) {
+//                    $rekody = $rekody
+//                            ->where('idbaza', '=', 8);
+//                }else if($typ == 1)
+//                {
+//                    $rekody = $rekody
+//                            ->whereIn('idbaza',[5,9,17]);
+//                }else if($typ == 2)
+//                {
+//                    $rekody = $rekody
+//                            ->whereIn('idbaza',[1,2,3,4,7,10,11,12,13,14,15,16,18]);
+//
+//                }else if($typ == 3)
+//                {
+//                    $rekody = $rekody
+//                            ->where('idbaza', '=', 6);
+//                }
+//                else if($typ == 4)
+//                {
+//                    $rekody = $rekody
+//                            ->where('idbaza', '=', 19);
+//                }
+//                else if($typ == 5)
+//                {   // zgody Bisnode
+//                    $rekody = $rekody
+//                        ->where('idbaza', '=', 28);
+//                }
+//                else if($typ == 6)
+//                {   // zgody nowe zgody
+//                    $rekody = $rekody
+//                        ->where('idbaza', '=', 27);
+//                }
+//                else if($typ == 7)
+//                { // zgody Reszta
+//                    $rekody = $rekody
+//                        ->where('idbaza', '=', 24);
+//                }
+//                else if($typ == 8)
+//                { // zgody event
+//                    $rekody = $rekody
+//                        ->where('idbaza', '=', 26);
+//                }
+//                else if($typ == 9)
+//                { // zgody exito
+//                    $rekody = $rekody
+//                        ->where('idbaza', '=', 29);
+//                }
+//
+//                $rekody  = $rekody->orderBy($dataDoProjektu, 'asc')
+//                ->limit($ilosc)
+//                ->get();
+//
+//            if(count($rekody) < $ilosc)
+//            {
+//                foreach ($rekody as $item)
+//                {
+//                    array_push($tablica,$item);
+//                }
+//                $ilosc = $ilosc - count($rekody);
+//            }else
+//            {
+//                foreach ($rekody as $item)
+//                {
+//                    array_push($tablica,$item);
+//                }
+//                break;
+//            }
+//        }
+//
+//        $tymczasowa = session()->get('tablicaDanych');
+//        foreach ($tablica as $item)
+//        {
+//            array_push($tymczasowa,$item);
+//        }
+//        session()->put('tablicaDanych',$tymczasowa);
     }
 
     public function getShipment()
