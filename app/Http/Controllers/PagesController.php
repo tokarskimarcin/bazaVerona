@@ -637,7 +637,7 @@ class PagesController extends Controller
 
             if($typ == 0) {
                 $rekody = $rekody
-                    ->where('idbaza', '=', 8);
+                    ->where('idbaza', '=', 8,38);
             }else if($typ == 1)
             {
                 $rekody = $rekody
