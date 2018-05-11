@@ -419,7 +419,7 @@ class PagesController extends Controller
             $poubdateexitoZgody =0;
             //Licznik ile rekordów przypada na dany kod
             foreach ($daneDoZapisania as $item) {
-                if($item['idbaza'] == 8) {
+                if($item['idbaza'] == 8 || $item['idbaza'] == 38) {
                     $licznikBis[$item['idkod']]++;
                 }else if($item['idbaza'] == 6)
                 {
@@ -431,7 +431,7 @@ class PagesController extends Controller
                 {
                     $licznikexito[$item['idkod']]++;
                 }
-                else if($item['idbaza'] == 28)
+                else if($item['idbaza'] == 28 || $item['idbaza'] == 48)
                 {
                     $licznikBisZgody[$item['idkod']]++;
                 }else if($item['idbaza'] == 27)
@@ -637,7 +637,7 @@ class PagesController extends Controller
 
             if($typ == 0) {
                 $rekody = $rekody
-                    ->where('idbaza', '=', 8);
+                    ->whereIn('idbaza', [8,38]);
             }else if($typ == 1)
             {
                 $rekody = $rekody
@@ -660,7 +660,7 @@ class PagesController extends Controller
             else if($typ == 5)
             {   // zgody Bisnode
                 $rekody = $rekody
-                    ->where('idbaza', '=', 28);
+                    ->whereIn('idbaza', [28,48]);
             }
             else if($typ == 6)
             {   // zgody nowe zgody
