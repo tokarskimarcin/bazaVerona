@@ -213,11 +213,13 @@ class UploadsController extends Controller
                                 // baza rekordu
                                 $telefon_baza = $kopia[9];
                                 // wrzucenie infromacji o rekordach
-                                DB::table('old_new_base')->insert(['id_record' => $telefon_id,'old_base' => $telefon_baza]);
+                                if($typ == "zgody") {
+                                    DB::table('old_new_base')->insert(['id_record' => $telefon_id, 'old_base' => $telefon_baza]);
+                                }
                                 // Dodanie rekordu do bazy
 
                                 if($typ == "zgody"){
-                                    if($telefon_baza == 8){
+                                    if($telefon_baza == 8 || $telefon_baza == 38){
                                         $idbaza = 28;
                                     }else if($telefon_baza == 6){
                                         $idbaza = 26;
@@ -227,7 +229,7 @@ class UploadsController extends Controller
                                         $idbaza = 27;
                                     }else if($telefon_baza == 28 || $telefon_baza == 26
                                         || $telefon_baza == 29 || $telefon_baza == 27
-                                        || $telefon_baza == 24){
+                                        || $telefon_baza == 24 || $telefon_baza == 48){
                                         $idbaza = $telefon_baza;
                                     }else{
                                         $idbaza = 24;
