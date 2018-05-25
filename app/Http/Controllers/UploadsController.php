@@ -219,7 +219,7 @@ class UploadsController extends Controller
                                 // Dodanie rekordu do bazy
 
                                 if($typ == "zgody"){
-                                    if($telefon_baza == 8 || $telefon_baza == 38){
+                                    if($telefon_baza == 8 || $telefon_baza == 38 ){
                                         $idbaza = 28;
                                     }else if($telefon_baza == 6){
                                         $idbaza = 26;
@@ -336,7 +336,7 @@ class UploadsController extends Controller
                 $idbazy = DB::table('rekordy')
                     ->select(DB::raw('
                     CASE 
-                     WHEN idbaza IN(8,28) THEN "bisnode" 
+                     WHEN idbaza IN(8,28,38,48) THEN "bisnode" 
                      WHEN idbaza IN(26,6) THEN "event"
                      WHEN idbaza IN(5, 9, 17, 27) THEN "zgody"
                      WHEN idbaza IN(1,2,3,4, 7, 10,11,12,13,14,15,16,18,24) THEN "reszta"
