@@ -64,9 +64,13 @@ class RaportsController extends Controller
             array_push($tablica,$datado);
             $this->setSingleRaport($tablica,2);
         }
+
         $data['overall_result'] = session()->get('resandship');
         $data['departments_statistic'] = session()->get('departamentres');
         $data['employee_statistic'] = session()->get('employeeres');
+        $data['departamentship'] = session()->get('departamentship');
+        $data['employeeship'] = session()->get('employeeship');
+
         return json_encode($data,JSON_UNESCAPED_UNICODE);
 
     }
