@@ -68,7 +68,7 @@
                     <li><a href="{{ url('historia') }}">Pobrane Rekordy</a></li>
                     <li><a href="{{ url('tempInsertData') }}">Podgląd rekordów</a></li>
 
-                    @if (Auth::user()->id == 1 || Auth::user()->id == 105 || Auth::user()->id == 130 )
+                    @if (Auth::user()->id == 1 || Auth::user()->id == 105 || Auth::user()->id == 130 || Auth::user()->id == 112 )
                         <li><a href="{{ url('odblokowanie') }}">Odblokowanie paczek</a></li>
                     @endif
 
