@@ -19,6 +19,7 @@ class LockingController extends Controller
 
     public function lockPost(Request $request)
     {
+        $lockHistory = new LockHistory;
         $response = '';
         $record = Record::where('telefon', '=', $request->telefon)->first();
         if ($record == null) {
@@ -26,11 +27,13 @@ class LockingController extends Controller
             $record->telefon = $request->telefon;
             $record->idbaza = 0;
             $record->lock = 1;
+            $lockHistory->id_baza = $record->idbaza;
             $response = '.new';
         } else {
             if ($record->lock == 1) {
                 return 'already locked';
             }
+            $lockHistory->id_baza = $record->idbaza;
             $record->imie = "";
             $record->nazwisko = "";
             $record->ulica = "";
@@ -40,11 +43,9 @@ class LockingController extends Controller
             $record->idkod = 0;
             $record->idbaza = 30;
             $record->lock = 1;
+            $record->save();
         }
 
-        $record->save();
-        $lockHistory = new LockHistory;
-        $lockHistory->id_baza = $record->idbaza;
         $lockHistory->telefon = $record->telefon;
         $lockHistory->save();
 
