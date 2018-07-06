@@ -91,3 +91,8 @@ Route::get('/planer', 'PlanerController@addroute');
 Route::get('/tempInsertData', 'UploadsController@tempInsertDataGet');
 Route::post('/tempInsertData', 'UploadsController@tempInsertDataPost');
 
+Route::get('/tempInsertData', 'UploadsController@tempInsertDataGet');
+
+Route::get('/locking', 'LockingController@lockGet');
+Route::post('/lock', 'LockingController@lockPost')->name('api.lockPostAjax');
+Route::post('/datatableLockAjax', 'LockingController@datatableLockAjax')->name('api.datatableLockAjax');

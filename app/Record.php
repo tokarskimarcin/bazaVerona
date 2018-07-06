@@ -8,5 +8,6 @@ class Record extends Model
 {
     protected $table = 'rekordy';
     protected $primaryKey = 'id';
+    public $timestamps = false;
     //
 }
