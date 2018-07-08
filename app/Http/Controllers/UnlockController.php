@@ -313,7 +313,7 @@ class unlockController extends Controller
             ->selectRaw('count(idkod)')
             ->where('idkod','=',$idkod)
             ->where($baza,'<',$date)
-            ->where('idbaza','=',8)
+            ->whereIn('idbaza','=',[8,38])
             ->where('lock','=',0)
             ->get();
         $lista = json_decode(json_encode((array) $lista), true);
@@ -435,7 +435,7 @@ class unlockController extends Controller
             ->selectRaw('count(idkod)')
             ->where('idkod','=',$idkod)
             ->where($baza,'<',$date)
-            ->where('idbaza','=',28)
+            ->whereIn('idbaza','=',[28,48])
             ->where('lock','=',0)
             ->get();
         $lista = json_decode(json_encode((array) $lista), true);
