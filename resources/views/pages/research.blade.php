@@ -947,8 +947,6 @@
                     else if (liczbareszyZgody > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0
                         || liczbazgodyZgody > 0 || liczbareszy > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
                         alert("Mieszasz Paczki, Zgody Resztę można poprać tylko jako osobną paczkę !!!!");
-                    }else if(szukana.trim().length == 0){
-                        alert('Pole miasto nie może być puse')
                     }
                     else {
                         var system = $('#selectSystem').val();
@@ -998,9 +996,6 @@
                     }
                 }
             }else{
-                 if(szukana.trim().length == 0){
-                        alert('Pole miasto nie może być puse')
-                    }
                 var system = $('#selectSystem').val();
                 var phoneSystem = 1;
                 if($('#cellPhoneSystem').length){
