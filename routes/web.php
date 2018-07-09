@@ -96,3 +96,6 @@ Route::get('/tempInsertData', 'UploadsController@tempInsertDataGet');
 Route::get('/locking', 'LockingController@lockGet');
 Route::post('/lock', 'LockingController@lockPost')->name('api.lockPostAjax');
 Route::post('/datatableLockAjax', 'LockingController@datatableLockAjax')->name('api.datatableLockAjax');
+
+Route::get('/phonenumberZipCodes', 'AnalizeController@getPhonenumberZipCodes');
+Route::post('/postPhonenumberZipCodes', 'AnalizeController@postPhonenumberZipCodes');
