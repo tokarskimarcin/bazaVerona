@@ -231,18 +231,24 @@ class PagesController extends Controller
 
         $dane =session()->get('tablicaDanych');
         $system =session()->get('system');
+        $phoneStstem =session()->get('phoneSystem');
 
         // Tablica Naglówka
         $naglowek = array();
         //Na podstawie wybranego systemu strzoenie odpowiedniego nagłówka
-        if($system == 0)
+        if($phoneStstem == 2 || $phoneStstem == 3){
+            $naglowek[] = array('Telefon','Kod');
+        }else if($system == 0)
             $naglowek[] = array('Imie','Nazwisko','Ulica','Nr. Domu','Nr. Mieszkania','Miasto','Kod','Telefon');
         else
             $naglowek[] = array('Telefon','Imię','Nazwisko','Ulica','Numer domu','Kod pocztowy','Miasto','Miasto Poczty','Komentarz','Status','Ponowny Kontakt o:','Wpisz kod pocztowy lub miasto:');
         //Wpisanie danych do pliku
         foreach ($dane as $item)
         {
-            if($system == 0)
+            if($phoneStstem == 2 || $phoneStstem == 3){
+                $naglowek[] = array($item['telefon'],$item['idkod']);
+            }
+            else if($system == 0)
                 $naglowek[] = array($item['imie'],$item['nazwisko'],$item['ulica'],$item['nrdomu'],$item['nrmieszkania'],$item['miasto'],$item['idkod'],$item['telefon']);
             else
                 $naglowek[] = array($item['telefon'],$item['imie'],$item['nazwisko'],$item['ulica'],$item['nrdomu'],$item['idkod'],$item['miasto']);
@@ -281,6 +287,7 @@ class PagesController extends Controller
         $reszta = $request['reszta'];
         $event = $request['event'];
         $exito = $request['exito'];
+        $phoneSystem = $request['phoneSystem'];
 
         $bisnodeZgody = $request['bisnodeZgody'];
         $zgodyZgody = $request['zgodyZgody'];
@@ -299,6 +306,7 @@ class PagesController extends Controller
         //Ustanowienie plików sesji(można uzywać w różnych miejscach klasy
         session()->put('tablicaDanych',$dane);
         session()->put('system',$system);
+        session()->put('phoneSystem',$phoneSystem);
         session()->put('miasto',$miasto);
         session()->put('projekt',$projekt);
 
@@ -344,7 +352,6 @@ class PagesController extends Controller
         {
             self::setDate($kody,$exitoZgody,9);
         }
-
         //Wywołanie funkcji UpdateData do zablokowanie pobieranych numerów
         self::updateData($bisnode,$zgody,$reszta,$event,$exito,
             $bisnodeZgody,$zgodyZgody,$resztaZgody,$eventZgody,$exitoZgody
@@ -382,6 +389,7 @@ class PagesController extends Controller
         );
 
             $daneDoZapisania = session()->get('tablicaDanych'); // wszystkie dane które checmy wykozystać
+
             $telefony = array();
             $kody = array();
             //zapisanie tablic telefonami i kodami;
@@ -629,12 +637,19 @@ class PagesController extends Controller
             $kod = str_replace('-','',$item);
             array_push($new_zip_code_array, intval($kod));
         }
+
+        $staticPhonePrefix = array(76,74,75,71, 52	, 56	, 54	, 83	, 82	, 81	, 84	, 95	, 68	, 44	, 43	, 42	, 46	, 12	, 18	, 14	, 23	, 29	, 24	, 48	, 25	, 22	, 77	, 13	, 16	, 17	, 15	, 85	, 86	, 87	, 58	, 59	, 33	, 34	, 32	, 41	, 55	, 89	, 62	, 63	, 65	, 67	, 61	, 91	, 94);
+        $phoneStstem =session()->get('phoneSystem');
         if(count($new_zip_code_array) > 0 ){
             $rekody = Record::select('imie', 'nazwisko', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','idbaza',$dataDoProjektu)
                 ->whereIn('idkod', $new_zip_code_array)
                 ->where('lock', '=', 0)
                 ->where($dataDoProjektu, '<', $blokada);
-
+            if($phoneStstem == 3){
+                $rekody = $rekody->whereIn(DB::raw('left(telefon,2)'),$staticPhonePrefix);
+            }else if($phoneStstem == 2){
+                $rekody = $rekody->whereNotIn(DB::raw('left(telefon,2)'),$staticPhonePrefix);
+            }
             if($typ == 0) {
                 $rekody = $rekody
                     ->whereIn('idbaza', [8,38]);

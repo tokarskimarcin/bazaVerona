@@ -190,10 +190,18 @@
             <td id="sumaliczbaZgody">0</td>
         </tr>
     </table>
-
-
     <div id="wybor">
         <form role="form" class="form-inline">
+            @if(Auth::user()->dep_id == 1)
+            <div class="form-group">
+                <label for="cellPhoneSystem">Typ pobrania:</label>
+                <select id="cellPhoneSystem" class="form-control selectWidth">
+                    <option value="1">Komórkowe + Stacjonarne</option>
+                    <option value="2">Komórkowe</option>
+                    <option value="3">Stacjonarne</option>
+                </select>
+            </div>
+            @endif
             <div class="form-group">
                 <label for="selectSystem">Wybierz system:</label>
                 <select id="selectSystem" class="form-control selectWidth">
@@ -346,7 +354,6 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    console.log(response);
                     if (response == 0) {
                         console.log("Brak danych do zwrócenia");
                     } else {
@@ -563,7 +570,6 @@
                                     }
                                 }
                                 wojewodztwoNowe = response;
-                                console.log(wojewodztwoNowe[0]);
                             }});
 
                     }
@@ -597,7 +603,6 @@
             });
 
             var indeks = 0;
-            console.log(badania);
             for(var i=0 ;i<selected.length;i++)
             {
                 indeks = parseInt(selected[i]);
@@ -942,9 +947,15 @@
                     else if (liczbareszyZgody > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0
                         || liczbazgodyZgody > 0 || liczbareszy > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
                         alert("Mieszasz Paczki, Zgody Resztę można poprać tylko jako osobną paczkę !!!!");
+                    }else if(szukana.trim().length == 0){
+                        alert('Pole miasto nie może być puse')
                     }
                     else {
                         var system = $('#selectSystem').val();
+                        var phoneSystem = 1;
+                        if($('#cellPhoneSystem').length){
+                            var phoneSystem = $('#cellPhoneSystem').val();
+                        }
                         document.getElementById("loader").style.display = "block";  // show the loading message.
                         $('#pobierz').attr("disabled", true);
                         var tablica;
@@ -956,6 +967,7 @@
                             url: '{{ url('storageResearch') }}',
                             data: {
                                 "System": system,
+                                "phoneSystem" : phoneSystem,
                                 "kody": tablicakodowpocztowych,
                                 "bisnode": liczbabisnode,
                                 "zgody": liczbazgody,
@@ -986,7 +998,14 @@
                     }
                 }
             }else{
+                 if(szukana.trim().length == 0){
+                        alert('Pole miasto nie może być puse')
+                    }
                 var system = $('#selectSystem').val();
+                var phoneSystem = 1;
+                if($('#cellPhoneSystem').length){
+                    var phoneSystem = $('#cellPhoneSystem').val();
+                }
                 document.getElementById("loader").style.display = "block";  // show the loading message.
                 $('#pobierz').attr("disabled", true);
                 var tablica;
@@ -999,6 +1018,7 @@
                     data: {
                         "System": system,
                         "kody": tablicakodowpocztowych,
+                        "phoneSystem" : phoneSystem,
                         "bisnode": liczbabisnode,
                         "zgody": liczbazgody,
                         "reszta": liczbareszy,

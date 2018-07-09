@@ -184,6 +184,16 @@
 </br>
     <div id="wybor">
         <form role="form" class="form-inline">
+            @if(Auth::user()->dep_id == 1)
+                <div class="form-group">
+                    <label for="cellPhoneSystem">Typ pobrania:</label>
+                    <select id="cellPhoneSystem" class="form-control selectWidth">
+                        <option value="1">Komórkowe + Stacjonarne</option>
+                        <option value="2">Komórkowe</option>
+                        <option value="3">Stacjonarne</option>
+                    </select>
+                </div>
+            @endif
             <div class="form-group">
                 <label for="selectSystem">Wybierz system:</label>
                 <select id="selectSystem" class="form-control selectWidth">
@@ -928,6 +938,10 @@
                         document.getElementById("loader").style.display = "block";  // show the loading message.
                         $('#pobierz').attr("disabled", true);
                         var tablica;
+                        var phoneSystem = 1;
+                        if($('#cellPhoneSystem').length){
+                            var phoneSystem = $('#cellPhoneSystem').val();
+                        }
                         if (rejonka != '') {
                             szukana = rejonka + '_Rejonka';
                         }
@@ -936,6 +950,7 @@
                             url: '{{ url('storageResearch') }}',
                             data: {
                                 "System": system,
+                                "phoneSystem" : phoneSystem,
                                 "kody": tablicakodowpocztowych,
                                 "bisnode": liczbabisnode,
                                 "zgody": liczbazgody,
@@ -970,6 +985,10 @@
                 document.getElementById("loader").style.display = "block";  // show the loading message.
                 $('#pobierz').attr("disabled", true);
                 var tablica;
+                var phoneSystem = 1;
+                if($('#cellPhoneSystem').length){
+                    var phoneSystem = $('#cellPhoneSystem').val();
+                }
                 if (rejonka != '') {
                     szukana = rejonka + '_Rejonka';
                 }
@@ -978,6 +997,7 @@
                     url: '{{ url('storageResearch') }}',
                     data: {
                         "System": system,
+                        "phoneSystem" : phoneSystem,
                         "kody": tablicakodowpocztowych,
                         "bisnode": liczbabisnode,
                         "zgody": liczbazgody,
