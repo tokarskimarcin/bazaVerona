@@ -17,6 +17,9 @@
         <div class="panel-body">
             <form method="post" action="{{URL::to('/phoneNumberText')}}" enctype="multipart/form-data">
             <div class="row">
+                    <div class="alert alert-info">
+                        Pierwszy wiersz w przesyłanym pliku musi zawierać nagłówek("telefon").
+                    </div>
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="col-lg-4">
                         <input id="import_file" name="import_file" placeholder="Wybierz plik..." type="file"/>
