@@ -652,25 +652,25 @@ class PagesController extends Controller
             }
             if($typ == 0) {
                 $rekody = $rekody
-                    ->whereIn('idbaza', [8,38]);
+                    ->whereIn('idbaza', [8,38]); //bisnode
             }else if($typ == 1)
             {
                 $rekody = $rekody
-                    ->whereIn('idbaza',[5,9,17]);
+                    ->whereIn('idbaza',[5,9,17]); //stare zgody
             }else if($typ == 2)
             {
                 $rekody = $rekody
-                    ->whereIn('idbaza',[1,2,3,4,7,10,11,12,13,14,15,16,18]);
+                    ->whereIn('idbaza',[1,2,3,4,7,10,11,12,13,14,15,16,18]); //reszta
 
             }else if($typ == 3)
             {
                 $rekody = $rekody
-                    ->where('idbaza', '=', 6);
+                    ->where('idbaza', '=', 6); //event
             }
             else if($typ == 4)
             {
                 $rekody = $rekody
-                    ->where('idbaza', '=', 19);
+                    ->where('idbaza', '=', 19); //exito
             }
             else if($typ == 5)
             {   // zgody Bisnode

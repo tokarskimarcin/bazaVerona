@@ -41,6 +41,7 @@
                                 <th>Lp.</th>
                                 <th>Telefon</th>
                                 <th>Kod pocztowy</th>
+                                <th>Baza</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,6 +52,7 @@
                                         <td>{{$count++}}</td>
                                         <td>{{$record->telefon}}</td>
                                         <td>{{$record->kodpocztowy}}</td>
+                                        <td>{{$record->idbaza}}</td>
                                     </tr>
                                 @endforeach
                             @endif

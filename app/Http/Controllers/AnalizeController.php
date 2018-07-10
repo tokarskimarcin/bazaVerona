@@ -15,6 +15,7 @@ class AnalizeController extends Controller
     }
 
     private function getCollectionOfPhoneNumberWithZipCodes($path){
+        // pobranie wszystkich wierszy z pierwszej kolumny
         $phoneNr = [];
         $file = fopen($path, 'r');
         $titles = fgetcsv($file);
@@ -24,21 +25,60 @@ class AnalizeController extends Controller
         }
         fclose($file);
 
+        //okreslenie idbazy
+        foreach ([8,38] as $key){
+            $baza[$key] = 'bisnode';
+        }
+        foreach ([5,9,17] as $key){
+            $baza[$key] = 'stare zgody';
+        }
+        foreach ([1,2,3,4,7,10,11,12,13,14,15,16,18] as $key){
+            $baza[$key] = 'reszta';
+        }
+        foreach ([6] as $key){
+            $baza[$key] = 'event';
+        }
+        foreach ([19] as $key){
+            $baza[$key] = 'exito';
+        }
+        foreach ([28,48] as $key){
+            $baza[$key] = 'zgody bisnode';
+        }
+        foreach ([27] as $key){
+            $baza[$key] = 'nowe zgody';
+        }
+        foreach ([24] as $key){
+            $baza[$key] = 'zgody reszta';
+        }
+        foreach ([26] as $key){
+            $baza[$key] = 'zgody event';;
+        }
+        foreach ([29] as $key){
+            $baza[$key] = 'zgody exito';
+        }
+
 
         $records = DB::table('rekordy')
-            ->select('telefon','kodpocztowy')
-            ->join('kod','rekordy.idkod','=','kod.idkod')
-            ->whereIn('telefon',$phoneNr)
+            ->select('telefon', 'kodpocztowy', 'idbaza')
+            ->join('kod', 'rekordy.idkod', '=', 'kod.idkod')
+            ->whereIn('telefon', $phoneNr)
             ->get();
-        $records->each(function ($item, $key) use (&$phoneNr){
-            foreach ($phoneNr as $key => $number){
-                if($number == $item->telefon){
+        $records->each(function ($item, $key) use (&$phoneNr, $baza) {
+            //jezeli w bazie istnieje klucz o wartosci idbazy danego numeru telefonu to zamien wartosc idbazy np. z 6 na 'event'
+            if (array_key_exists($item->idbaza, $baza))
+                $item->idbaza = $baza[$item->idbaza];
+            foreach ($phoneNr as $key => $number) {
+                //jezeli istnieje dany numer w tablicy numerow to go usun z tablicy
+                if ($number == $item->telefon) {
                     unset($phoneNr[$key]);
                     break;
                 }
-            }        });
-        foreach($phoneNr as $number){
-            $records->push((object)['telefon'=>intval($number),'kodpocztowy'=>'Tego numeru nie ma w bazie']);
+            }
+        });
+
+        //dla pozostaly numerow ktore nie istnieja w bazie danych, nadaj nastepujace wartosci dla kodu pocztowage i idbazy
+        foreach ($phoneNr as $number) {
+            $records->push((object)['telefon' => intval($number), 'kodpocztowy' => 'Tego numeru nie ma w bazie', 'idbaza' => '']);
         }
 
         return $records;
