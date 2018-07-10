@@ -31,6 +31,7 @@ Route::get('/getWojByCity', 'PagesController@getWojByCity');
 Route::get('/historia', 'packageController@getPackage');
 Route::post('/historyCSV', 'packageController@HistoryCSV');
 Route::get('/historyCSVDownload', 'packageController@historyCSVDownload');
+Route::post('/getCSVFile', 'packageController@getCSVFile');
 
 // Odblokowywanie rekordów
 Route::get('/odblokowanie', 'UnlockController@getRecords');

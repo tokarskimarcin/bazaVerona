@@ -114,6 +114,10 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
 
+        function replaceAll(str, find, replace) {
+            return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+        }
+
         $('.btn').click(function(event){
             document.getElementById("loader").style.display = "block";
             var dane = event.target.id;
@@ -153,7 +157,19 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    window.location="{{URL::to('historyCSVDownload')}}";
+                    var napis = JSON.parse(response['napis']);
+                    var naglowek = JSON.parse(response['naglowek']);
+                    var parsedNaglowek = JSON.stringify(naglowek);
+
+                    const placeToAppend = document.querySelector('#loader');
+                    placeToAppend.innerHTML = '';
+
+                    var formDiv = document.createElement('div');
+                    formDiv.innerHTML = `<form method="POST" action="{{URL::to('/getCSVFile')}}" id="csvForm"><input type="hidden" name="naglowek" value=` + parsedNaglowek + `><input type="hidden" name="napis" value=` + napis + `><input type="hidden" name="_token" value="{{ csrf_token() }}"> </form>`;
+                    placeToAppend.appendChild(formDiv);
+
+                    var csvForm = document.querySelector('#csvForm');
+                    csvForm.submit();
                     document.getElementById("loader").style.display = "none";
                 }
             });

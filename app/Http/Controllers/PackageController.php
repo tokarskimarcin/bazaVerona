@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Record;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -62,6 +63,19 @@ class PackageController extends Controller
         })->export('csv');
 
     }
+
+    public function getCSVFile(Request $request) {
+        $naglowek = json_decode($request->naglowek);
+        $napis = $request->napis;
+
+        return Excel::create($napis, function ($excel) use ($naglowek) {
+            $excel->sheet('sheet1', function ($sheet) use ($naglowek) {
+                $sheet->fromArray($naglowek, null, 'A1', false, false);
+            });
+        })->export('csv');
+    }
+
+
     public function HistoryCSV(Request $request)
     {
         $id = $request['id'];
@@ -75,22 +89,51 @@ class PackageController extends Controller
         $system = 1;
         if($baza == "Wysylka") {
             $dane =
-                Record::select('imie', 'nazwisko', 'nrdomu', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','data_wysylka as data')
+                Record::select(DB::raw('
+                    REPLACE(imie," ","_") as imie,
+                    REPLACE(nazwisko," ","_") as nazwisko,
+                    REPLACE(nrdomu," ","_") as nrdomu,
+                    REPLACE(ulica," ","_") as ulica,
+                    REPLACE(nrdomu," ","_") as nrdomu,
+                    REPLACE(nrmieszkania," ","_") as nrmieszkania,
+                    REPLACE(miasto," ","_") as miasto,
+                    REPLACE(idkod," ","_") as idkod,
+                    REPLACE(telefon," ","_") as telefon,
+                    REPLACE(data_wysylka," ","_") as data
+                '))
                     ->where('wysylka', '=', $id)
                     ->get();
+//                Record::select('imie', 'nazwisko', 'nrdomu', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','data_wysylka as data')
+//                    ->where('wysylka', '=', $id)
+//                    ->get();
             $system = 1;
         }else
         {
             $dane =
-                Record::select('imie', 'nazwisko', 'nrdomu', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','data as data')
+                Record::select(DB::raw('
+                REPLACE(imie," ","_") as imie,
+                REPLACE(nazwisko," ","_") as nazwisko,
+                REPLACE(nrdomu," ","_") as nrdomu,
+                REPLACE(ulica," ","_") as ulica,
+                REPLACE(nrdomu," ","_") as nrdomu,
+                REPLACE(nrmieszkania," ","_") as nrmieszkania,
+                REPLACE(miasto," ","_") as miasto,
+                REPLACE(idkod," ","_") as idkod,
+                REPLACE(telefon," ","_") as telefon,
+                REPLACE(data," ","_") as data
+                '))
                     ->where('badania', '=', $id)
                     ->get();
+
+//                Record::select('imie', 'nazwisko', 'nrdomu', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','data as data')
+//                    ->where('badania', '=', $id)
+//                    ->get();
             $system = 0;
         }
-        print_r($dane);
+
+//        print_r($dane);
         $dane = json_decode(json_encode((array) $dane), true);
         $dane = self::setArray($dane);
-
 
         $data = $dane[0]['data'];
         $napis = $miasto.'_8-'.$baza8.'_zg-'.$zg.'_ev-'.$ev.'_r-'.$reszta;
@@ -100,9 +143,9 @@ class PackageController extends Controller
         $naglowek = array();
         //Na podstawie wybranego systemu strzoenie odpowiedniego nagłówka
         if($system == 0)
-            $naglowek[] = array('Imie','Nazwisko','Ulica','Nr. Domu','Nr. Mieszkania','Miasto','Kod','Telefon');
+            $naglowek[] = array('Imie','Nazwisko','Ulica','Nr.Domu','Nr.Mieszkania','Miasto','Kod','Telefon');
         else
-            $naglowek[] = array('Telefon','Imie','Nazwisko','Ulica','Nr. Domu','Kod Pocztowy','Miasto');
+            $naglowek[] = array('Telefon','Imie','Nazwisko','Ulica','Nr.Domu','Kod_Pocztowy','Miasto');
         //Wpisanie danych do pliku
         foreach ($dane as $item)
         {
@@ -112,10 +155,19 @@ class PackageController extends Controller
                 $naglowek[] = array($item['telefon'],$item['imie'],$item['nazwisko'],$item['ulica'],$item['nrdomu'],$item['idkod'],$item['miasto']);
         }
 
-        session()->put('naglowek',$naglowek);
-        session()->put('napis',$napis);
+//        foreach($naglowek as $item) {
+//            foreach($item as $item2) {
+//                $item2 = str_ireplace(' ', '_',$item2);
+//            }
+////            $item = str_ireplace(' ','_',$item);
+//        }
+//        return $naglowek;
+        $naglowek = json_encode($naglowek);
 
+        $napis = json_encode($napis);
+        $infoArray = array('naglowek' => $naglowek, 'napis' => $napis);
 
+        return $infoArray;
 
     }
 
