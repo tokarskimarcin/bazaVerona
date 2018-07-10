@@ -190,10 +190,18 @@
             <td id="sumaliczbaZgody">0</td>
         </tr>
     </table>
-
-
     <div id="wybor">
         <form role="form" class="form-inline">
+            @if(Auth::user()->dep_id == 1)
+            <div class="form-group">
+                <label for="cellPhoneSystem">Typ pobrania:</label>
+                <select id="cellPhoneSystem" class="form-control selectWidth">
+                    <option value="1">Komórkowe + Stacjonarne</option>
+                    <option value="2">Komórkowe</option>
+                    <option value="3">Stacjonarne</option>
+                </select>
+            </div>
+            @endif
             <div class="form-group">
                 <label for="selectSystem">Wybierz system:</label>
                 <select id="selectSystem" class="form-control selectWidth">
@@ -243,6 +251,7 @@
 
     <script>
         var arr = new Array();
+        var userType = '{{Auth::user()->dep_id}}';
         var source = [];
         var miasta = [];
         var region = [];
@@ -345,7 +354,6 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    console.log(response);
                     if (response == 0) {
                         console.log("Brak danych do zwrócenia");
                     } else {
@@ -562,7 +570,6 @@
                                     }
                                 }
                                 wojewodztwoNowe = response;
-                                console.log(wojewodztwoNowe[0]);
                             }});
 
                     }
@@ -596,7 +603,6 @@
             });
 
             var indeks = 0;
-            console.log(badania);
             for(var i=0 ;i<selected.length;i++)
             {
                 indeks = parseInt(selected[i]);
@@ -870,142 +876,173 @@
 
 
         $("#pobierz").on("click",function(e){
-            if(liczbacalosci > 1000 || liczbacalosciZgody  > 1000)
-            {
-                alert("Maksymalna ilość rekordów to 1000");
-            }else if(liczbacalosci < 1 && liczbacalosciZgody  < 1){
-                console.log("Brak danych do pobrania");
-            }
-            else {
-                if(liczbabisnode > bisbadania)
-                {
-                    alert("Za Duzo");
-                }else if(liczbaevent > eventbadania)
-                {
-                    alert("Za Duzo");
-                }else if(liczbareszy > resztabadania)
-                {
-                    alert("Za Duzo");
-                }else if(liczbazgody > zgodybadania)
-                {
-                    alert("Za Duzo");
-                }else if(liczbaexito > exitobadania)
-                {
-                    alert("Za Duzo");
-                }
 
-                else if(liczbabisnodeZgody > bisbadaniaZgody)
-                {
-                    alert("Za Duzo");
+            if(userType != 1) {
+                if (liczbacalosci > 1000 || liczbacalosciZgody > 1000) {
+                    alert("Maksymalna ilość rekordów to 1000");
+                } else if (liczbacalosci < 1 && liczbacalosciZgody < 1) {
+                    alert("Brak danych do pobrania");
                 }
-                else if(liczbazgodyZgody > zgodybadaniaZgody)
-                {
-                    alert("Za Duzo");
-                }
-                else if(liczbaeventZgody > eventbadaniaZgody)
-                {
-                    alert("Za Duzo");
-                }
-                else if(liczbaexitoZgody > exitobadaniaZgody)
-                {
-                    alert("Za Duzo");
-                }
-                else if(liczbareszyZgody > resztabadaniaZgody)
-                {
-                    alert("Za Duzo");
-                }
-
-                else if(liczbaexito > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0
-                    || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
-                {
-                        alert("Mieszasz Paczki, Exito można poprać tylko jako osobną paczkę !!!!");
-                }else if(liczbabisnode > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbaexito > 0
-                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
-                {
-                    alert("Mieszasz Paczki, Bisnode można poprać tylko jako osobną paczkę !!!!");
-                }else if(liczbaevent > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
-                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
-                {
-                    alert("Mieszasz Paczki, Event można poprać tylko jako osobną paczkę !!!!");
-                }else if(liczbazgody > 0 && (liczbaevent > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
-                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
-                {
-                    alert("Mieszasz Paczki, Zgody można poprać tylko jako osobną paczkę !!!!");
-                }else if(liczbareszy > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0
-                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
-                {
-                    alert("Mieszasz Paczki, Resztę można poprać tylko jako osobną paczkę !!!!");
-                }
-                else if(liczbaexitoZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0
-                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexito > 0))
-                {
-                    alert("Mieszasz Paczki, Zgody Exito można poprać tylko jako osobną paczkę !!!!");
-                }
-                else if(liczbabisnodeZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbaexito > 0
-                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnode > 0 || liczbaexitoZgody > 0))
-                {
-                    alert("Mieszasz Paczki, Zgody Bisnode można poprać tylko jako osobną paczkę !!!!");
-                }
-                else if(liczbaeventZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
-                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaevent > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
-                {
-                    alert("Mieszasz Paczki, Zgody Event można poprać tylko jako osobną paczkę !!!!");
-                }
-                else if(liczbazgodyZgody > 0 && (liczbaevent > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
-                        || liczbazgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
-                {
-                    alert("Mieszasz Paczki, Zgody Zgody można poprać tylko jako osobną paczkę !!!!");
-                }
-                else if(liczbareszyZgody > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0
-                        || liczbazgodyZgody > 0 || liczbareszy > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0))
-                {
-                    alert("Mieszasz Paczki, Zgody Resztę można poprać tylko jako osobną paczkę !!!!");
-                }
-
-                else
-                {
-                    var system = $('#selectSystem').val();
-                    document.getElementById("loader").style.display = "block";  // show the loading message.
-                    $('#pobierz').attr("disabled", true);
-                    var tablica;
-                    if(rejonka !='')
-                    {
-                        szukana=rejonka+'_Rejonka';
+                else {
+                    if (liczbabisnode > bisbadania) {
+                        alert("Za Duzo");
+                    } else if (liczbaevent > eventbadania) {
+                        alert("Za Duzo");
+                    } else if (liczbareszy > resztabadania) {
+                        alert("Za Duzo");
+                    } else if (liczbazgody > zgodybadania) {
+                        alert("Za Duzo");
+                    } else if (liczbaexito > exitobadania) {
+                        alert("Za Duzo");
                     }
-                    $.ajax({
-                        type: "POST",
-                        url: '{{ url('storageResearch') }}',
-                        data: {
-                            "System": system,
-                            "kody": tablicakodowpocztowych,
-                            "bisnode": liczbabisnode,
-                            "zgody": liczbazgody,
-                            "reszta": liczbareszy,
-                            "event": liczbaevent,
-                            "exito": liczbaexito,
-                            "bisnodeZgody": liczbabisnodeZgody,
-                            "zgodyZgody": liczbazgodyZgody,
-                            "resztaZgody": liczbareszyZgody,
-                            "eventZgody": liczbaeventZgody,
-                            "exitoZgody": liczbaexitoZgody,
-                            "miasto": szukana,
-                            "idwoj": idwoj,
-                            "projekt": "Badania"
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            tablica = response;
-                            $('#pobierz').attr("disabled", false);
-                            window.location="{{URL::to('gererateCSV')}}";
-                            document.getElementById("loader").style.display = "none";
-                            $( "#any_button" ).trigger( "click" );
-                        }
-                    });
 
+                    else if (liczbabisnodeZgody > bisbadaniaZgody) {
+                        alert("Za Duzo");
+                    }
+                    else if (liczbazgodyZgody > zgodybadaniaZgody) {
+                        alert("Za Duzo");
+                    }
+                    else if (liczbaeventZgody > eventbadaniaZgody) {
+                        alert("Za Duzo");
+                    }
+                    else if (liczbaexitoZgody > exitobadaniaZgody) {
+                        alert("Za Duzo");
+                    }
+                    else if (liczbareszyZgody > resztabadaniaZgody) {
+                        alert("Za Duzo");
+                    }
+
+                    else if (liczbaexito > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Exito można poprać tylko jako osobną paczkę !!!!");
+                    } else if (liczbabisnode > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Bisnode można poprać tylko jako osobną paczkę !!!!");
+                    } else if (liczbaevent > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Event można poprać tylko jako osobną paczkę !!!!");
+                    } else if (liczbazgody > 0 && (liczbaevent > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Zgody można poprać tylko jako osobną paczkę !!!!");
+                    } else if (liczbareszy > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Resztę można poprać tylko jako osobną paczkę !!!!");
+                    }
+                    else if (liczbaexitoZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbabisnode > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexito > 0)) {
+                        alert("Mieszasz Paczki, Zgody Exito można poprać tylko jako osobną paczkę !!!!");
+                    }
+                    else if (liczbabisnodeZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbaevent > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnode > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Zgody Bisnode można poprać tylko jako osobną paczkę !!!!");
+                    }
+                    else if (liczbaeventZgody > 0 && (liczbazgody > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszyZgody > 0 || liczbaevent > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Zgody Event można poprać tylko jako osobną paczkę !!!!");
+                    }
+                    else if (liczbazgodyZgody > 0 && (liczbaevent > 0 || liczbareszy > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgody > 0 || liczbareszyZgody > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Zgody Zgody można poprać tylko jako osobną paczkę !!!!");
+                    }
+                    else if (liczbareszyZgody > 0 && (liczbaevent > 0 || liczbazgody > 0 || liczbabisnode > 0 || liczbaexito > 0
+                        || liczbazgodyZgody > 0 || liczbareszy > 0 || liczbaeventZgody > 0 || liczbabisnodeZgody > 0 || liczbaexitoZgody > 0)) {
+                        alert("Mieszasz Paczki, Zgody Resztę można poprać tylko jako osobną paczkę !!!!");
+                    }
+                    else {
+                        var system = $('#selectSystem').val();
+                        var phoneSystem = 1;
+                        if($('#cellPhoneSystem').length){
+                            var phoneSystem = $('#cellPhoneSystem').val();
+                        }
+                        document.getElementById("loader").style.display = "block";  // show the loading message.
+                        $('#pobierz').attr("disabled", true);
+                        var tablica;
+                        if (rejonka != '') {
+                            szukana = rejonka + '_Rejonka';
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: '{{ url('storageResearch') }}',
+                            data: {
+                                "System": system,
+                                "phoneSystem" : phoneSystem,
+                                "kody": tablicakodowpocztowych,
+                                "bisnode": liczbabisnode,
+                                "zgody": liczbazgody,
+                                "reszta": liczbareszy,
+                                "event": liczbaevent,
+                                "exito": liczbaexito,
+                                "bisnodeZgody": liczbabisnodeZgody,
+                                "zgodyZgody": liczbazgodyZgody,
+                                "resztaZgody": liczbareszyZgody,
+                                "eventZgody": liczbaeventZgody,
+                                "exitoZgody": liczbaexitoZgody,
+                                "miasto": szukana,
+                                "idwoj": idwoj,
+                                "projekt": "Badania"
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function (response) {
+                                tablica = response;
+                                $('#pobierz').attr("disabled", false);
+                                window.location = "{{URL::to('gererateCSV')}}";
+                                document.getElementById("loader").style.display = "none";
+                                $("#any_button").trigger("click");
+                            }
+                        });
+
+                    }
                 }
+            }else{
+                var system = $('#selectSystem').val();
+                var phoneSystem = 1;
+                if($('#cellPhoneSystem').length){
+                    var phoneSystem = $('#cellPhoneSystem').val();
+                }
+                document.getElementById("loader").style.display = "block";  // show the loading message.
+                $('#pobierz').attr("disabled", true);
+                var tablica;
+                if (rejonka != '') {
+                    szukana = rejonka + '_Rejonka';
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '{{ url('storageResearch') }}',
+                    data: {
+                        "System": system,
+                        "kody": tablicakodowpocztowych,
+                        "phoneSystem" : phoneSystem,
+                        "bisnode": liczbabisnode,
+                        "zgody": liczbazgody,
+                        "reszta": liczbareszy,
+                        "event": liczbaevent,
+                        "exito": liczbaexito,
+                        "bisnodeZgody": liczbabisnodeZgody,
+                        "zgodyZgody": liczbazgodyZgody,
+                        "resztaZgody": liczbareszyZgody,
+                        "eventZgody": liczbaeventZgody,
+                        "exitoZgody": liczbaexitoZgody,
+                        "miasto": szukana,
+                        "idwoj": idwoj,
+                        "projekt": "Badania"
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        tablica = response;
+                        $('#pobierz').attr("disabled", false);
+                        window.location = "{{URL::to('gererateCSV')}}";
+                        document.getElementById("loader").style.display = "none";
+                        $("#any_button").trigger("click");
+                    }
+                });
+
             }
+
+
         });
     </script>
 @endsection
