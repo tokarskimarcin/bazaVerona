@@ -17,8 +17,8 @@ class AnalizeController extends Controller
     private function getCollectionOfPhoneNumberWithZipCodes($path){
         $phoneNr = [];
         $file = fopen($path, 'r');
-        $titles = fgetcsv($file, 1000);
-        while (($row = fgetcsv($file, 1000)) !== false)
+        $titles = fgetcsv($file);
+        while (($row = fgetcsv($file)) !== false)
         {
             array_push($phoneNr,$row[0]);
         }
@@ -31,13 +31,12 @@ class AnalizeController extends Controller
             ->whereIn('telefon',$phoneNr)
             ->get();
         $records->each(function ($item, $key) use (&$phoneNr){
-            for($i = 0; $i < count($phoneNr); $i++){
-                if($phoneNr[$i] == $item->telefon){
-                    unset($phoneNr[$i]);
+            foreach ($phoneNr as $key => $number){
+                if($number == $item->telefon){
+                    unset($phoneNr[$key]);
                     break;
                 }
-            }
-        });
+            }        });
         foreach($phoneNr as $number){
             $records->push((object)['telefon'=>intval($number),'kodpocztowy'=>'Tego numeru nie ma w bazie']);
         }
