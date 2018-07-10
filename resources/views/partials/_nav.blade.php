@@ -69,7 +69,7 @@
                     <li><a href="{{ url('historia') }}">Pobrane Rekordy</a></li>
                     <li><a href="{{ url('tempInsertData') }}">Podgląd rekordów</a></li>
 
-                    @if (Auth::user()->id == 133 || Auth::user()->id == 1)
+                    @if (Auth::user()->dep_id == 1)
                         <li><a href="{{ url('phonenumberZipCodes') }}">Sprawdzenie kodów pocztowych dla telefonów</a></li>
                     @endif
 
