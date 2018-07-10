@@ -100,3 +100,6 @@ Route::post('/datatableLockAjax', 'LockingController@datatableLockAjax')->name('
 
 Route::get('/phonenumberZipCodes', 'AnalizeController@getPhonenumberZipCodes');
 Route::post('/postPhonenumberZipCodes', 'AnalizeController@postPhonenumberZipCodes');
+
+Route::get('/phoneNumberText', 'AnalizeController@phoneNumberTextGet');
+Route::post('/phoneNumberText', 'AnalizeController@phoneNumberTextPost');
