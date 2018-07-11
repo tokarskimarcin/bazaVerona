@@ -229,8 +229,8 @@
             <th>Zgody Nowe</th>
             <th>Event</th>
             <th>Event Zgody</th>
-            <th hidden>Exito</th>
-            <th hidden>Exito Zgody</th>
+            <th>Exito</th>
+            <th>Exito Zgody</th>
             <th>Reszta</th>
             <th>Reszta Zgody</th>
             <th>
@@ -250,6 +250,7 @@
 
 
     <script>
+        var globalCity;
         var arr = new Array();
         var userType = '{{Auth::user()->dep_id}}';
         var source = [];
@@ -520,9 +521,9 @@
                         }
                     },
                     "columnDefs": [
-                        {
-                            "searchable": false, "targets":[0,2,3,4,5,6,7,8],
-                            "orderable": false, "targets": [0,13]}
+                        {"searchable": false, "targets":[0,2,3,4,5,6,7,8]},
+                        {"orderable": false, "targets": [0,3,13]},
+                        {"visible": false, "targets": [9,10] },
                     ],
                 "autoWidth": false,
                     deferRender:    true,
@@ -784,7 +785,6 @@
                 $("#exznalezionychZgody").html(exitobadaniaZgody + "/"+ sumaexZgody);
                 $("#rznalezionychZgody").html(resztabadaniaZgody + "/"+ sumareszZgody);
                 $("#sumaznalezionychZgody").html(sumabadaniaZgody + "/" + sumacalosciZgody);
-
                 ///////FUNKCJA Koniec //////////////
             });
             $('#example tbody').on('click', 'tr', function (event) { // reakcja na klikniece wierszu w tabeli z danymi
@@ -949,53 +949,15 @@
                         alert("Mieszasz Paczki, Zgody Resztę można poprać tylko jako osobną paczkę !!!!");
                     }
                     else {
-                        var system = $('#selectSystem').val();
-                        var phoneSystem = 1;
-                        if($('#cellPhoneSystem').length){
-                            var phoneSystem = $('#cellPhoneSystem').val();
-                        }
-                        document.getElementById("loader").style.display = "block";  // show the loading message.
-                        $('#pobierz').attr("disabled", true);
-                        var tablica;
-                        if (rejonka != '') {
-                            szukana = rejonka + '_Rejonka';
-                        }
-                        $.ajax({
-                            type: "POST",
-                            url: '{{ url('storageResearch') }}',
-                            data: {
-                                "System": system,
-                                "phoneSystem" : phoneSystem,
-                                "kody": tablicakodowpocztowych,
-                                "bisnode": liczbabisnode,
-                                "zgody": liczbazgody,
-                                "reszta": liczbareszy,
-                                "event": liczbaevent,
-                                "exito": liczbaexito,
-                                "bisnodeZgody": liczbabisnodeZgody,
-                                "zgodyZgody": liczbazgodyZgody,
-                                "resztaZgody": liczbareszyZgody,
-                                "eventZgody": liczbaeventZgody,
-                                "exitoZgody": liczbaexitoZgody,
-                                "miasto": szukana,
-                                "idwoj": idwoj,
-                                "projekt": "Badania"
-                            },
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function (response) {
-                                tablica = response;
-                                $('#pobierz').attr("disabled", false);
-                                window.location = "{{URL::to('gererateCSV')}}";
-                                document.getElementById("loader").style.display = "none";
-                                $("#any_button").trigger("click");
-                            }
-                        });
-
+                        downloadCSV();
                     }
                 }
             }else{
+                downloadCSV();
+            }
+
+
+            function downloadCSV() {
                 var system = $('#selectSystem').val();
                 var phoneSystem = 1;
                 if($('#cellPhoneSystem').length){
@@ -1012,8 +974,8 @@
                     url: '{{ url('storageResearch') }}',
                     data: {
                         "System": system,
-                        "kody": tablicakodowpocztowych,
                         "phoneSystem" : phoneSystem,
+                        "kody": tablicakodowpocztowych,
                         "bisnode": liczbabisnode,
                         "zgody": liczbazgody,
                         "reszta": liczbareszy,
@@ -1032,14 +994,27 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
-                        tablica = response;
+                        var RphoneSystem = parseInt(response['phoneStstem']);
+                        var Rsystem = parseInt(response['system']);
+                        var RLogId = parseInt(response['RLogId']);
+                        const placeToAppend = document.querySelector('#loader');
+                        placeToAppend.innerHTML = '';
+                        var formDiv = document.createElement('div');
+                        formDiv.innerHTML = `
+                                <form method="POST" action="{{URL::to('/gererateCSV')}}" id="csvForm">
+                                    <input type="hidden" name="Rsystem" value=` + Rsystem + `>
+                                    <input type="hidden" name="RphoneSystem" value=` + RphoneSystem + `>
+                                    <input type="hidden" name="RLogId" value=` + RLogId + `>
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                </form>`;
+                        placeToAppend.appendChild(formDiv);
+                        var csvForm = document.querySelector('#csvForm');
+                        csvForm.submit();
                         $('#pobierz').attr("disabled", false);
-                        window.location = "{{URL::to('gererateCSV')}}";
                         document.getElementById("loader").style.display = "none";
                         $("#any_button").trigger("click");
                     }
                 });
-
             }
 
 

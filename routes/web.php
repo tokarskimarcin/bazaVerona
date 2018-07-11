@@ -18,7 +18,7 @@ Route::get('/badania', 'PagesController@getResearch');
 Route::get('/wysylka', 'PagesController@getShipment');
 Route::get('/getCity', 'PagesController@getCity');
 Route::post('/storageResearch', 'PagesController@storageResearch');
-Route::get('/gererateCSV', 'PagesController@gererateCSV');
+Route::post('/gererateCSV', 'PagesController@gererateCSV');
 Route::post('/searchFromData', 'PagesController@searchFromData');
 Route::post('/getDepname', 'PagesController@getDepname');
 Route::get('/getWoj', 'PagesController@getWoj');

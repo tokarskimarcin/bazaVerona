@@ -200,38 +200,22 @@ class PagesController extends Controller
     }
     //Generowanie pliku CSV na podstawie zebranych danych
 
-    public function gererateCSV()
+    public function gererateCSV(Request $request)
     {
         $data = date("Y-m-d H:i:s", strtotime('+1 hours'));
-        $iledanych = session()->get('iledanych');
-        $miasto = str_replace('-','/',session()->get('miasto'));
+        $idLog = $request->RLogId;
+        $logInfo = DB::table('log_download')->where('id','=',$idLog)->first();
+        $miasto = str_replace('-','/',$logInfo->miasto);
 
-        if($iledanych[0] != 0 || $iledanych[1] != 0 || $iledanych[2] != 0 || $iledanych[3] != 0 || $iledanych[4] != 0){
-            $napis = $miasto.'_Bis-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2];
+        if($logInfo->baza8 != 0 || $logInfo->bazazg != 0 || $logInfo->bazaevent != 0 || $logInfo->bazareszta != 0){
+            $napis = $miasto.'_Bis-'.$logInfo->baza8.'_zg-'.$logInfo->bazazg.'_ev-'.$logInfo->bazaevent.'_r-'.$logInfo->bazareszta;
             $napis = $napis.'_'.$data;
         }else{
-            $napis = $miasto.'_BisZG-'.$iledanych[5].'_zgZG-'.$iledanych[6].'_evZG-'.$iledanych[8].'_rZG-'.$iledanych[7];
+            $napis = $miasto.'_BisZG-'.$logInfo->baza8Zgody.'_zgZG-'.$logInfo->bazazgZgody.'_evZG-'.$logInfo->bazaeventZgody.'_rZG-'.$logInfo->bazaresztaZgody;
             $napis = $napis.'_'.$data;
         }
-//        if($iledanych[4] != 0 && ($iledanych[0] ==0 && $iledanych[1] == 0 && $iledanych[2] == 0 && $iledanych[3]==0))
-//        {
-//            $napis = $miasto.'_EXITO-'.$iledanych[4];
-//            $napis = $napis.'_'.$data;
-//        }
-//        else if($iledanych[4] != 0 && ($iledanych[0] ==0 || $iledanych[1] == 0 || $iledanych[2] == 0 || $iledanych[3]==0))
-//        {
-//            $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2].'_EXITO-'.$iledanych[4];
-//            $napis = $napis.'_'.$data;
-//        }
-//        else{
-//            $napis = $miasto.'_8-'.$iledanych[0].'_zg-'.$iledanych[1].'_ev-'.$iledanych[3].'_r-'.$iledanych[2];
-//            $napis = $napis.'_'.$data;
-//        }
-
-
-        $dane =session()->get('tablicaDanych');
-        $system =session()->get('system');
-        $phoneStstem =session()->get('phoneSystem');
+        $system =  $request->Rsystem;
+        $phoneStstem =$request->RphoneSystem;
 
         // Tablica Naglówka
         $naglowek = array();
@@ -243,6 +227,12 @@ class PagesController extends Controller
         else
             $naglowek[] = array('Telefon','Imię','Nazwisko','Ulica','Numer domu','Kod pocztowy','Miasto','Miasto Poczty','Komentarz','Status','Ponowny Kontakt o:','Wpisz kod pocztowy lub miasto:');
         //Wpisanie danych do pliku
+        if($logInfo->baza == "Badania"){
+            $dane = Record::where('badania','=',$logInfo->id)->get();
+        }else{
+            $dane = Record::where('wysylka','=',$logInfo->id)->get();
+        }
+
         foreach ($dane as $item)
         {
             if($phoneStstem == 2 || $phoneStstem == 3){
@@ -253,8 +243,6 @@ class PagesController extends Controller
             else
                 $naglowek[] = array($item['telefon'],$item['imie'],$item['nazwisko'],$item['ulica'],$item['nrdomu'],$item['idkod'],$item['miasto']);
         }
-        //Czyszczenie plików sesji
-        self::unlucksession();
         //Zwrocenie Pliku do pobrania
         return Excel::create($napis, function($excel) use ($naglowek) {
             $excel->sheet('sheet1', function($sheet) use ($naglowek) {
@@ -298,68 +286,65 @@ class PagesController extends Controller
         $miasto = $request['miasto'];
         $idwoj = $request['idwoj'];
         $projekt = $request['projekt'];
-
+        $ileDanych = 0;
 
         //pusta tablica to przechowywania rekordów do wygenerowanie przez csv
-        $dane = array();
-
-        //Ustanowienie plików sesji(można uzywać w różnych miejscach klasy
-        session()->put('tablicaDanych',$dane);
-        session()->put('system',$system);
-        session()->put('phoneSystem',$phoneSystem);
-        session()->put('miasto',$miasto);
-        session()->put('projekt',$projekt);
+        $tablicaDanych = array();
 
         if($bisnode !=0)
         {   //Wywołanie metody setDane która pobiera wymagane dane w określonej ilości na podstawie określonych kodów
-            self::setDate($kody,$bisnode,0);
+            self::setDate($kody,$bisnode,0,$phoneSystem,$projekt,$tablicaDanych);
         }
         if($zgody !=0)
         {
-            self::setDate($kody,$zgody,1);
+            self::setDate($kody,$zgody,1,$phoneSystem,$projekt,$tablicaDanych);
         }
         if($reszta !=0)
         {
-            self::setDate($kody,$reszta,2);
+            self::setDate($kody,$reszta,2,$phoneSystem,$projekt,$tablicaDanych);
         }
         if($event!=0)
         {
-            self::setDate($kody,$event,3);
+            self::setDate($kody,$event,3,$phoneSystem,$projekt,$tablicaDanych);
         }
         if($exito!=0)
         {
-            self::setDate($kody,$exito,4);
+            self::setDate($kody,$exito,4,$phoneSystem,$projekt,$tablicaDanych);
         }
 
 
         if($bisnodeZgody!=0)
         {
-            self::setDate($kody,$bisnodeZgody,5);
+            self::setDate($kody,$bisnodeZgody,5,$phoneSystem,$projekt,$tablicaDanych);
         }
         if($zgodyZgody!=0)
         {
-            self::setDate($kody,$zgodyZgody,6);
+            self::setDate($kody,$zgodyZgody,6,$phoneSystem,$projekt,$tablicaDanych);
         }
         if($resztaZgody!=0)
         {
-            self::setDate($kody,$resztaZgody,7);
+            self::setDate($kody,$resztaZgody,7,$phoneSystem,$projekt,$tablicaDanych);
         }
         if($eventZgody!=0)
         {
-            self::setDate($kody,$eventZgody,8);
+            self::setDate($kody,$eventZgody,8,$phoneSystem,$projekt,$tablicaDanych);
         }
         if($exitoZgody!=0)
         {
-            self::setDate($kody,$exitoZgody,9);
+            self::setDate($kody,$exitoZgody,9,$phoneSystem,$projekt,$tablicaDanych);
         }
+        $RLogId = 0;
         //Wywołanie funkcji UpdateData do zablokowanie pobieranych numerów
         self::updateData($bisnode,$zgody,$reszta,$event,$exito,
             $bisnodeZgody,$zgodyZgody,$resztaZgody,$eventZgody,$exitoZgody
-            ,$miasto,$idwoj,$projekt);
-
+            ,$miasto,$idwoj,$projekt,$tablicaDanych,$ileDanych,$RLogId);
+        $endData['RLogId'] = $RLogId;
+        $endData['system'] = $system;
+        $endData['phoneStstem'] = $phoneSystem;
+        return $endData;
     }
     //Zablokowanie numerów, dodanie wpisu w log_download, zmniejszenie licznika
-    public function updateData($bisnode,$zgody,$reszta,$event,$exito,$bisnodeZgody,$zgodyZgody,$resztaZgody,$eventZgody,$exitoZgody,$miasto,$idwoj,$projekt)
+    public function updateData($bisnode,$zgody,$reszta,$event,$exito,$bisnodeZgody,$zgodyZgody,$resztaZgody,$eventZgody,$exitoZgody,$miasto,$idwoj,$projekt,$tablicaDanych,&$iledanych,&$RLogId)
     {
         $data = date("Y-m-d H:i:s", strtotime('+1 hours'));
         $databezgodiny = date("Y-m-d");
@@ -385,10 +370,11 @@ class PagesController extends Controller
                 'miasto' => $miasto,
                 'idwoj' => $idwoj,
                 'status' => 0,
-                'baza'=>session()->get('projekt')]
+                'baza'=> $projekt]
         );
+        $RLogId = $id;
 
-            $daneDoZapisania = session()->get('tablicaDanych'); // wszystkie dane które checmy wykozystać
+            $daneDoZapisania = $tablicaDanych; // wszystkie dane które checmy wykozystać
 
             $telefony = array();
             $kody = array();
@@ -577,8 +563,7 @@ class PagesController extends Controller
                 array_push($ilosc,$poubdatereszZgody);
                 array_push($ilosc,$poubdateevZgody);
                 array_push($ilosc,$poubdateexitoZgody);
-
-                session()->put('iledanych',$ilosc);
+                $iledanych = $ilosc;
         //Insert już poprawnych danych
         DB::table('log_download')
             ->where('id',$id)
@@ -614,7 +599,7 @@ class PagesController extends Controller
 
     }
     //Pobranie wymaganej ilości danych z bazy, typ- rodzaj bazy 0-bisnode,1-zgody,2-reszta,3-event,4-exito
-    public function setDate($kody,$ilosc,$typ)
+    public function setDate($kody,$ilosc,$typ,$phoneStstem,$projekt,&$tablicaDanych)
     {
 //        $kody=["00-001","00-002","00-003"];
 //        $ilosc = 10;
@@ -622,7 +607,7 @@ class PagesController extends Controller
         $tablica = array();
         $blokada = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-7,date("Y")));
 
-        if(session()->get('projekt') == "Badania")
+        if($projekt == "Badania")
         {
             $dataDoProjektu ="data";
             $Order = "badania";
@@ -639,7 +624,6 @@ class PagesController extends Controller
         }
 
         $staticPhonePrefix = array(76,74,75,71, 52	, 56	, 54	, 83	, 82	, 81	, 84	, 95	, 68	, 44	, 43	, 42	, 46	, 12	, 18	, 14	, 23	, 29	, 24	, 48	, 25	, 22	, 77	, 13	, 16	, 17	, 15	, 85	, 86	, 87	, 58	, 59	, 33	, 34	, 32	, 41	, 55	, 89	, 62	, 63	, 65	, 67	, 61	, 91	, 94);
-        $phoneStstem =session()->get('phoneSystem');
         if(count($new_zip_code_array) > 0 ){
             $rekody = Record::select('imie', 'nazwisko', 'ulica', 'nrdomu', 'nrmieszkania', 'miasto', 'idkod', 'telefon','idbaza',$dataDoProjektu)
                 ->whereIn('idkod', $new_zip_code_array)
@@ -705,12 +689,12 @@ class PagesController extends Controller
             {
                 array_push($tablica,$item);
             }
-            $tymczasowa = session()->get('tablicaDanych');
+            $tymczasowa = $tablicaDanych;
             foreach ($tablica as $item)
             {
                 array_push($tymczasowa,$item);
             }
-            session()->put('tablicaDanych',$tymczasowa);
+            $tablicaDanych = $tymczasowa;
 
         }
 
