@@ -57,29 +57,40 @@ class AnalizeController extends Controller
             $baza[$key] = 'zgody exito';
         }
 
-
+        //$duplicatePhoneNr = [];
         $records = DB::table('rekordy')
             ->select('telefon', 'kodpocztowy', 'idbaza')
             ->join('kod', 'rekordy.idkod', '=', 'kod.idkod')
             ->whereIn('telefon', $phoneNr)
             ->get();
-        $records->each(function ($item, $key) use (&$phoneNr, $baza) {
+        $records->each(function ($item, $key) use (&$phoneNr, $baza){ //, &$duplicatePhoneNr) {
             //jezeli w bazie istnieje klucz o wartosci idbazy danego numeru telefonu to zamien wartosc idbazy np. z 6 na 'event'
             if (array_key_exists($item->idbaza, $baza))
                 $item->idbaza = $baza[$item->idbaza];
+            //$found = false;
             foreach ($phoneNr as $key => $number) {
                 //jezeli istnieje dany numer w tablicy numerow to go usun z tablicy
                 if ($number == $item->telefon) {
                     unset($phoneNr[$key]);
-                    break;
+                    /*if(!$found) {
+                        $found = true;
+                        unset($phoneNr[$key]);
+                    }else{
+                        array_push($duplicatePhoneNr, $number);
+                        unset($phoneNr[$key]);
+                    }*/
                 }
             }
         });
 
-        //dla pozostaly numerow ktore nie istnieja w bazie danych, nadaj nastepujace wartosci dla kodu pocztowage i idbazy
+        //dla pozostalych numerow ktore nie istnieja w bazie danych, nadaj nastepujace wartosci dla kodu pocztowage i idbazy
         foreach ($phoneNr as $number) {
             $records->push((object)['telefon' => intval($number), 'kodpocztowy' => 'Tego numeru nie ma w bazie', 'idbaza' => '']);
         }
+        /*
+        foreach ($duplicatePhoneNr as $number) {
+            $records->push((object)['telefon' => intval($number), 'kodpocztowy' => 'Duplikat', 'idbaza' => '']);
+        }*/
 
         return $records;
     }

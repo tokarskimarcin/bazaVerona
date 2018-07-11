@@ -38,7 +38,7 @@
                     <table class="table" id="datatable">
                         <thead>
                             <tr>
-                                <th>Lp.</th>
+                                {{--<th>Lp.</th>--}}
                                 <th>Telefon</th>
                                 <th>Kod pocztowy</th>
                                 <th>Baza</th>
@@ -49,7 +49,7 @@
                             @if(Session::has('records'))
                                 @foreach(Session::get('records') as $record)
                                     <tr>
-                                        <td>{{$count++}}</td>
+                                        {{--<td>{{$count++}}</td>--}}
                                         <td>{{$record->telefon}}</td>
                                         <td>{{$record->kodpocztowy}}</td>
                                         <td>{{$record->idbaza}}</td>
