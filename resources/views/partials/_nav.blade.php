@@ -70,7 +70,7 @@
                     <li><a href="{{ url('tempInsertData') }}">Podgląd rekordów</a></li>
                     <li><a href="{{ url('phoneNumberText') }}">Generowanie sms</a></li>
 
-                    @if (Auth::user()->id == 133 || Auth::user()->id == 1 || Auth::user()->dep_id == 1)
+                    @if (Auth::user()->id == 133 || Auth::user()->id == 1 || Auth::user()->dep_id == 1 || Auth::user()->id == 109)
                         <li><a href="{{ url('phonenumberZipCodes') }}">Sprawdzenie kodów pocztowych dla telefonów</a></li>
                     @endif
 
