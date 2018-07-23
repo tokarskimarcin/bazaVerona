@@ -119,8 +119,10 @@ class AnalizeController extends Controller
         $contents = $request->contents; //string
 
         if($request->file('import_file') !== null) {
+            $originalFileName = $request->file('import_file')->getClientOriginalName();
+            $fileName = substr($originalFileName,0,strlen($originalFileName)-4);
             $path = $request->file('import_file')->getRealPath(); // for example: C:\xampp\tmp\php6E3A.tmp
-            $this->createCSVWithUserData($path,$date,$time,$contents);
+            $this->createCSVWithUserData($path,$date,$time,$contents,$fileName);
         }else
             return Redirect::back();
     }
@@ -132,7 +134,7 @@ class AnalizeController extends Controller
      * @param $text
      * @return mixed
      */
-    private function createCSVWithUserData($path, $date, $time, $text) {
+    private function createCSVWithUserData($path, $date, $time, $text,$fileName) {
         $file = fopen($path, 'r');
         $titles = fgetcsv($file);
         $row = 1;
@@ -148,7 +150,7 @@ class AnalizeController extends Controller
             array_push($completeLinesArray, $lineArray);
         }
         fclose($file);
-        $napis="plik wynikowy";
+        $napis= $fileName;
         return Excel::create($napis, function ($excel) use ($completeLinesArray) {
             $excel->sheet('sheet1', function ($sheet) use ($completeLinesArray) {
                 $sheet->fromArray($completeLinesArray, null, 'A1', false, false);
