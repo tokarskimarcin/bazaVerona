@@ -462,7 +462,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma,
                      baza')
-                ->where('id_user', '>=', 1);
+                ->where('id_user', '>=', 1)
+                ->where('status', '=', 0);
         if($typ == 1) {
             $resandship = $resandship
                 ->where('date', 'like', $date[0] . '%')
@@ -498,7 +499,8 @@ class RaportsController extends Controller
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
             ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
-            ->where('baza', 'like', 'Badania');;
+            ->where('baza', 'like', 'Badania')
+            ->where('status', '=', 0);
         if($typ == 1) {
             $departamentres = $departamentres
                 ->where('date', 'like', $date[0] . '%')
@@ -540,7 +542,8 @@ class RaportsController extends Controller
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
                 ->join('users_t', 'id_user', 'users_t.id')
                 ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
-                ->where('baza', 'like', 'Wysylka');
+                ->where('baza', 'like', 'Wysylka')
+                ->where('status', '=', 0);
         if($typ == 1) {
             $departamentship = $departamentship
                 ->where('date', 'like', $date[0] . '%')
@@ -578,7 +581,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
-            ->where('baza', 'like', 'Badania');
+            ->where('baza', 'like', 'Badania')
+            ->where('status', '=', 0);
 
         if($typ == 1) {
             $employeeres =  $employeeres
@@ -669,7 +673,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma,
                      baza')
-            ->where('id_user', '>=', 1);
+            ->where('id_user', '>=', 1)
+            ->where('status', '=', 0);
         if($typ == 1) {
             $resandship = $resandship
                 ->where('date', 'like', $date[0] . '%')
@@ -703,7 +708,8 @@ class RaportsController extends Controller
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
             ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
-            ->where('baza', 'like', 'Badania');;
+            ->where('baza', 'like', 'Badania')
+            ->where('status', '=', 0);
         if($typ == 1) {
             $departamentres = $departamentres
                 ->where('date', 'like', $date[0] . '%')
@@ -740,7 +746,8 @@ class RaportsController extends Controller
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
             ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
-            ->where('baza', 'like', 'Wysylka');
+            ->where('baza', 'like', 'Wysylka')
+            ->where('status', '=', 0);
         if($typ == 1) {
             $departamentship = $departamentship
                 ->where('date', 'like', $date[0] . '%')
@@ -778,7 +785,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
-            ->where('baza', 'like', 'Badania');
+            ->where('baza', 'like', 'Badania')
+            ->where('status', '=', 0);
 
         if($typ == 1) {
             $employeeres =  $employeeres
@@ -820,7 +828,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
-            ->where('baza', 'like', 'Wysylka');
+            ->where('baza', 'like', 'Wysylka')
+            ->where('status', '=', 0);
 
         if($typ == 1) {
             $employeeship =  $employeeship
@@ -862,7 +871,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
                 ->join('woj', 'log_download.idwoj', 'woj.idwoj')
-                ->where('baza', 'Badania');
+                ->where('baza', 'Badania')
+                ->where('status', '=', 0);
         if($typ == 1) {
             $cityres = $cityres
                 ->where('date', 'like', $date[0] . '%')
@@ -896,7 +906,8 @@ class RaportsController extends Controller
                                 sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                                  + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
                 ->join('woj', 'log_download.idwoj', 'woj.idwoj')
-                ->where('baza', 'Badania');
+                ->where('baza', 'Badania')
+                ->where('status', '=', 0);
                     if($typ == 1) {
                         $cityship = $cityship
                             ->where('date', 'like', $date[0] . '%')
@@ -945,7 +956,8 @@ class RaportsController extends Controller
                     sum(baza8)+sum(bazazg)+sum(bazareszta)+sum(bazaevent)+sum(bazaexito)
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma,
                      baza')
-            ->where('id_user', '=', $id);
+            ->where('id_user', '=', $id)
+            ->where('status', '=', 0);
         if($typ == 1) {
             $resandship = $resandship
                 ->where('date', 'like', $date[0] . '%')
@@ -980,7 +992,8 @@ class RaportsController extends Controller
             ->join('users_t', 'id_user', 'users_t.id')
             ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
             ->where('baza', 'like', 'Badania')
-            ->where('id_user', '=', $id);
+            ->where('id_user', '=', $id)
+            ->where('status', '=', 0);
         if($typ == 1) {
             $departamentres = $departamentres
                 ->where('date', 'like', $date[0] . '%')
@@ -1018,7 +1031,8 @@ class RaportsController extends Controller
             ->join('users_t', 'id_user', 'users_t.id')
             ->join('departments_t', 'users_t.dep_id', 'departments_t.id')
             ->where('baza', 'like', 'Wysylka')
-            ->where('id_user', '=', $id);
+            ->where('id_user', '=', $id)
+            ->where('status', '=', 0);
         if($typ == 1) {
             $departamentship = $departamentship
                 ->where('date', 'like', $date[0] . '%')
@@ -1059,7 +1073,8 @@ class RaportsController extends Controller
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
             ->where('baza', 'like', 'Badania')
-            ->where('id_user', '=', $id);
+            ->where('id_user', '=', $id)
+            ->where('status', '=', 0);
 
         if($typ == 1) {
             $employeeres =  $employeeres
@@ -1102,7 +1117,8 @@ class RaportsController extends Controller
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('users_t', 'id_user', 'users_t.id')
             ->where('baza', 'like', 'Wysylka')
-            ->where('id_user', '=', $id);
+            ->where('id_user', '=', $id)
+            ->where('status', '=', 0);
 
         if($typ == 1) {
             $employeeship =  $employeeship
@@ -1143,7 +1159,8 @@ class RaportsController extends Controller
                      + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('woj', 'log_download.idwoj', 'woj.idwoj')
             ->where('baza', 'Badania')
-            ->where('id_user', '=', $id);
+            ->where('id_user', '=', $id)
+            ->where('status', '=', 0);
         if($typ == 1) {
             $cityres = $cityres
                 ->where('date', 'like', $date[0] . '%')
@@ -1178,7 +1195,8 @@ class RaportsController extends Controller
                              + sum(baza8Zgody)+sum(bazazgZgody)+sum(bazaresztaZgody)+sum(bazaeventZgody)+sum(bazaexitoZgody) as suma')
             ->join('woj', 'log_download.idwoj', 'woj.idwoj')
             ->where('baza', 'Badania')
-            ->where('id_user', '=', $id);
+            ->where('id_user', '=', $id)
+            ->where('status', '=', 0);
                 if($typ == 1) {
                     $cityship = $cityship
                         ->where('date', 'like', $date[0] . '%')
