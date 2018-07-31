@@ -522,7 +522,7 @@
                     },
                     "columnDefs": [
                         {"searchable": false, "targets":[0,2,3,4,5,6,7,8]},
-                        {"orderable": false, "targets": [0,3,13]},
+                        {"orderable": false, "targets": [0,13]},
                         {"visible": false, "targets": [9,10] },
                     ],
                 "autoWidth": false,

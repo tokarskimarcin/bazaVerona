@@ -77,7 +77,7 @@
                     @if (Auth::user()->id == 1 || Auth::user()->id == 105 || Auth::user()->id == 130 || Auth::user()->id == 112 )
                         <li><a href="{{ url('odblokowanie') }}">Odblokowanie paczek</a></li>
                     @endif
-                    @if (Auth::user()->id == 133 || Auth::user()->id == 1)
+                    @if (Auth::user()->id == 133 || Auth::user()->id == 1 || Auth::user()->id == 134)
                         <li><a href="{{ url('locking') }}">Zablokuj</a></li>
                     @endif
             </ul>
