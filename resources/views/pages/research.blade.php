@@ -253,6 +253,7 @@
         var globalCity;
         var arr = new Array();
         var userType = '{{Auth::user()->dep_id}}';
+        let userID = '{{Auth::user()->id}}';
         var source = [];
         var miasta = [];
         var region = [];
@@ -877,7 +878,8 @@
 
         $("#pobierz").on("click",function(e){
 
-            if(userType != 1) {
+            if(userType != 1 && userID != 109) {
+                console.log(userID);
                 if (liczbacalosci > 1000 || liczbacalosciZgody > 1000) {
                     alert("Maksymalna ilość rekordów to 1000");
                 } else if (liczbacalosci < 1 && liczbacalosciZgody < 1) {
