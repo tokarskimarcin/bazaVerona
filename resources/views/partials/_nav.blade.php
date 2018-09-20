@@ -74,7 +74,7 @@
                         <li><a href="{{ url('phonenumberZipCodes') }}">Sprawdzenie kodów pocztowych dla telefonów</a></li>
                     @endif
 
-                    @if (Auth::user()->id == 1 || Auth::user()->id == 105 || Auth::user()->id == 130 || Auth::user()->id == 112 )
+                    @if (Auth::user()->id == 1 || Auth::user()->id == 105 || Auth::user()->id == 130 || Auth::user()->id == 112 || Auth::user()->dep_id == 1)
                         <li><a href="{{ url('odblokowanie') }}">Odblokowanie paczek</a></li>
                     @endif
                     @if (Auth::user()->id == 133 || Auth::user()->id == 1 || Auth::user()->id == 134)
