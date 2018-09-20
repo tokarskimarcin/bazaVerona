@@ -878,7 +878,7 @@
 
         $("#pobierz").on("click",function(e){
 
-            if(userType != 1) {
+            if(userType != 1 && userID != 139) {
                 console.log(userID);
                 if (liczbacalosci > 1000 || liczbacalosciZgody > 1000) {
                     alert("Maksymalna ilość rekordów to 1000");
