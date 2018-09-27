@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Postcode;
+use App\Record;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Auth;
@@ -10,7 +12,7 @@ class RaportsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth',['except' => ['getRaportNewBaseWeek', 'getRaportNewBaseMonth','getRaportDayAPI']]);
+        $this->middleware('auth',['except' => ['getRaportNewBaseWeek', 'getRaportNewBaseMonth','getRaportDayAPI','getRaportCityInfoAPI']]);
     }
 // wystawienie danych nowych zgód tygodniowy
     public function getRaportNewBaseWeek()
@@ -73,6 +75,25 @@ class RaportsController extends Controller
 
         return json_encode($data,JSON_UNESCAPED_UNICODE);
 
+    }
+    // Wystawienie ilości zgód na dane miasto
+    public function getRaportCityInfoAPI($cityName = null){
+        if($cityName != null){
+            $city = strtolower($cityName);
+            $districtArray = ['warszawa','bydgoszcz','gdańsk','kraków','lublin','poznań','szczecin','wrocław','lódź'];
+            if(in_array($city,$districtArray)){
+                $city = $city.'%';
+            }
+            $infoAboutCity = Postcode::where('miasto','like',$city)->get();
+            $data['zgody'] = 0;
+            foreach ($infoAboutCity as $item){
+                $data['zgody'] += $item->zgody;
+                $data['zgody'] += $item->zgodyFromZgody;
+            }
+            return json_encode($data,JSON_UNESCAPED_UNICODE);
+        }else{
+            return json_encode([],JSON_UNESCAPED_UNICODE);
+        }
     }
 
     public function getRaport()
@@ -1245,5 +1266,7 @@ class RaportsController extends Controller
     {
         return view('raports.raport');
     }
+
+
 
 }
