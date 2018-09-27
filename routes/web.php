@@ -71,6 +71,9 @@ Route::post('/raport', 'RaportsController@setRaport');
 
 Route::get('/getRaportDayAPI/{id}', 'RaportsController@getRaportDayAPI');
 
+
+Route::get('/getRaportCityInfoAPI/{id}', 'RaportsController@getRaportCityInfoAPI');
+
 Route::get('/raportuzytkownika', 'RaportsController@getraportuser');
 Route::post('/raportuzytkownika', 'RaportsController@setraportuser');
 
