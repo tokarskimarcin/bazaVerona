@@ -79,11 +79,13 @@ class RaportsController extends Controller
     // Wystawienie ilości zgód na dane miasto
     public function getRaportCityInfoAPI($cityName = null){
         if($cityName != null){
-            $city = strtolower($cityName);
+
+            $city = mb_strtolower($cityName);
             $districtArray = ['warszawa','bydgoszcz','gdańsk','kraków','lublin','poznań','szczecin','wrocław','lódź'];
             if(in_array($city,$districtArray)){
                 $city = $city.'%';
             }
+
             $infoAboutCity = Postcode::where('miasto','like',$city)->get();
             $data['zgody'] = 0;
             foreach ($infoAboutCity as $item){
