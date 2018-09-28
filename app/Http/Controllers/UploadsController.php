@@ -22,7 +22,7 @@ class UploadsController extends Controller
     //Strona do wgrywania danych "Zgody"
     public function  getUploadAgree()
     {
-        if(Auth::user()->id == 1)
+        if(Auth::user()->id == 1 || Auth::user()->dep_id == 1)
             return view('uploads.agree');
         else
             return redirect()->away('badania');
@@ -30,7 +30,7 @@ class UploadsController extends Controller
     //Wyświetlenie strony do wgrania Eventu
     public function  getUploadEvent()
     {
-        if(Auth::user()->id == 1)
+        if(Auth::user()->id == 1 || Auth::user()->dep_id == 1)
             return view('uploads.event');
         else
             return redirect()->away('badania');
@@ -38,7 +38,7 @@ class UploadsController extends Controller
     //Wyświetlenie strony do wgrania Bisnode
     public function  getUploadBisnode()
     {
-        if(Auth::user()->id == 1)
+        if(Auth::user()->id == 1 || Auth::user()->dep_id == 1)
             return view('uploads.bisnode');
         else
             return redirect()->away('badania');
@@ -46,7 +46,7 @@ class UploadsController extends Controller
     //Wyświetlenie strony do wgrania Pomylek
     public function  getUploadMistake()
     {
-        if(Auth::user()->id == 1)
+        if(Auth::user()->id == 1 || Auth::user()->dep_id == 1)
             return view('uploads.mistake');
         else
             return redirect()->away('badania');
