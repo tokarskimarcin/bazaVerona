@@ -55,20 +55,34 @@ class LockingController extends Controller
 
     public function datatableLockAjax(Request $request)
     {
+        ini_set('memory_limit', '-1');
         $id_baza = $request->id_baza;
         $telefon = $request->telefon;
         $created_at = $request->created_at;
-
+        $searching = false;
+/*
         $id_baza = $id_baza === null ? '%' : $id_baza;
         $telefon = $telefon === null ? '%' : $telefon;
-        $created_at = $created_at === null ? '%' : $created_at;
+        $created_at = $created_at === null ? '%' : $created_at;*/
 
-        $lockHistory = LockHistory::where([
-            ['id_baza', 'like', $id_baza],
-            ['telefon', 'like', $telefon],
-            ['created_at', 'like', $created_at.'%']
-        ])->get();
+        $lockHistory = LockHistory::select(DB::raw('*'));
+        if($id_baza !== null ){
+            $lockHistory->where('id_baza', 'like', $id_baza);
+            $searching = true;
+        }
+        if($telefon !== null ){
+            $lockHistory->where('telefon', 'like', $telefon);
+            $searching = true;
+        }
+        if($created_at !== null ){
+            $lockHistory->where('created_at', 'like', $created_at.'%');
+            $searching = true;
+        }
 
+        if(!$searching){
+            $lockHistory->orderBy('created_at','desc')->limit(100);
+        }
+        $lockHistory = $lockHistory->get();
         return datatables($lockHistory)->make(true);
     }
 

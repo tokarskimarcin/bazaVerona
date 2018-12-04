@@ -29,7 +29,7 @@
                 <div class="col-lg-6">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Nr telefonu</span>
-                        <input id="lockInput" type="number" min="0" class="form-control" placeholder="Nr telefonu"
+                        <input id="lockInput" type="text" min="0" class="form-control" placeholder="Nr telefonu"
                                aria-describedby="basic-addon1">
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                 <div class="col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">Nr telefonu</span>
-                        <input id="telInput" type="number" min="0" class="form-control" placeholder="Nr telefonu"
+                        <input id="telInput" type="text" min="0" class="form-control" placeholder="Nr telefonu"
                                aria-describedby="basic-addon1">
                     </div>
                 </div>
@@ -152,6 +152,7 @@
 
         /** --------------------------------- DATATABLE --------------------------------- **/
         let datatable = $("#datatable").DataTable({
+            "searching": false,
             autoWidth: true,
             processing: true,
             serverSide: true,
@@ -181,11 +182,23 @@
         /** --------------------------------- EVENT LISTENERS --------------------------------- **/
 
         $('#baseInput').change(onInputChange);
-        $('#telInput').change(onInputChange);
         $('#dateInput').change(onInputChange);
+
+
+        $('#lockInput').on('input', function (e) {
+            removeNotNumberCharacters(e);
+        });
+        $('#telInput').on('input', function (e) {
+            removeNotNumberCharacters(e);
+            onInputChange(e);
+        });
 
         function onInputChange(e){
             datatable.ajax.reload();
+        }
+
+        function removeNotNumberCharacters(e){
+            $(e.target).val($(e.target).val().replace(/\D/g,''));
         }
 
         $('#lock').click((e) => {
